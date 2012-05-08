@@ -1,0 +1,14 @@
+Package: GUTS
+Type: Package
+Title: GUTS: Fast Calculation of the Likelihood of a Stochastic Survival Model
+Version: 0.2.2
+Author: Carlo Albert & Sören Vogel <guts.package@gmail.com>
+Maintainer: Carlo Albert & Sören Vogel <guts.package@gmail.com>
+Description: GUTS objects contain exposure and survival time series as well as parameter values, and are able to calculate the survival probabilities as well as the logarithm of the corresponding likelihood.
+License: GPL-2
+LazyLoad: yes
+Depends: methods, Rcpp (>= 0.9.4)
+LinkingTo: Rcpp
+RcppModules: modguts
+LazyData: no
+Encoding: UTF-8

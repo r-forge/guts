@@ -1,0 +1,6 @@
+useDynLib(GUTS)
+exportPattern("^[[:alpha:]]+")
+import( methods )
+import( Rcpp )
+S3method(print, GUTS)
+S3method(logLik, GUTS)
