@@ -3,7 +3,7 @@
  * @file		GUTS.cpp
  * @author		soeren.vogel@uzh.ch
  * @author		carlo.albert@eawag.ch
- * @date		2012-04-30
+ * @date		2012-05-09
  * @license		GPL-2
  */
 
@@ -23,17 +23,21 @@ GUTS::GUTS() :
     mz(), mS(), mLL( GNAN_DOUBLE ),
     mErrors( GER_COUNT, true ), mErrorMessages( GER_COUNT, "" )
 {
-    mErrorMessages.at( GER_C ) = "C is not set up.";
-    mErrorMessages.at( GER_CT ) = "Ct is not set up.";
-    mErrorMessages.at( GER_Y ) = "y is not set up.";
-    mErrorMessages.at( GER_YT ) = "yt is not set up.";
-    mErrorMessages.at( GER_PAR ) = "par not set up.";
-    mErrorMessages.at( GER_M ) = "M not set up.";
-    mErrorMessages.at( GER_DIST ) = "dist not set up.";
-    mErrorMessages.at( GER_N ) = "N not set up.";
-    mErrorMessages.at( GER_Z ) = "z not set up.";
-    mErrorMessages.at( GER_S ) = "Survival probabilities not set up.";
-    mErrorMessages.at( GER_LL ) = "Loglikelihood not set up.";
+    mErrorMessages.at( GER_C ) = "C not set up";
+    mErrorMessages.at( GER_CT ) = "Ct not set up";
+    mErrorMessages.at( GER_Y ) = "y not set up";
+    mErrorMessages.at( GER_YT ) = "yt not set up";
+    mErrorMessages.at( GER_PAR ) = "par not set up";
+    mErrorMessages.at( GER_M ) = "M not set up";
+
+    // dist has a valid default:
+    mErrors.at( GER_DIST ) = false;
+    mErrorMessages.at( GER_DIST ) = "";
+
+    mErrorMessages.at( GER_N ) = "N not set up";
+    mErrorMessages.at( GER_Z ) = "z not available";
+    mErrorMessages.at( GER_S ) = "Survival probabilities not calculated";
+    mErrorMessages.at( GER_LL ) = "Loglikelihood not calculated";
 } // end GUTS::GUTS()
 
 /*
@@ -71,12 +75,12 @@ void GUTS::setConcentrations( const vector<double>& C, const vector<double>& Ct 
     if ( C.size() < 2 )
     {
         mErrors.at( GER_C )			= true;
-        mErrorMessages.at( GER_C )  = "Vector C must be longer than 1.";
+        mErrorMessages.at( GER_C )  = "vector C must be longer than 1";
     }
     if ( C.size() != Ct.size() )
     {
         mErrors.at( GER_C )         = true;
-        mErrorMessages.at( GER_C )  = "Vectors C and Ct must have the same length.";
+        mErrorMessages.at( GER_C )  = "vectors C and Ct must have the same length";
     }
 
     // New errors on Ct
@@ -312,12 +316,12 @@ void GUTS::setSample( const vector<double>& z )
     if ( z.size() < 3 )
     {
         mErrors.at( GER_Z )			= true;
-        mErrorMessages.at( GER_Z ) 	= "z must be longer than 2.";
+        mErrorMessages.at( GER_Z ) 	= "z must be longer than 2";
     }
     else if ( *min_element( z.begin(), z.end() ) < 0.0f )
     {
         mErrors.at( GER_Z )     	= true;
-        mErrorMessages.at( GER_Z )	= "z must contain non-negative values.";
+        mErrorMessages.at( GER_Z )	= "z must contain non-negative values";
     }
 
     // Assign z, dist and N if no errors

@@ -2,7 +2,7 @@
  * @file        GUTS_logLikelihood.cpp
  * @author      soeren.vogel@uzh.ch
  * @author      carlo.albert@eawag.ch
- * @date        2012-05-01
+ * @date        2012-05-07
  * @license     GPL-2
  *
  * Calculate the logarithm of the likelihood of data present in GUTS object.
@@ -20,7 +20,7 @@ using namespace std;
  * error write: GER_LL
  */
 
-void GUTS::calcLoglikelihood()
+double GUTS::calcLoglikelihood()
 {
     /*
      * We need survival probabilities first
@@ -30,6 +30,7 @@ void GUTS::calcLoglikelihood()
 
 	// Reset error on this method
     mErrors.at( GER_LL ) = false;
+    mErrorMessages.at( GER_LL )	= "";
 
 	/*
      * Check for errors
@@ -42,16 +43,16 @@ void GUTS::calcLoglikelihood()
             mErrors.at( GER_LL )		= true;
             mErrorMessages.at( GER_LL )	= "calcLoglikelihood failed: " + mErrorMessages.at( i[j] );
             mLL = GNAN_DOUBLE;
-            return;
+            return mLL;
         }
     }
 
 	/*
-     * We have not returned so far
+     * We have not returned so far: continue calculation
      */
     
     /*
-     * Reset mLL, the loglikelihood
+     * Reset mLL (loglikelihood).
      * Append 0 to mS, but don't forget to remove it at the end!
      * Append 0 to my, but don't forget to remove it at the end!
      */
@@ -67,7 +68,7 @@ void GUTS::calcLoglikelihood()
 		if ( diffS <= 0.0f && diffy != 0 )
         {
         	mLL = -INFINITY;
-            return;
+            return mLL;
         }
         else
         {
@@ -80,4 +81,7 @@ void GUTS::calcLoglikelihood()
      */
     mS.pop_back();
     my.pop_back();
+
+    return mLL;
+
 } // end GUTS::calcLoglikelihood()

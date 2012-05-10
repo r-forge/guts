@@ -45,5 +45,7 @@ RCPP_MODULE(modguts)
 
         .property( "S",     &GUTS::getS, "Survival probabilities." )
         .property( "LL",    &GUTS::getLL, "Loglikelihood." )
+
+        .property( "errors",    &GUTS::getErrorMessages, "Errors." )
     ;
 }

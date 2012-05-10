@@ -1,31 +1,35 @@
 \encoding{UTF-8}
-\name{GUTS-class}
+\name{Rcpp_GUTS-class}
 \Rdversion{1.1}
 \docType{class}
 
+\alias{GUTS}
 \alias{GUTS-class}
 \alias{GUTS-method}
 \alias{GUTS-package}
-\alias{GUTS}
-\alias{Rcpp_GUTS-class}
-\alias{Rcpp_GUTS}
-\alias{modguts}
-\alias{print.GUTS}
-\alias{logLik.GUTS}
 
-\title{Class \code{GUTS} (\code{"Rcpp_GUTS"})}
+\alias{Rcpp_GUTS}
+\alias{Rcpp_GUTS-class}
+\alias{Rcpp_GUTS-method}
+
+\alias{modguts}
+
+\alias{print.Rcpp_GUTS}
+\alias{logLik.Rcpp_GUTS}
+
+\title{Class \code{Rcpp_GUTS}}
 
 \description{
 \code{GUTS} (General Unified Theory of Survival) is a stochastic survival model for ecotoxicology.
-The R class \code{GUTS} allows for the definition of exposure and survival time series as well as parameter values, and the calculation of the survival probabilities and the logarithm of the corresponding likelihood.
-\code{GUTS} is the constructor object of the C++ class “GUTS” exposed to R through the \link{Rcpp} module \code{modguts}.
-The reference class for \code{GUTS} is \code{"Rcpp_GUTS"}.
+The class \code{Rcpp_GUTS} is the reference class for the C++ class \code{GUTS} exposed to R through the \link{Rcpp} module \code{modguts}.
+The class allows for the definition of exposure and survival time series as well as parameter values, and the calculation of the survival probabilities and the logarithm of the corresponding likelihood.
+\code{GUTS} is the constructor object of \code{Rcpp_GUTS}.
 }
 
 \section{Objects from the Class}{
-New objects can be created by calls to the \bold{reference method} \code{new()} (see \link{ReferenceClasses}), or the \bold{function} \code{new("Rcpp_GUTS")}.
-No arguments must be provided, and a “factory fresh” \code{GUTS} object contains non-sense/empty values.
-A \code{GUTS} object has no public fields. Setter methods must be used to set values of an object.
+New objects can be created by calls to the method \code{new()} (see \link{ReferenceClasses}), or the function \code{new("Rcpp_GUTS")}.
+No arguments must be provided, and a “factory fresh” \code{GUTS} object contains default (empty) values.
+Fields are read only. Setter methods must be used to set values on fields.
 }
 
 %\section{Slots}{The class has no slots. Private fields can be set using methods (see below).}
@@ -38,6 +42,8 @@ A \code{GUTS} object has no public fields. Setter methods must be used to set va
       Set the vectors of concentrations (\code{C}) and concentration time points (\code{Ct}).
       \code{C} and \code{Ct} must have the same length of at least 2 values each.
       \code{Ct} must start at 0, and contain unique values in ascending order.
+      The last value of \code{Ct} must not be smaller than the last value of \code{yt},
+        i.e., there must be information about concentrations when no survivor remain.
     }
 
     \item{setSurvivors}{\code{signature(y = "integer", yt = "double")}:
@@ -45,6 +51,8 @@ A \code{GUTS} object has no public fields. Setter methods must be used to set va
       \code{y} must be a vector of integers (counts).
       \code{y} and \code{yt} must have the same length of at least 2 values each.
       \code{yt} must start at 0, and contain unique values in ascending order.
+      The last value of \code{yt} must not be larger than the last value of \code{Ct},
+        i.e., there must be information about concentrations when no survivor remain.
     }
 
     \item{setParameters}{\code{signature(par = "double")}:
@@ -105,29 +113,29 @@ A \code{GUTS} object has no public fields. Setter methods must be used to set va
       Calculate the logarithm of the likelihood of a properly set-up \code{"GUTS"} object.
     }
 
-    \item{show}{\code{signature()}:
+    \item{show}{\code{signature(object = "Rcpp_GUTS")}:
       Display current values of a GUTS object. S4 wrapper for field access with a formatted output.
     }
   }
 }
 
 \section{Fields}{%
-First, to access the survival probabilities or the loglikelihood, use the fields \code{S} and \code{LL}.
+To access the survival probabilities or the loglikelihood, use the fields \code{S} and \code{LL}.
 
-\code{C}, \code{Ct}, \code{y}, \code{yt}, \code{par}, \code{M}, \code{dist}, \code{N}, \code{z}, \code{S}, and \code{LL} are fields of a GUTS object. Note that any of these fields is \bold{read-only}. Content can be modified using setters and methods (see above). However, field contents can be displayed, or assigned to other R variables using the standard R procedures.%
+\code{C}, \code{Ct}, \code{y}, \code{yt}, \code{par}, \code{M}, \code{dist}, \code{N}, \code{z}, \code{S}, \code{LL}, and \code{errors} are fields of a GUTS object. Note that any of these fields is \bold{read-only}. Content can be modified using setters and methods (see above). However, field contents can be displayed, or assigned to other \R variables using the standard \R procedures.%
 }
 
 \section{Distributions}{%
-\code{GUTS} creates samples internally according to \code{dist}, \code{N}, and \code{pars[4:length(pars)]}.
-If no values for the creation of the distribution are given, no sample is created.
-If \code{dist} is set to \code{"empirical"}, \code{setSample} must be invoked with a valid sample vector.
-If \code{dist} is set to \code{"lognormal"}, a sample of size \code{N} is drawn from a lognormal distribution
-  with \code{mean = pars[4]} and \code{sigma = pars[5]}. Note that mean and sigma are parameters for the
-  \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!
+  \code{GUTS} creates samples internally according to \code{dist}, \code{N}, and \code{pars[4:length(pars)]}.
+  If no values for the creation of the distribution are given, no sample is created.
+  If \code{dist} is set to \code{"empirical"}, \code{setSample} must be invoked with a valid sample vector.
+  If \code{dist} is set to \code{"lognormal"}, a sample of size \code{N} is drawn from a lognormal distribution
+    with \code{mean = pars[4]} and \code{sigma = pars[5]}. Note that mean and sigma are parameters for the
+    \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!
 }
 
-\section{Calculate Survival Probabilities}{%
-This method is overloaded. It can be called in either of three ways:
+\section{Method: Calculate Survival Probabilities}{%
+  This method is overloaded. It can be called in either of three ways:
   \describe{
     \item{with no argument}{%
       It checks for all fields properly set up, except the survivors field \code{y}.%
@@ -151,40 +159,63 @@ This method is overloaded. It can be called in either of three ways:
 
 \section{Functions}{
   \describe{
-    \item{print(object)}{Simple wrapper for \code{show}.}
-    \item{logLik(object)}{Wrapper for returning the loglikelihood. Returns an object of class “logLik” with the loglikelihood as value and the length of the survivor’s vector as the degrees of freedom. Additional arguments (\code{...}) may be supplied but are ignored.}
+    \item{\code{print(object)}}{%
+      Simple wrapper for \code{show}.%
+    }
+    \item{\code{logLik(object, ...)}}{%
+      Wrapper for \code{calcLoglikelihood()}.
+      Returns an S3 object of class “logLik” with the loglikelihood as value and the length of the survivor’s vector (\code{y})
+        as the degrees of freedom.
+      Additional arguments (\code{...}) may be supplied but are ignored.%
+    }
   }
 }
 
 \section{Notes and warnings}{
   \describe{
 %    \item{Compiling from source}{Compilation from source would require an installation of the C++ boost library (\href{http://www.boost.org/}{http://www.boost.org/}). The library is expected in \code{/opt/local/include} under UNIX-likes, and in \code{/Boost} under Windows. Change the makefiles in \code{GUTS/src} to fit your installation.}
-    \item{Serialisation}{Serialisation is currently not implemented. Objects of class \code{GUTS} cannot be saved across sessions. Clean out every \code{GUTS} object from your workspace before leaving \R. On restart, rebuild \code{GUTS} objects if necessary.}
-    \item{Development status}{The package is under current development. \bold{Save your work before using this software.}}
+    \item{Copy objects}{%
+      New objects \bold{must} be created using the \code{new{}} method (see above).
+      Assigning \R objects to other \R objects would \bold{not} create a \bold{copy of the object}
+        but a \bold{copy of the reference} (pointing to the same object).
+      See examples below for details.%
+    }
+    \item{Serialisation}{%
+      Serialisation is currently not implemented.
+      Objects of class \code{GUTS} cannot be saved across sessions.
+      Clean out every \code{GUTS} object from your workspace before leaving \R.
+      On restart, rebuild \code{GUTS} objects if necessary.%
+    }
+    \item{Development status}{%
+      The package is under current development.
+      \bold{Save your work before using this software.}%
+    }
   }
 }
 
 \references{Jager T., Albert C., Preuss T., Ashauer R., General unified theory of survival – a toxicokinetic toxicodynamic framework for ecotoxicology, published online in Env. Sci. and Tech. (2011) (\href{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/\#}{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/#}).}
 
 \author{%
-Carlo Albert & Sören Vogel \email{guts.package@gmail.com}
+Carlo Albert \email{carlo.albert@eawag.ch} & Sören Vogel \email{soeren.vogel@uzh.ch}
 
-Maintainer: Carlo Albert & Sören Vogel \email{guts.package@gmail.com}%
+Maintainer: Sören Vogel \email{soeren.vogel@uzh.ch} & Carlo Albert \email{carlo.albert@eawag.ch}
 }
 
-\seealso{\code{\link{ReferenceClasses}}, \code{\link{Rcpp}}, \code{\link{new}}, \code{mcmc}, \code{\link{GUTSdiazinon}}}
+\seealso{\code{\link{ReferenceClasses}}, \code{\link{Rcpp}}, \code{\link{new}}, \code{\link{diazinon}}}
 
 \examples{
 library( "GUTS" )
 
+## documentation
+\dontrun{vignette( "GUTS-Documentation" )}
+
 ## what GUTS is
-getRefClass( "Rcpp_GUTS" )
-GUTS # is a C++ class
-getRefClass( GUTS ) # is a generator object
+\dontrun{getRefClass( "Rcpp_GUTS" )}
 
 ## defaults
 obj0 <- new( "Rcpp_GUTS" ) # also: obj0 <- GUTS$new()
 obj0$LL # NaN
+logLik(obj0)
 
 obj0$setConcentrations(
    C = c(102.65, 97.59, 0.00, 0.00, 103.88, 98.19, 0.00, 0.00, 0.00, 0.00),
@@ -205,8 +236,7 @@ obj0$calcLoglikelihood()
 obj0$S # vector of survival probabilities
 obj0$LL # abt -183
 
-# R: use meanlog, meansd
-# GUTS: use mean, sigma
+## R: use meanlog, meansd; GUTS: use mean, sigma
 zR <- rlnorm( 10000, 2.8943280, 0.33420543 )
 obj1 <- GUTS$new()
 obj1$setParameters( c( rep(1, 3),
@@ -216,14 +246,17 @@ obj1$setSampleLength( 10000 )
 obj1$setDistribution( "lognormal" )
 obj1$calcSample()
 
-# compare:
-\dontrun{
-zDiff <- sort(zR) - sort(obj1$z)
-par(mfrow=c(3, 1))
-plot(density(obj1$z))
-plot(density(zR))
-plot(density(zDiff))
-}
+## compare:
+\dontrun{zDiff <- sort(zR) - sort(obj1$z)}
+\dontrun{par(mfrow=c(3, 1))}
+\dontrun{plot(density(obj1$z))}
+\dontrun{plot(density(zR))}
+\dontrun{plot(density(zDiff))}
+
+## Copy copies the reference, not the object
+obj2 <- obj1
+obj2$setSampleLength( N = 1999 ) # sets N also on obj1!
+obj1$N # 1999
 }
 
 \keyword{classes}

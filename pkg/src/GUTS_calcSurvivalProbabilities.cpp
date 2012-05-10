@@ -35,6 +35,7 @@ void GUTS::calcSurvivalProbabilities()
 
 	// Reset error on this method
     mErrors.at( GER_S ) = false;
+    mErrorMessages.at( GER_S )	= "";
 
     // Check for errors
     int i[] = { GER_C, GER_CT, GER_YT, GER_PAR, GER_M, GER_Z };
@@ -50,8 +51,12 @@ void GUTS::calcSurvivalProbabilities()
     }
 
 	/*
-     * We have not returned, and
-     * hence check errors not checked so far
+     * We have not returned, and hence check errors not checked so far:
+     * (1) Both time vectors must be set up properly
+     * (2) The last time point of concentrations must be larger or equal
+     *     to the last time point of survivors: there must be information
+     *     about concentrations when there is no more information about
+     *     survivors.
      */
     if ( myt.size() <= 0 || mCt.size() <= 0 || myt.back() > mCt.back() )
     {

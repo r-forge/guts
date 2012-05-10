@@ -1,9 +1,8 @@
 /** Class GUTS.
- *
  * @file        GUTS.h
  * @author      soeren.vogel@uzh.ch
  * @author      carlo.albert@eawag.ch, 
- * @date        2012-04-30
+ * @date        2012-05-07
  * @license     GPL-2
  *
  * GUTS: Fast Calculation of the Likelihood of a Stochastic Survival Model
@@ -114,10 +113,11 @@ public:
     void calcSurvivalProbabilities( const vector<double>& St );
 
     /** Calculate loglikelihood.
+     * @return      mLL     The loglikelihood.
      * Set mLL.
      * Error: GER_LL
      */
-    void calcLoglikelihood();
+    double calcLoglikelihood();
 
     /*
      * Getters. Simply return contents of field.
@@ -134,6 +134,9 @@ public:
     vector<double>  getz()      const { return mz; }
     vector<double>  getS()      const { return mS; }
     double          getLL()     const { return mLL; }
+    vector<bool>    getErrors() const { return mErrors; }
+    vector<string>  getErrorMessages()
+                                const { return mErrorMessages; }
 
     /** showObject()
      * Print complete object in a formatted way to cout.
@@ -162,8 +165,7 @@ protected:
     double mLL;                     // Loglikelihood
 
     /** do-Methods
-     * Work horses for specific samples and the calculation of the
-     * survival probabilities.
+     * Work horses for specific samples and the calculation of the survival probabilities.
      */
     void doCalcSampleLognormal ( const double& mean, const double& sigma, const int& n ); // Muss das sein?
     void doCalcSurvivalProbabilities();
