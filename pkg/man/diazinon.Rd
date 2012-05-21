@@ -8,14 +8,12 @@
 }
 \usage{diazinon}
 \format{A list containing 12 vectors, plus a description string.}
-%\source{<none>}
-\references{Jager T., Albert C., Preuss T., Ashauer R., General unified theory of survival – a toxicokinetic toxicodynamic framework for ecotoxicology, published online in Env. Sci. and Tech. (2011) (\href{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/\#}{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/#}).}
+\source{Ashauer, R., Hintermeister, A., Caravatti, I., Kretschmann, A. & Escher, B. I. 2010 Toxicokinetic-toxicodynamic modeling explains carry-over toxicity from exposure to diazinon by slow organism recovery. Environmental Science & Technology 44, 3963-3971, \href{http://pubs.acs.org/doi/abs/10.1021/es903478b}{http://pubs.acs.org/doi/abs/10.1021/es903478b}.}
+%\references{}
 \keyword{datasets}
 
 \author{%
-Carlo Albert & Sören Vogel \email{guts.package@gmail.com}
-
-Maintainer: Carlo Albert & Sören Vogel \email{guts.package@gmail.com}%
+Maintainer: Sören Vogel \email{soeren.vogel@uzh.ch}%
 }
 
 \seealso{\code{\link{GUTS}}}

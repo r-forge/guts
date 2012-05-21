@@ -1,6 +1,6 @@
 /** GUTS method calcSample
  *
- * @file		GUTS_calcSample.cpp
+ * @file    GUTS_calcSample.cpp
  * @author      soeren.vogel@uzh.ch
  * @author      carlo.albert@eawag.ch
  * @date        2012-04-30
@@ -20,42 +20,42 @@ using namespace std;
  */
 void GUTS::calcSample()
 {
-	/*
+  /*
      * Errors checked elsewhere
      */
     int i[] = { GER_PAR, GER_N, GER_DIST };
     for ( unsigned int j = 0; j < 3; ++j )
     {
-    	if ( mErrors.at( i[j] ) )
+      if ( mErrors.at( i[j] ) )
         {
-        	mErrors.at( GER_Z ) 		= true;
-	        mErrorMessages.at( GER_Z ) 	= "calculation of z failed: " + mErrorMessages.at( i[j] );
+          mErrors.at( GER_Z )     = true;
+          mErrorMessages.at( GER_Z )   = "calculation of z failed: " + mErrorMessages.at( i[j] );
             mz.resize( 0 );
             return;
         }
     }
-
-	/*
+  
+  /*
      * par, N and dist seem to be okay
      * Run specific checks and assignment
      */
     if ( mdist == "lognormal" )
     {
-    	if ( mpar.size() < 5 )
+      if ( mpar.size() < 5 )
         {
-        	mErrors.at( GER_Z )			= true;
-            mErrorMessages.at( GER_Z ) 	= "error in calcSample(), par needs 5 parameters";
+          mErrors.at( GER_Z )      = true;
+            mErrorMessages.at( GER_Z )   = "error in calcSample(), par needs 5 parameters";
         }
         else if ( mpar.at(3) <= 0.0f || mpar.at(4) <= 0.0f )
         {
-        	mErrors.at( GER_Z )			= true;
-            mErrorMessages.at( GER_Z ) 	= "error in calcSample(), par 4 and 5 must be non-negative";
+          mErrors.at( GER_Z )      = true;
+            mErrorMessages.at( GER_Z )   = "error in calcSample(), par 4 and 5 must be non-negative";
         }
         else
         {
-	        doCalcSampleLognormal( mpar.at(3), mpar.at(4), mN );
-        	mErrors.at( GER_Z )			= false;
-            mErrorMessages.at( GER_Z ) 	= "";
+          doCalcSampleLognormal( mpar.at(3), mpar.at(4), mN );
+          mErrors.at( GER_Z )      = false;
+            mErrorMessages.at( GER_Z )   = "";
             return;
         }
     }

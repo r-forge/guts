@@ -1,12 +1,12 @@
 # GUTS R definitions.
 # carlo.albert@eawag.ch, soeren.vogel@uzh.ch
-# 2012-05-10
+# 2012-05-21
 # GPL-2
 
 #
 # basic hidden print functionality
 #
-.guts.print <- function( object, digits=6 ) {
+.guts.print <- function(object, digits=6) {
   cat(
     "\n",
     "GUTS object with the following attributes:\n",
@@ -55,6 +55,12 @@
   }
   cat( "\n", sep="" )
 
+  cat( "Vector of damages (D, ", length(object$D), " elements)", sep="" )
+  if ( length(object$D) > 0 ) {
+    cat( ":\n\t", "Min=", min(object$D), ", Max=", max(object$D), ", Mean=", mean(object$D), ", Sigma=", sd(object$D), sep="" )
+  }
+  cat( "\n", sep="" )
+
   cat( "Vector of survival probabilities (S, ", length(object$S), " elements)", sep="" )
   if ( length(object$S) > 0 ) {
     cat( ":\n\t", paste( round(object$S, digits=digits), sep=", ", collapse=", " ), sep="" )
@@ -79,9 +85,9 @@
 #  .guts.print( object )
 #}
 # S3:
-print.Rcpp_GUTS <- function( x, ... ) {
-  out <- .guts.print( x )
-  return( invisible( out ) )
+print.Rcpp_GUTS <- function(x, ...) {
+  out <- .guts.print(x)
+  return(invisible(out))
 }
 #print.GUTS <- function( x, ... ) {
 #  out <- .guts.print( x )
@@ -89,12 +95,12 @@ print.Rcpp_GUTS <- function( x, ... ) {
 #}
 # S4:
 #
-setMethod("show", "Rcpp_GUTS", function( object ) .guts.print( object ) )
+setMethod("show", "Rcpp_GUTS", function(object) .guts.print(object))
 
 #
 # Generic function logLik
 #
-logLik.Rcpp_GUTS <- function (object, ...) {
+logLik.Rcpp_GUTS <- function(object, ...) {
   eval.parent( substitute( object$calcLoglikelihood() ) )
   len <- length(object$y)
   if ( len < 1 | is.na(object$LL) | is.null(object$LL) ) {

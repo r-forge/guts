@@ -43,6 +43,7 @@ RCPP_MODULE(modguts)
         .property( "N",     &GUTS::getN, "Sample length (numerical exactness)." )
         .property( "z",     &GUTS::getz, "Sample." )
 
+        .property( "D",     &GUTS::getD, "Vector of damages." )
         .property( "S",     &GUTS::getS, "Survival probabilities." )
         .property( "LL",    &GUTS::getLL, "Loglikelihood." )
 

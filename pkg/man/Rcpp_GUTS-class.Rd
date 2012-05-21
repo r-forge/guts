@@ -19,17 +19,17 @@
 
 \title{Class \code{Rcpp_GUTS}}
 
-\description{
+\description{%
 \code{GUTS} (General Unified Theory of Survival) is a stochastic survival model for ecotoxicology.
 The class \code{Rcpp_GUTS} is the reference class for the C++ class \code{GUTS} exposed to R through the \link{Rcpp} module \code{modguts}.
 The class allows for the definition of exposure and survival time series as well as parameter values, and the calculation of the survival probabilities and the logarithm of the corresponding likelihood.
-\code{GUTS} is the constructor object of \code{Rcpp_GUTS}.
+\code{GUTS} is the constructor object of \code{Rcpp_GUTS}.%
 }
 
-\section{Objects from the Class}{
+\section{Objects from the Class}{%
 New objects can be created by calls to the method \code{new()} (see \link{ReferenceClasses}), or the function \code{new("Rcpp_GUTS")}.
 No arguments must be provided, and a “factory fresh” \code{GUTS} object contains default (empty) values.
-Fields are read only. Setter methods must be used to set values on fields.
+Fields are read only. Setter methods must be used to set values on fields.%
 }
 
 %\section{Slots}{The class has no slots. Private fields can be set using methods (see below).}
@@ -102,15 +102,16 @@ Fields are read only. Setter methods must be used to set values on fields.
     }
 
     \item{calcSurvivalProbabilities}{\code{signature(...)}:
-      Calculate the survival probabilities.
+      Calculate the vector of damages (\code{D}) and the survival probabilities (\code{S}).
       \code{calcLoglikelihood} calls \code{calcSurvivalProbabilities} to set the vector of survival probabilities \code{S}.
-      However, \code{calcSurvivalProbabilities} can be used directly to calculate and set a vector \code{S}.
+      However, \code{calcSurvivalProbabilities} can be used directly to calculate and set a vectors \code{D} and \code{S}.
       This method is overloaded, which means it may be called with various arguments.
         See section \bold{Calculate Survival Probabilities} for details.
     }
 
     \item{calcLoglikelihood}{\code{signature()}:
       Calculate the logarithm of the likelihood of a properly set-up \code{"GUTS"} object.
+      Sets the logliklihood (\code{LL}), if calculated, else to \code{NA}.
     }
 
     \item{show}{\code{signature(object = "Rcpp_GUTS")}:
@@ -122,7 +123,7 @@ Fields are read only. Setter methods must be used to set values on fields.
 \section{Fields}{%
 To access the survival probabilities or the loglikelihood, use the fields \code{S} and \code{LL}.
 
-\code{C}, \code{Ct}, \code{y}, \code{yt}, \code{par}, \code{M}, \code{dist}, \code{N}, \code{z}, \code{S}, \code{LL}, and \code{errors} are fields of a GUTS object. Note that any of these fields is \bold{read-only}. Content can be modified using setters and methods (see above). However, field contents can be displayed, or assigned to other \R variables using the standard \R procedures.%
+\code{C}, \code{Ct}, \code{y}, \code{yt}, \code{par}, \code{M}, \code{dist}, \code{N}, \code{z}, \code{D}, \code{S}, \code{LL}, and \code{errors} are fields of a GUTS object. Note that any of these fields is \bold{read-only}. Content can be modified using setters and methods (see above). However, field contents can be displayed, or assigned to other \R variables using the standard \R procedures.%
 }
 
 \section{Distributions}{%
@@ -188,6 +189,7 @@ To access the survival probabilities or the loglikelihood, use the fields \code{
     }
     \item{Development status}{%
       The package is under current development.
+      Party of the software are likely to change with future releases. Refer to this manual page after updating your copy.
       \bold{Save your work before using this software.}%
     }
   }
@@ -201,49 +203,51 @@ Carlo Albert \email{carlo.albert@eawag.ch} & Sören Vogel \email{soeren.vogel@uz
 Maintainer: Sören Vogel \email{soeren.vogel@uzh.ch} & Carlo Albert \email{carlo.albert@eawag.ch}
 }
 
-\seealso{\code{\link{ReferenceClasses}}, \code{\link{Rcpp}}, \code{\link{new}}, \code{\link{diazinon}}}
+\seealso{\code{\link{ReferenceClasses}}, \code{\link{Rcpp}}, \code{\link{new}}, \code{\link{diazinon}}, \code{\link{logLik}}, \code{\link{print}}, \code{\link[MHadaptive]{MHadaptive}}}
 
 \examples{
-library( "GUTS" )
+library("GUTS")
 
 ## documentation
-\dontrun{vignette( "GUTS-Documentation" )}
+\dontrun{vignette("GUTS-Documentation")}
 
 ## what GUTS is
-\dontrun{getRefClass( "Rcpp_GUTS" )}
+\dontrun{getRefClass("Rcpp_GUTS")}
 
 ## defaults
-obj0 <- new( "Rcpp_GUTS" ) # also: obj0 <- GUTS$new()
+obj0 <- new("Rcpp_GUTS") # also: obj0 <- GUTS$new()
 obj0$LL # NaN
 logLik(obj0)
 
+## one experiment
+data(diazinon)
+
 obj0$setConcentrations(
-   C = c(102.65, 97.59, 0.00, 0.00, 103.88, 98.19, 0.00, 0.00, 0.00, 0.00),
-  Ct = c(0.00, 1.02, 1.03, 2.99, 3.01, 4.01, 4.02, 11.01, 18.01, 22.01)
+   C = diazinon$C1,
+  Ct = diazinon$Ct1
 )
 obj0$setSurvivors(
-   y = c(70, 66, 61, 55, 31, 31, 29, 26, 24, 22, 21, 19, 17,
-         14, 14, 13, 11, 11, 10, 9, 8, 8, 8),
-  yt = 0:22
+   y = diazinon$y1,
+  yt = diazinon$yt1
 )
 obj0$setParameters(
   par = c(0.05084761, 0.12641525, 1.61840054, 19.09911, 6.495246)
 )
-obj0$setTimeGridPoints( M = 10000 )
-obj0$setDistribution( dist = "lognormal" )
-obj0$setSampleLength( N = 10000 )
+obj0$setTimeGridPoints(M = 10000)
+obj0$setDistribution(dist = "lognormal")
+obj0$setSampleLength(N = 10000)
 obj0$calcLoglikelihood()
-obj0$S # vector of survival probabilities
 obj0$LL # abt -183
+logLik(obj0) # abt -183
+obj0$S # vector of survival probabilities
 
 ## R: use meanlog, meansd; GUTS: use mean, sigma
-zR <- rlnorm( 10000, 2.8943280, 0.33420543 )
+zR <- rlnorm(10000, 2.8943280, 0.33420543)
 obj1 <- GUTS$new()
-obj1$setParameters( c( rep(1, 3),
-  mean(zR), sd(zR) # mean and sigma of lognormal!
-) )
-obj1$setSampleLength( 10000 )
-obj1$setDistribution( "lognormal" )
+obj1$setParameters(c(rep(1, 3),
+  mean(zR), sd(zR))) # mean and sigma of lognormal!
+obj1$setSampleLength(10000)
+obj1$setDistribution("lognormal")
 obj1$calcSample()
 
 ## compare:
@@ -255,7 +259,7 @@ obj1$calcSample()
 
 ## Copy copies the reference, not the object
 obj2 <- obj1
-obj2$setSampleLength( N = 1999 ) # sets N also on obj1!
+obj2$setSampleLength(N = 1999) # sets N also on obj1!
 obj1$N # 1999
 }
 
