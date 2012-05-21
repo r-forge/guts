@@ -33,19 +33,30 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <!-- get project title  -->
 <!-- own website starts here, the following may be changed as you like -->
 
-<?php if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_name,'r')){
-$contents = '';
-while (!feof($handle)) {
-	$contents .= fread($handle, 8192);
+<?php
+if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_name,'r')) {
+  $contents = '';
+  while (!feof($handle)) {
+    $contents .= fread($handle, 8192);
+  }
+  fclose($handle);
+  echo $contents;
 }
-fclose($handle);
-echo $contents; } ?>
+?>
 
 <!-- end of project description -->
 
-<p> No content added. </p>
+<p>The <strong>project summary page</strong> can be found <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>.
+</p>
 
-<p> The <strong>project summary page</strong> you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>. </p>
+<p>To learn more about the background of GUTS, please refer to one of the following web sites:
+<ul>
+  <li><a href="http://www.debtox.info/about_guts.php">http://www.debtox.info/about_guts.php</a></li>
+  <li><a href="http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/">http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/</a></li>
+  <li><a href="http://dx.doi.org/10.1021/es103092a">http://dx.doi.org/10.1021/es103092a</a></li>
+</ul>
+
+<p>Last updated: 2012-05-14</p>
 
 </body>
 </html>
