@@ -2,7 +2,7 @@
  * @file      GUTS_logLikelihood.cpp
  * @author    soeren.vogel@uzh.ch
  * @author    carlo.albert@eawag.ch
- * @date      2012-05-13
+ * @date      2012-05-21
  * @license   GPL-2
  *
  * Calculate the logarithm of the likelihood of data present in GUTS object.
@@ -67,7 +67,8 @@ void GUTS::calcLoglikelihood() {
     if (diffS <= 0.0f && diffy != 0) {
       mLL = -INFINITY;
       return;
-    } else {
+    }
+    else {
       mLL += diffy * log( diffS );
     }
   }
