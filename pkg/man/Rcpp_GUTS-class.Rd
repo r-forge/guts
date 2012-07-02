@@ -203,7 +203,7 @@ Carlo Albert \email{carlo.albert@eawag.ch} & Sören Vogel \email{soeren.vogel@uz
 Maintainer: Sören Vogel \email{soeren.vogel@uzh.ch} & Carlo Albert \email{carlo.albert@eawag.ch}
 }
 
-\seealso{\code{\link{ReferenceClasses}}, \code{\link{Rcpp}}, \code{\link{new}}, \code{\link{diazinon}}, \code{\link{logLik}}, \code{\link{print}}, \code{\link[MHadaptive]{MHadaptive}}}
+\seealso{\code{\link{ReferenceClasses}}, \code{\link{Rcpp}}, \code{\link{new}}, \code{\link{diazinon}}, \code{\link{logLik}}, \code{\link{print}}, \code{\link[adaptMCMC]{adaptMCMC}}}
 
 \examples{
 library("GUTS")
