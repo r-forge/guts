@@ -13,7 +13,7 @@
 \keyword{datasets}
 
 \author{%
-Maintainer: Sören Vogel \email{soeren.vogel@uzh.ch}%
+Maintainer: Sören Vogel & Carlo Albert \email{guts.package@gmail.com}%
 }
 
 \seealso{\code{\link{GUTS}}}
