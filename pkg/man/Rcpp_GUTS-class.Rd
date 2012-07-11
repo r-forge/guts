@@ -200,7 +200,7 @@ To access the survival probabilities or the loglikelihood, use the fields \code{
 \author{%
 Carlo Albert \email{carlo.albert@eawag.ch} & Sören Vogel \email{soeren.vogel@uzh.ch}
 
-Maintainer: Sören Vogel & Carlo Albert \email{guts.package@gmail.com}
+Maintainer: Sören Vogel \email{soeren.vogel@uzh.ch}
 }
 
 \seealso{\code{\link{ReferenceClasses}}, \code{\link{Rcpp}}, \code{\link{new}}, \code{\link{diazinon}}, \code{\link{logLik}}, \code{\link{print}}, \code{\link[adaptMCMC]{adaptMCMC}}}
