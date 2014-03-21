@@ -1,5 +1,5 @@
-AC_INIT([GUTS], [0.2.8])
-AC_PREREQ(2.67)
+AC_INIT([GUTS], [0.3.0])
+AC_PREREQ(2.69)
 AC_LANG(C++)
 AC_REQUIRE_CPP
 AC_PROG_CXX
@@ -24,7 +24,7 @@ AC_PROG_R
 # adapted from RQuantLib
 : ${R_HOME=`R RHOME`}
 if test -z "${R_HOME}"; then
-    AC_MSG_ERROR([Could not determine R_HOME.])   
+    AC_MSG_ERROR([Could not determine R_HOME.])
 fi
 #CXX=`${R_HOME}/bin/R CMD config CXX`
 CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
@@ -47,7 +47,7 @@ else
 fi
 
 AC_CONFIG_MACRO_DIR([m4])
-AX_BOOST_BASE([1.45.0])
+AX_BOOST_BASE([1.55.0])
 AC_SUBST([CXXFLAGS],["${CXXFLAGS} ${BOOST_CPPFLAGS}"])
 AC_SUBST([LDFLAGS],["${LDFLAGS} ${BOOST_LDFLAGS}"])
 
