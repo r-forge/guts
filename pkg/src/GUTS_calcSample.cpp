@@ -1,10 +1,10 @@
 /** GUTS method calcSample
  *
  * @file    GUTS_calcSample.cpp
- * @author      soeren.vogel@uzh.ch
- * @author      carlo.albert@eawag.ch
- * @date        2012-04-30
- * @license     GPL-2
+ * @author  soeren.vogel@uzh.ch
+ * @author  carlo.albert@eawag.ch
+ * @date    2012-04-30
+ * @license GPL-2
  */
 
 #ifndef guts_h
@@ -69,13 +69,13 @@ void GUTS::doCalcSampleLognormal( const double& mean, const double& sigma, const
     using namespace boost;
 
     // Mersenne twister RNG, seeded once with #seconds since 1970
-    static mt19937 rng(static_cast<unsigned> (std::time(0)));
+    static boost::random::mt19937 rng(static_cast<unsigned> (std::time(0)));
 
     // Select Gaussian probability distribution with mean and sigma
-    lognormal_distribution<double> lognorm_dist( mean, sigma );
+    boost::lognormal_distribution<double> lognorm_dist( mean, sigma );
 
     // Bind RNG to distribution, forming a function
-    variate_generator<mt19937&, lognormal_distribution<double> >
+    variate_generator<boost::random::mt19937&, boost::lognormal_distribution<double> >
         lognormal_sampler(rng, lognorm_dist);
 
     // Sample from the distribution
