@@ -59,7 +59,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
   <li><a href="http://dx.doi.org/10.1021/es103092a">http://dx.doi.org/10.1021/es103092a</a></li>
 </ul>
 
-<p>Last updated: 2012-05-14</p>
+<p>Last updated: 2014-03-26</p>
 
 </body>
 </html>
