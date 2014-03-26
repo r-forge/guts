@@ -49,7 +49,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <p>The <strong>project summary page</strong> can be found <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>.
 </p>
 
-<p>A <strong>documentation</strong> can be found <a href="http://<?php echo $domain; ?>/doc/GUTS Documentation.pdf"><strong>here</strong></a>.
+<p>A <strong>documentation</strong> can be found <a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf"><strong>here</strong></a>.
 </p>
 
 <p>To learn more about the background of GUTS, please refer to one of the following web sites:
