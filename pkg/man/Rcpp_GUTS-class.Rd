@@ -208,9 +208,6 @@ Maintainer: Sören Vogel \email{soeren.vogel@uzh.ch}
 \examples{
 library("GUTS")
 
-## documentation
-\dontrun{vignette("GUTS-Documentation")}
-
 ## what GUTS is
 \dontrun{getRefClass("Rcpp_GUTS")}
 

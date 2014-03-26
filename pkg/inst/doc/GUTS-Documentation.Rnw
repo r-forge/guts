@@ -1,4 +1,0 @@
-%\VignetteIndexEntry{GUTS User Manual}
-\documentclass{article}
-\begin{document}
-\end{document}
