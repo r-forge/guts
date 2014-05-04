@@ -1,16 +1,16 @@
 ##
 # GUTS R definitions.
-# carlo.albert@eawag.ch, soeren.vogel@uzh.ch
-# 2012-05-21
-# GPL-2
+# soeren.vogel@uzh.ch
+# carlo.albert@eawag.ch
+# 2014-05-04
 #
 
 
 
 
 
-#
-# A Little Helper For Formatted Printing
+##
+# A Little Helper For Formatted Printing.
 #
 .g_print_help <- function( x, width, digits ) {
 	y <- paste( round(x, digits=digits), sep="", collapse=", " )
@@ -22,8 +22,8 @@
 
 
 
-#
-# Basic Hidden Print Functionality
+##
+# Basic Hidden Print Functionality.
 #
 .guts.print <- function( object, width=getOption('width'), digits=getOption('digits') ) {
 
@@ -142,8 +142,8 @@ setMethod("show", "Rcpp_GUTS", function(object) .guts.print(object))
 
 
 
-#
-# Generic function logLik
+##
+# Generic Function ‘logLik’.
 #
 logLik.Rcpp_GUTS <- function(object, ...) {
 	eval.parent( substitute( object$calcLoglikelihood() ) )

@@ -1,9 +1,10 @@
-/** GUTS method logLikelihood
- * @file      GUTS_logLikelihood.cpp
- * @author    soeren.vogel@posteo.ch
- * @author    carlo.albert@eawag.ch
- * @date      2014-03-21
- * @license   GPL-2
+/** GUTS Method logLikelihood
+ *
+ * @file    GUTS_logLikelihood.cpp
+ * @author  soeren.vogel@posteo.ch
+ * @author  carlo.albert@eawag.ch
+ * @date    2014-03-21
+ * @license GPL-2
  *
  * Calculate the logarithm of the likelihood of data present in GUTS object.
  */

@@ -197,11 +197,9 @@ To access the survival probabilities or the loglikelihood, use the fields \code{
 
 \references{Jager T., Albert C., Preuss T., Ashauer R., General unified theory of survival – a toxicokinetic toxicodynamic framework for ecotoxicology, published online in Env. Sci. and Tech. (2011) (\href{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/\#}{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/#}).}
 
-\author{%
-Carlo Albert \email{carlo.albert@eawag.ch} & Sören Vogel \email{soeren.vogel@uzh.ch}
+\author{Carlo Albert \email{carlo.albert@eawag.ch} & Sören Vogel \email{soeren.vogel@posteo.ch}
 
-Maintainer: Sören Vogel \email{soeren.vogel@uzh.ch}
-}
+Maintainer: Sören Vogel \email{soeren.vogel@posteo.ch}}
 
 \seealso{\code{\link{ReferenceClasses}}, \code{\link{Rcpp}}, \code{\link{new}}, \code{\link{diazinon}}, \code{\link{logLik}}, \code{\link{print}}, \code{\link[adaptMCMC]{adaptMCMC}}}
 

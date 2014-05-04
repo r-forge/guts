@@ -1,7 +1,7 @@
-/** GUTS method calcSample
+/** GUTS Method calcSample
  *
  * @file    GUTS_calcSample.cpp
- * @author  soeren.vogel@uzh.ch
+ * @author  soeren.vogel@posteo.ch
  * @author  carlo.albert@eawag.ch
  * @date    2012-04-30
  * @license GPL-2

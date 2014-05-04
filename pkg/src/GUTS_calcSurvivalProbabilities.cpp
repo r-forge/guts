@@ -1,6 +1,7 @@
-/** GUTS method calcSurvivalProbabilities
+/** GUTS Method calcSurvivalProbabilities
+ *
  * @file    GUTS_calcSurvivalProbabilities.cpp
- * @author  soeren.vogel@uzh.ch
+ * @author  soeren.vogel@posteo.ch
  * @author  carlo.albert@eawag.ch
  * @date    2012-05-14
  * @license GPL-2

@@ -1,9 +1,10 @@
 /** Class GUTS.
- * @file        GUTS.h
- * @author      soeren.vogel@uzh.ch
- * @author      carlo.albert@eawag.ch, 
- * @date        2012-05-11
- * @license     GPL-3
+ *
+ * @file    GUTS.h
+ * @author  soeren.vogel@posteo.ch
+ * @author  carlo.albert@eawag.ch
+ * @date    2012-05-11
+ * @license GPL-3
  *
  * GUTS: Fast Calculation of the Likelihood of a Stochastic Survival Model
  */

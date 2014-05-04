@@ -1,7 +1,7 @@
-/** GUTS class implementation.
+/** GUTS Class Implementation.
  *
  * @file		GUTS.cpp
- * @author	soeren.vogel@uzh.ch
+ * @author  soeren.vogel@posteo.ch
  * @author	carlo.albert@eawag.ch
  * @date		2012-05-11
  * @license	GPL-2
