@@ -52,6 +52,9 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <p>A <strong>documentation</strong> can be found <a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf"><strong>here</strong></a>.
 </p>
 
+<p>For questions and news on updates you can subscribe to the mailing list here: https://lists.r-forge.r-project.org/mailman/listinfo/guts-users
+</p>
+
 <p>To learn more about the background of GUTS, please refer to one of the following web sites:
 <ul>
   <li><a href="http://www.debtox.info/about_guts.php">http://www.debtox.info/about_guts.php</a></li>
@@ -59,7 +62,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
   <li><a href="http://dx.doi.org/10.1021/es103092a">http://dx.doi.org/10.1021/es103092a</a></li>
 </ul>
 
-<p>Last updated: 2014-03-26</p>
+<p>Last updated: 2015-04-01</p>
 
 </body>
 </html>

@@ -1,8 +1,8 @@
 ##
-# GUTS R definitions.
+# GUTS R Definitions.
 # soeren.vogel@uzh.ch
 # carlo.albert@eawag.ch
-# 2014-05-04
+# 2015-04-01
 #
 
 
@@ -36,7 +36,7 @@
 	)
 
 	# Concentrations
-	cat( "Vector of concentrations (C, ", length(object$C), " elements)", sep="" )
+	cat( "Concentrations (C, ", length(object$C), " elements)", sep="" )
 	if ( length(object$C) > 0 ) {
 		cat( ":", .g_print_help(object$C, width, digits), sep="\n" )
 	} else {
@@ -44,7 +44,7 @@
 	}
 
 	# Concentration time points
-	cat( "Vector of concentration time points (Ct, ", length(object$Ct), " elements)", sep="" )
+	cat( "Concentration time points (Ct, ", length(object$Ct), " elements)", sep="" )
 	if ( length(object$Ct) > 0 ) {
 		cat( ":", .g_print_help(object$Ct, width, digits), sep="\n" )
 	} else {
@@ -52,7 +52,7 @@
 	}
 
 	# Survivors
-	cat( "Vector of survivors (y, ", length(object$y), " elements)", sep="" )
+	cat( "Survivors (y, ", length(object$y), " elements)", sep="" )
 	if ( length(object$y) > 0 ) {
 		cat( ":", .g_print_help(object$y, width, digits), sep="\n" )
 	} else {
@@ -60,12 +60,16 @@
 	}
 
 	# Survivor time points
-	cat( "Vector of survivor time points (yt, ", length(object$yt), " elements)", sep="" )
+	cat( "Survivor time points (yt, ", length(object$yt), " elements)", sep="" )
 	if ( length(object$yt) > 0 ) {
 		cat( ":", .g_print_help(object$yt, width, digits), sep="\n" )
 	} else {
 		cat( "\n", sep="" )
 	}
+
+	# Distribution, Model
+	cat( "Distribution (dist)  : ", object$dist, "\n", sep="" )
+	cat( "Model (model)        : ", object$model, "\n", sep="" )
 
 	# Parameters
 	cat( "Parameters (par, ", length(object$par), " elements)", sep="" )
@@ -78,25 +82,10 @@
 	# Time grid points
 	cat( "Time grid points (M) : ", object$M, "\n", sep="" )
 	#  cat( "Distribution (dist)  : ", dQuote(object$dist), "\n", sep="" )
-	cat( "Distribution (dist)  : ", object$dist, "\n", sep="" )
 	cat( "Sample length (N)    : ", object$N, "\n", sep="" )
 
-	# Sample vector
-	cat( "Sample vector (z, ", length(object$z), " elements)", sep="" )
-	if ( length(object$z) > 0 ) {
-		cat( ":\n\t", "Min=", min(object$z), ", Max=", max(object$z), ", Mean=", mean(object$z), ", Sigma=", sd(object$z), sep="" )
-	}
-	cat( "\n", sep="" )
-
-	# Damages
-	cat( "Vector of damages (D, ", length(object$D), " elements)", sep="" )
-	if ( length(object$D) > 0 ) {
-		cat( ":\n\t", "Min=", min(object$D), ", Max=", max(object$D), ", Mean=", mean(object$D), ", Sigma=", sd(object$D), sep="" )
-	}
-	cat( "\n", sep="" )
-
 	# Survival probabilities
-	cat( "Vector of survival probabilities (S, ", length(object$S), " elements)", sep="" )
+	cat( "Survival probabilities (S, ", length(object$S), " elements)", sep="" )
 	if ( length(object$S) > 0 ) {
 		cat( ":", .g_print_help(object$S, width, digits), sep="\n" )
 	} else {
@@ -106,14 +95,33 @@
 	# Loglikelihood
 	cat( "Loglikelihood (LL): ", object$LL, "\n", sep="" )
 
-	# Messages/warnings
-	cat( "Messages/warnings: ", sep="" )
-	if ( sum(object$errors!="") == 0 ) {
-		cat( "none", "\n", sep="" )
+	# Messages/warnings, see enum in header
+	hmesg <- c(
+		'C must be checked.',
+		'Ct must be checked.',
+		'Y must be checked.',
+		'Yt must be checked.',
+		'Distribution name must be checked.',
+		'Model name must be checked.',
+		'Parameters must be checked.',
+		'Warning: parameters must be non-negative.',
+		'Sample length must be checked.',
+		'Time grid points must be checked.',
+		'Empirical sample must be checked.',
+		'Sample must be checked.',
+		'Survival probabilities must be checked.'
+	)
+	cat( "Messages:", sep="" )
+	if ( any( object$Messages ) ) {
+		for ( i in which(object$Messages) ) {
+			if ( object$Messages[i] ) {
+				cat( "\n", sep="" )
+				print( hmesg[i] )
+				cat( "\n", sep="" )
+			}
+		}
 	} else {
-		cat( "\n", sep="" )
-		print( object$errors[object$errors!=""] )
-		cat( "\n", sep="" )
+		cat( " none.", "\n", sep="" )
 	}
 
 	# Footer
@@ -137,8 +145,6 @@ print.Rcpp_GUTS <- function(x, ...) {
 
 # S4:
 setMethod("show", "Rcpp_GUTS", function(object) .guts.print(object))
-
-
 
 
 
