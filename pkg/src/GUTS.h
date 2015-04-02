@@ -4,7 +4,7 @@
  * @file    GUTS.h
  * @author  soeren.vogel@posteo.ch
  * @author  carlo.albert@eawag.ch
- * @date    2015-04-01
+ * @date    2015-04-02
  * @license GPL-2
  *
  * GUTS: Fast Calculation of the Likelihood of a Stochastic Survival Model.
@@ -43,23 +43,26 @@ using namespace std;
 
 /**
  * Constants.
+ * NaN, Max, Inf
+ * Only used expressions.
  */
 
-/*
- * NaN.
- */
-// NaN for in is always 0. See: http://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c
-const int         GNAN_INT    = 0;
+/* NaN. */
+// NaN for int is always 0. See: http://stackoverflow.com/questions/3949457/can-an-integer-be-nan-in-c
+//const int         GNAN_INT    = 0;
 const double      GNAN_DOUBLE = std::numeric_limits<double>::quiet_NaN();
 const std::string GNAN_STRING = "NaN";
 
-/*
- * Inf.
- */
+/* Max. */
+const double      GMAX_DOUBLE = std::numeric_limits<double>::max();
+
+/* Inf. */
 const double      GINF_DOUBLE = std::numeric_limits<double>::infinity();
 
 /*
- * More Constants, http://www.cplusplus.com/reference/cfloat/
+ * More Constants, see
+ * * http://www.cplusplus.com/reference/cfloat/
+ * * http://en.cppreference.com/w/cpp/types/numeric_limits
  * DBL_MAX_EXP = largest double.
  * DBL_EPSILON
  * DBL_MIN

@@ -4,7 +4,7 @@
  * @file    GUTS.cpp
  * @author  soeren.vogel@posteo.ch
  * @author  carlo.albert@eawag.ch
- * @date    2015-04-01
+ * @date    2015-04-02
  * @license	GPL-2
  */
 
@@ -53,7 +53,7 @@ GUTS::GUTS() : mInterval(4.0),
 	/*
 	 * Set default wpar 3 to Model "it" (Inf, represented as maximum double).
 	 */
-	wpar.at(2) = DBL_MAX_EXP; // largest double
+	wpar.at(2) = GMAX_DOUBLE; // largest double
 
 	/*
 	 * Default mparPos {0,1,2,3,4}.
@@ -113,7 +113,7 @@ GUTS::~GUTS() {
  */
 void GUTS::makeDefaultGrid() {
 	defaultGrid.resize( mN );
-	for ( unsigned int i = 0; i < mN; ++i ) {
+	for ( int i = 0; i < mN; ++i ) {
 		defaultGrid.at(i) = (2.0 * i - mN + 1.0) / (mN-1.0);
 	}
 }
@@ -347,7 +347,7 @@ void GUTS::makeExperiment() {
 	 * Default mparPos { 0, 1, 2, 3, 4 }. Resize needed, since sizes changes!
 	 */
 	wpar.assign( 5, 0.0 );
-	wpar.at(2) = DBL_MAX_EXP; // represent Inf with largest double
+	wpar.at(2) = GMAX_DOUBLE; // represent Inf with largest double
 	mparPos.assign( 5, 0 ); // five zeros, fill rest with loop.
 	for ( int i = 1; i < 5; i++ ) {
 		mparPos.at(i) = i;
@@ -444,7 +444,7 @@ void GUTS::setParameters( const vector<double>& par ) {
 			return;
 		} else if ( std::isinf(wpar.at(2)) ) {
 			/* Check for inf at 3rd par. */
-			wpar.at(2) = DBL_MAX_EXP;
+			wpar.at(2) = GMAX_DOUBLE;
 		}
 		mMessages.at( GER_PAR ) = false;
 		mMessages.at( GWA_PAR ) = false;

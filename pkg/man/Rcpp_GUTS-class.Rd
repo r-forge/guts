@@ -184,7 +184,7 @@ This method is overloaded. It can be called in either of three ways:
 
 
 
-\references{Jager T., Albert C., Preuss T., Ashauer R., General unified theory of survival – a toxicokinetic toxicodynamic framework for ecotoxicology, published online in Env. Sci. and Tech. (2011) (\href{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/\#}{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/#}).}
+\references{Jager T., Albert C., Preuss T., Ashauer R., General unified theory of survival – a toxicokinetic toxicodynamic framework for ecotoxicology, published online in Env. Sci. and Tech. (2011) (\href{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/}{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/}).}
 
 \author{Carlo Albert \email{carlo.albert@eawag.ch} & Sören Vogel \email{soeren.vogel@posteo.ch}
 
