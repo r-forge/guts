@@ -116,8 +116,7 @@
 		for ( i in which(object$Messages) ) {
 			if ( object$Messages[i] ) {
 				cat( "\n", sep="" )
-				print( hmesg[i] )
-				cat( "\n", sep="" )
+				cat( hmesg[i], sep="" )
 			}
 		}
 	} else {
