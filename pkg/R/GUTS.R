@@ -95,33 +95,11 @@
 	# Loglikelihood
 	cat( "Loglikelihood (LL): ", object$LL, "\n", sep="" )
 
-	# Messages/warnings, see enum in header
-	hmesg <- c(
-		'C must be checked.',
-		'Ct must be checked.',
-		'Y must be checked.',
-		'Yt must be checked.',
-		'Distribution name must be checked.',
-		'Model name must be checked.',
-		'Parameters must be checked.',
-		'Warning: parameters must be non-negative.',
-		'Sample length must be checked.',
-		'Time grid points must be checked.',
-		'Empirical sample must be checked.',
-		'Sample must be checked.',
-		'Survival probabilities must be checked.'
-	)
-	cat( "Messages:", sep="" )
-	if ( any( object$Messages ) ) {
-		for ( i in which(object$Messages) ) {
-			if ( object$Messages[i] ) {
-				cat( "\n", sep="" )
-				cat( hmesg[i], sep="" )
-			}
-		}
-	} else {
-		cat( " none.", "\n", sep="" )
+	# Messages/warnings
+	for ( msg in object$Messages ) {
+		warning( msg )
 	}
+	cat( "\n", sep="" )
 
 	# Footer
 	cat( "\n", sep="" )

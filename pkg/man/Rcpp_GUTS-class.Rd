@@ -286,7 +286,7 @@ library("GUTS")
 ## defaults
 obj0 <- new("Rcpp_GUTS") # also: obj0 <- GUTS$new()
 obj0$LL # NaN
-logLik( obj0 )
+\dontrun{logLik( obj0 )}
 
 ## one experiment
 data(diazinon)
