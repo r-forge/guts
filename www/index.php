@@ -46,6 +46,10 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 
 <!-- end of project description -->
 
+<p><b>Important news: GUTS version 0.9.X is a complete re-implementation of GUTS! Please consult the man page for more information.</b></p>
+
+<p>If you still need to use one of the old package versions you could have a look at the CRAN archives. CRAN binaries for GUTS version 0.5.2 can be found <a href="http://guts.r-forge.r-project.org/files/CRAN_bin_0.5.2.zip"><strong>here</strong></a>. However, they may contain bugs which will never be fixed.</p>
+	
 <p>The <strong>project summary page</strong> can be found <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>.
 </p>
 
@@ -62,7 +66,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
   <li><a href="http://dx.doi.org/10.1021/es103092a">http://dx.doi.org/10.1021/es103092a</a></li>
 </ul>
 
-<p>Last updated: 2015-04-01</p>
+<p>Last updated: 2015-05-04</p>
 
 </body>
 </html>
