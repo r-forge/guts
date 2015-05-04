@@ -2,6 +2,16 @@
 
 \name{GUTS-package}
 \alias{GUTS-package}
+%\alias{attr<-}
+\alias{attr<-.GUTS}
+%\alias{attributes<-}
+\alias{attributes<-.GUTS}
+%\alias{mostattributes<-}
+\alias{mostattributes<-.GUTS}
+\alias{print.GUTS}
+\alias{modguts}
+\alias{[[<-.GUTS}
+\alias{$<-.GUTS}
 
 \docType{package}
 

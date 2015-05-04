@@ -328,15 +328,15 @@ print.GUTS <- function(x, ...) {
 ##
 # Setters of Fields.
 #
-"[[<-" <- function(x, field, value) {
-	UseMethod("[[<-", x)
-}
+#"[[<-" <- function(x, field, value) {
+#	UseMethod("[[<-", x)
+#}
 "[[<-.GUTS" <- function(x, field, value) {
 	stop( "Use function `guts_setup()` for changing fields." )
 }
-"$<-" <- function(x, field, value) {
-	UseMethod("$<-", x)
-}
+#"$<-" <- function(x, field, value) {
+#	UseMethod("$<-", x)
+#}
 "$<-.GUTS" <- function(x, field, value) {
 	stop( "Use function `guts_setup()` for changing fields." )
 }

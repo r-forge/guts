@@ -8,15 +8,6 @@
 \alias{guts_calc_loglikelihood}
 \alias{guts_calc_survivalprobs}
 
-%\alias{attr<-}
-\alias{attr<-.GUTS}
-%\alias{attributes<-}
-\alias{attributes<-.GUTS}
-%\alias{mostattributes<-}
-\alias{mostattributes<-.GUTS}
-\alias{print.GUTS}
-\alias{modguts}
-
 
 
 \title{Fast Calculation of the Likelihood of a Stochastic Survival Model}

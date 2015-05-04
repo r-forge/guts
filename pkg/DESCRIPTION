@@ -1,7 +1,7 @@
 Package: GUTS
 Type: Package
 Title: Fast Calculation of the Likelihood of a Stochastic Survival Model
-Version: 0.9.0
+Version: 0.9.1
 Date: 2015-05-04
 Author: Carlo Albert <carlo.albert@eawag.ch> and Sören Vogel <soeren.vogel@posteo.ch>
 Maintainer: Sören Vogel <soeren.vogel@posteo.ch>
