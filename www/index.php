@@ -46,17 +46,12 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 
 <!-- end of project description -->
 
-<p><b>Important news: GUTS version 0.9.X is a complete re-implementation of GUTS! Please consult the man page for more information.</b></p>
+<p><b>Important news: GUTS version 0.9.X is a complete re-implementation of GUTS!  Please consult the man page for more information.</b>  If you still need to use one of the old package versions you could have a look at the CRAN archives.  CRAN binaries for GUTS version 0.5.2 can be found <a href="http://guts.r-forge.r-project.org/files/CRAN_bin_0.5.2.zip"><strong>here</strong></a>.  However, they may contain bugs that will never be fixed.</p>
 
-<p>If you still need to use one of the old package versions you could have a look at the CRAN archives. CRAN binaries for GUTS version 0.5.2 can be found <a href="http://guts.r-forge.r-project.org/files/CRAN_bin_0.5.2.zip"><strong>here</strong></a>. However, they may contain bugs which will never be fixed.</p>
-	
-<p>The <strong>project summary page</strong> can be found <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>.
+<p>The <strong>project summary page</strong> on R-Forge can be found <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>.  <strong>GUTS on CRAN</strong> can be found at <a href="http://cran.r-project.org/web/packages/GUTS/index.html">http://cran.r-project.org/web/packages/GUTS/index.html</a>.  A <strong>documentation</strong> can be found <a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf"><strong>here</strong></a>.
 </p>
 
-<p>A <strong>documentation</strong> can be found <a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf"><strong>here</strong></a>.
-</p>
-
-<p>For questions and news on updates you can subscribe to the mailing list here: https://lists.r-forge.r-project.org/mailman/listinfo/guts-users
+<p>For questions and news on updates you can subscribe to the mailing list here: <a href="https://lists.r-forge.r-project.org/mailman/listinfo/guts-users">https://lists.r-forge.r-project.org/mailman/listinfo/guts-users</a>.
 </p>
 
 <p>To learn more about the background of GUTS, please refer to one of the following web sites:
