@@ -17,8 +17,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 
   <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title><?php echo $group_name; ?></title>
+	<title>GUTS Project<?php //echo $group_name; ?></title>
 	<link href="http://<?php echo $themeroot; ?>styles/estilo1.css" rel="stylesheet" type="text/css" />
+	<link href="./styles.css" rel="stylesheet" type="text/css" />
   </head>
 
 <body>
@@ -34,6 +35,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 <!-- own website starts here, the following may be changed as you like -->
 
 <?php
+/*
 if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_name,'r')) {
   $contents = '';
   while (!feof($handle)) {
@@ -42,26 +44,37 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
   fclose($handle);
   echo $contents;
 }
+*/
 ?>
 
 <!-- end of project description -->
 
-<p><b>Important news: GUTS version 0.9.X is a complete re-implementation of GUTS!  Please consult the man page for more information.</b>  If you still need to use one of the old package versions you could have a look at the CRAN archives.  CRAN binaries for GUTS version 0.5.2 can be found <a href="http://guts.r-forge.r-project.org/files/CRAN_bin_0.5.2.zip"><strong>here</strong></a>.  However, they may contain bugs that will never be fixed.</p>
+<h1>GUTS Project</h1>
 
-<p>The <strong>project summary page</strong> on R-Forge can be found <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>.  <strong>GUTS on CRAN</strong> can be found at <a href="http://cran.r-project.org/web/packages/GUTS/index.html">http://cran.r-project.org/web/packages/GUTS/index.html</a>.  A <strong>documentation</strong> can be found <a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf"><strong>here</strong></a>.
-</p>
 
-<p>For questions and news on updates you can subscribe to the mailing list here: <a href="https://lists.r-forge.r-project.org/mailman/listinfo/guts-users">https://lists.r-forge.r-project.org/mailman/listinfo/guts-users</a>.
-</p>
+<h2>News</h2>
 
-<p>To learn more about the background of GUTS, please refer to one of the following web sites:
 <ul>
-  <li><a href="http://www.debtox.info/about_guts.php">http://www.debtox.info/about_guts.php</a></li>
-  <li><a href="http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/">http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/</a></li>
-  <li><a href="http://dx.doi.org/10.1021/es103092a">http://dx.doi.org/10.1021/es103092a</a></li>
+	<li><strong>Important:</strong> GUTS version 0.9.X is a complete re-implementation of GUTS!  Please consult the man page for more information.</li>
+	<li>The current documentation (see below) is outdated. An updated version will follow soon.</li>
 </ul>
 
-<p>Last updated: 2015-05-04</p>
+
+<h2>Links</h2>
+
+<ul>
+	<li><a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">Project summary page on R-Forge</a></li>
+	<li>GUTS on CRAN:
+		<a href="http://cran.r-project.org/web/packages/GUTS/index.html">http://cran.r-project.org/web/packages/GUTS/index.html</a></li>
+	<li><a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf">GUTS extended documentation</a> (currently outdated!)</li>
+	<li>GUTS R-Forge mailing list (new and updates): <a href="https://lists.r-forge.r-project.org/mailman/listinfo/guts-users">https://lists.r-forge.r-project.org/mailman/listinfo/guts-users</a></li>
+	<li>Background of GUTS: <a href="http://www.debtox.info/about_guts.php">http://www.debtox.info/about_guts.php</a></li>
+	<li>GUTS modelling: <a href="http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/">http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/</a></li>
+	<li>Paper on GUTS: <a href="http://dx.doi.org/10.1021/es103092a">http://dx.doi.org/10.1021/es103092a</a></li>
+	<li><a href="http://guts.r-forge.r-project.org/files/CRAN_bin_0.5.2.zip">CRAN binaries for GUTS version 0.5.2</a>. Note that they may contain bugs that will never be fixed.</li>
+</ul>
+
+<p>Last updated: 2015-05-05</p>
 
 </body>
 </html>
