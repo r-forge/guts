@@ -38,7 +38,7 @@ Maintainer: Sören Vogel \email{soeren.vogel@posteo.ch}}
 \itemize{
 	\item Caution: This is a complete reimplementation of the former package. Please update your code.%
 	\item The package is under current development. Parts of the software are likely to change with future releases. Refer to the manual pages after updating your copy. Save your work before using this software.%
-	\item Extended help and documentation}{Extended help and an in-depth documentation can be found at the project web site \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.%
+	\item Extended help and an in-depth documentation can be found at the project web site \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.%
 }
 } % End of \note.
 

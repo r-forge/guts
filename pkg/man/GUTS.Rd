@@ -14,7 +14,7 @@
 
 
 
-\description{GUTS (General Unified Theory of Survival) is a stochastic survival model for ecotoxicology. Use \code{guts_setup} to define exposure and survival time series as well as parameter values. Use \code{guts_calc_loglikelihood} to calculate the survival probabilities and the corresponding loglikelihood. \code{guts_calc_survivalprobs} is a convenient wrapper for calculate survival probabilities.}
+\description{GUTS (General Unified Theory of Survival) is a stochastic survival model for ecotoxicology. Use \code{guts_setup} to define exposure and survival time series as well as parameter values. Use \code{guts_calc_loglikelihood} to calculate the survival probabilities and the corresponding loglikelihood. \code{guts_calc_survivalprobs} is a convenience wrapper for calculate survival probabilities.}
 
 
 
@@ -44,7 +44,7 @@ guts_calc_survivalprobs(gobj, yts = 0)
 	}
 	\item{model}{Model as character, either \dQuote{Proper} (default) or \dQuote{IT}.%
 	}
-	\item{N}{Integer. Sample length. Must be greater than 2.%
+	\item{N}{Integer. Thresholds sample length. Must be greater than 2.%
 	}
 	\item{M}{Integer. Time grid points. Must be greater than 1.%
 	}
@@ -60,43 +60,44 @@ guts_calc_survivalprobs(gobj, yts = 0)
 
 \details{%
 
-\subsection{Field and Attribute Access}{%
-Fields and attributes of an object of class \dQuote{GUTS} are read-only. To prevent accidental change of fields or attributes, replacement functions have be rewritten throwing an error. Use function \code{guts_setup} to modify fields.
 
-However, parameters can be updated through the use of the function \code{guts_calc_loglikelihood}, and survivors and survivor time points are set when using the function \code{guts_calc_survivalprobs}.
+\subsection{Field and Attribute Access}{%
+Fields and attributes of an object of class \dQuote{GUTS} are read-only. To prevent accidental change of fields or attributes, replacement functions were rewritten throwing an error when used. Always use function \code{guts_setup} to modify fields.
+
+However, parameters can also be updated using the function \code{guts_calc_loglikelihood}, and survivors and survivor time points are set when using the function \code{guts_calc_survivalprobs}.
 } % End of \subsection{Field and Attribute Access}.
+
 
 \subsection{Parameters}{%
 For distribution \dQuote{lognormal} and model \dQuote{Proper}, 5 parameters are required:
 \itemize{%
 	\item hb: background mortality rate
-	\item kr: recovery rate
+	\item ke: dominant rate constant% was kr: recovery rate
 	\item kk: killing rate
-	\item m:  sample mean
-	\item sd: sample standard deviation
+	\item mn: mean of thresholds z from distribution \code{dist}
+	\item sd: standard deviation of thresholds z from distribution \code{dist}
 }
 
-The number of parameters is checked according to \code{dist} and \code{type}.
-For type \dQuote{Proper}…
+The number of parameters is checked according to \code{dist} and \code{type}. For type \dQuote{Proper}…
 \itemize{%
-	\item …if distribution is \dQuote{lognormal}, 5 non-negative parameters are required. If \code{sd} is not 0, \code{m} must not be 0.%
+	\item …if distribution is \dQuote{lognormal}, 5 non-negative parameters are required. If \code{sd} is not 0, \code{mn} must not be 0.%
 	\item …if distribution is \dQuote{delta}, 4 non-negative parameters are required.%
 }
-If dist is \dQuote{delta}, \code{sd} is set internally and must not be provided. If model is \dQuote{IT}, the number of required parameters is reduced by 1; the parameter \dQuote{kk} is set internally and must not be provided.
+If dist is \dQuote{delta} (also referred to as SD), \code{sd} is set internally and must not be provided. If model is \dQuote{IT}, the number of required parameters is reduced by 1; the parameter \dQuote{kk} is set internally and must not be provided.
 
-Wrong number of parameters will give an error. Wrong parameter values (e.g., negative values) give a warning to the object, setting the loglikelihood to \code{-Inf}.
+Wrong number of parameters will give an error. Wrong parameter values (e.g., negative values) give a warning and set the loglikelihood to \code{-Inf}.
 } % End of \subsection{Parameters}.
 
+
 \subsection{Distributions}{%
-Samples are created internally according to \code{dist}, \code{model}, \code{N} (and \code{pars}).
+Thresholds are created internally according to \code{dist}, \code{model}, \code{N} (and \code{pars}).
 
 \itemize{%
-	\item If \code{dist} is set to \dQuote{lognormal} (default), a sample of size \code{N} is drawn from a lognormal distribution with \code{m, sd}. Note that \code{m} and \code{sd} are parameters for the \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!%
-	\item If \code{dist} is set to \dQuote{delta}, a sample vector of size \code{N} from the delta distribution is created (with one parameter).%
-	\item Model type \dQuote{SD} is implemented through distribution \dQuote{delta}.
+	\item If \code{dist} is set to \dQuote{lognormal} (default), \code{N} ordered thresholds are created from the lognormal distribution with \code{mn, sd}. Note that \code{mn} and \code{sd} are parameters for the \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!%
+	\item If \code{dist} is set to \dQuote{delta}, \code{N} thresholds are created from the delta distribution with \code{mn}.%
+	\item For model type \dQuote{SD} use distribution \dQuote{delta} and model \dQuote{Proper}.
 }
 } % End of \subsection{Distributions}.
-
 } % End of \details
 
 
@@ -115,18 +116,18 @@ Samples are created internally according to \code{dist}, \code{model}, \code{N} 
 \item{M}{Time grid points.}
 \item{results}{List of results.}
 
-The list of results contain the following fields:
+The field \code{results} is a list containing the following fields:
 
 \item{S}{Vector of Survivor probabilities.}
 \item{LL}{The loglikelihood.}
 
-The object has the following attributes (for internal use):
-
-\item{class}{\code{GUTS}}
-\item{experiment}{Internal representation of distribution and model.}
-\item{wpar}{Internal representation of parameters.}
-\item{par_pos}{Internal representation of parameter positions.}
-\item{checked}{Force creation of GUTS objects through function use.}
+%The object has the following attributes (for internal use):
+%
+%\item{class}{\code{GUTS}}
+%\item{experiment}{Internal representation of distribution and model.}
+%\item{wpar}{Internal representation of parameters.}
+%\item{par_pos}{Internal representation of parameter positions.}
+%\item{checked}{Force creation of GUTS objects through function use.}
 
 \code{guts_calc_loglikelihood} and \code{guts_calc_survivalprobs} update objects directly and do not return a value. Use the fields \code{object$results$LL} and \code{object$results$S} to access the loglikelihood and survival probabilities.
 } % End of \value.
@@ -147,8 +148,8 @@ Maintainer: Sören Vogel \email{soeren.vogel@posteo.ch}}
 \note{%
 \itemize{
 	\item Caution: This is a complete reimplementation of the former package. Please update your code.%
-	\item The package is under current development. Parts of the software are likely to change with future releases. Refer to this manual page after updating your copy. \bold{Save your work before using this software.}%
-	\item Extended help and documentation}{Extended help and an in-depth documentation can be found at the project web site \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.%
+	\item The package is under current development. Parts of the software are likely to change with future releases. Refer to this manual page after updating. \bold{Save your work before using this software.}%
+	\item Extended help and an in-depth documentation can be found at the project web site \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.%
 }
 } % End of \note.
 

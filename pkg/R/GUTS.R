@@ -2,7 +2,7 @@
 # GUTS R Definitions.
 # soeren.vogel@uzh.ch, carlo.albert@eawag.ch
 # License GPL-2
-# 2015-05-03
+# 2015-05-15
 #
 
 
@@ -232,9 +232,22 @@ guts_calc_survivalprobs <- function( gobj, yts = 0 ) {
 		# 	assign(objname, 7:9, parent.frame()); print(obj)
 		# }
 		# f(a); a
+
+		# Calculate everything on tmp.
 		guts_calc_loglikelihood( tmp, gobj$par )
+
+		# Create a random hidden temp file in parent.frame() and assign tmp to it.
+		# Because assign does not work with lists.
+		fn <- paste( '.', paste(sample(letters, 8), sep='', collapse=''), as.numeric(Sys.time()), sep='' )
+		assign(fn, tmp, parent.frame())
+
+		# Now do the actual assignment of fn to the original object.
 		gobjname <- deparse(substitute(gobj))
-		assign(gobjname, tmp, parent.frame())
+		txt <- paste( gobjname, '<-', fn, sep='' )
+		eval(parse(text=txt), parent.frame())
+
+		# Remove temporary file from parent.frame().
+		rm( list=c(fn), envir=parent.frame() )
 	} else {
 		stop( "" )
 	}

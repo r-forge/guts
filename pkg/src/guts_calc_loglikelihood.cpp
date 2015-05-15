@@ -3,7 +3,7 @@
  * Function guts_calc_loglikelihood(gobj, pars).
  * soeren.vogel@posteo.ch, carlo.albert@eawag.ch
  * License GPL-2
- * 2015-05-04
+ * 2015-05-15
  */
 
 #include <Rcpp.h>
@@ -132,8 +132,7 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	int k       = 0;
 
 	/*
-	 * Try out diffC and diffCt.
-	 * diffCCt is diffC/diffCt.
+	 * diffC and diffCt, diffCCt is diffC/diffCt.
 	 */
 	std::vector<double>   diffC(C.size());
 	std::vector<double>  diffCt(Ct.size());
@@ -145,31 +144,18 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	}
 
 	/*
-	 * Try out tauvec.
-	 */
-	//std::vector<double> tauvec(M+1, 0.0);
-	//for ( int i = 1; i <= M; ++i ) {
-	//	tauvec.at(i) += dtau * i;
-	//}
-
-	/*
 	 * Loop over yt.
 	 */
 	for ( unsigned int ytpos = 0; ytpos < yt.size(); ++ytpos ) {
 
 		while ( tau < yt.at(ytpos) && dpos < M ) {
-		//while ( tauvec.at(tauit) < yt.at(ytpos) && dpos < M ) {
 
 			tmp = exp( -wpar[1] * (tau - Ct.at(k)) );
-			//tmp = exp( -wpar[1] * (tauvec.at(tauit) - Ct.at(k)) );
 			if ( wpar[1] > 0.0 ) {
-				//summand3 = diffC.at(k)  *  (tau - Ct.at(k) - (1.0-tmp)/wpar[1])  /  diffCt.at(k);
 				summand3 = (tau - Ct.at(k) - (1.0-tmp)/wpar[1])  *  diffCCt.at(k);
-				//summand3 = diffC.at(k)  *  (tauvec.at(tauit) - Ct.at(k) - (1.0-tmp)/wpar[1])  /  diffCt.at(k);
 			} else {
 				summand3 = 0.0;
 			}
-			//D.at(dpos) = D.at(ii) * tmp  +  C.at(k) * (1.0-tmp)  +  summand3;
 			D.at(dpos) =  tmp * (D.at(ii) - C.at(k))  +  C.at(k)  +  summand3;
 
 			/*
@@ -194,11 +180,8 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 			 * Increment or decrement dpos, tau, k.
 			 */
 			++dpos;
-			//tau += dtau;
 			tau = dtau * (++tauit);
-			//++tauit;
 			if ( tau > Ct[k+1] ) {
-			//if ( tauvec.at(tauit) > Ct[k+1] ) {
 				++k;
 				ii = dpos-1;
 			}
