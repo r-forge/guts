@@ -1,8 +1,8 @@
 Package: GUTS
 Type: Package
 Title: Fast Calculation of the Likelihood of a Stochastic Survival Model
-Version: 0.9.3
-Date: 2015-05-15
+Version: 0.9.5
+Date: 2015-05-31
 Author: Carlo Albert <carlo.albert@eawag.ch> and Sören Vogel <soeren.vogel@posteo.ch>
 Maintainer: Sören Vogel <soeren.vogel@posteo.ch>
 Description: Given exposure and survival time series as well as parameter values, GUTS allows for the fast calculation of the survival probabilities as well as the logarithm of the corresponding likelihood.

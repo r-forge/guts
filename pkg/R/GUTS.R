@@ -2,7 +2,7 @@
 # GUTS R Definitions.
 # soeren.vogel@uzh.ch, carlo.albert@eawag.ch
 # License GPL-2
-# 2015-05-15
+# 2015-05-30
 #
 
 
@@ -12,28 +12,23 @@
 ##
 # Function guts_setup(...).
 #
-guts_setup <- function(C, Ct, y, yt, par = 0, dist = 'lognormal', model = 'Proper', N = 1000, M = 10000) {
-
-	#
-	# Defaults for S and LL.
-	#
-	S   <-  NA
-	LL  <-  NA
+guts_setup <- function(C, Ct, y, yt, dist = 'lognormal', model = 'Proper', N = 1000, M = 10000) {
 
 	#
 	# Check missing arguments and arguments types (numeric, character).
 	#
-	args_num_names  <- c('C', 'Ct', 'y', 'yt', 'par', 'N', 'M')
+	args_num_names  <- c('C', 'Ct', 'y', 'yt', 'N', 'M')
 	args_char_names <- c('dist', 'model')
-	args_num_type   <- c(is.numeric(C), is.numeric(Ct), is.numeric(y), is.numeric(yt), is.numeric(par), is.numeric(N), is.numeric(M))
+	args_num_type   <- c(is.numeric(C), is.numeric(Ct), is.numeric(y), is.numeric(yt), is.numeric(N), is.numeric(M))
 	args_char_type  <- c(is.character(dist), is.character(model))
 	if ( any( !args_num_type ) ) {
 		i <- which(!args_num_type)[1]
-		stop( paste( "Argument ", args_num_names[i], " not numeric.", sep='' ) )
+		stop( paste( "Argument ", args_num_names[i], " must be numeric.", sep='' ) )
 	} else if ( any( !args_char_type ) ) {
 		i <- which(!args_num_type)[1]
-		stop( paste( "Argument ", args_char_names[i], " not character.", sep='' ) )
+		stop( paste( "Argument ", args_char_names[i], " must be character.", sep='' ) )
 	}
+
 
 	#
 	# Check length of single value arguments.
@@ -46,6 +41,7 @@ guts_setup <- function(C, Ct, y, yt, par = 0, dist = 'lognormal', model = 'Prope
 			assign( args_sin_names[i], get(args_sin_names[i])[1] )
 		}
 	}
+
 
 	#
 	# Check concentrations and survivors.
@@ -72,19 +68,34 @@ guts_setup <- function(C, Ct, y, yt, par = 0, dist = 'lognormal', model = 'Prope
 		stop( 'Vector yt must contain unique values in ascending order.' )
 	} else if ( any(diff(y) > 0) ) {
 		stop( 'Values in vector y must not ascend.' )
-	} else if ( Ct[length(Ct)] < yt[length(yt)] ) {
-		stop( 'Last value of vector Ct must not be smaller than last value of vector yt.' )
 	} else if ( min(c(C, Ct, y, yt)) < 0 ) {
 		stop( 'Vectors C, Ct, y, yt must contain non-negative values.' )
 	}
 
+
 	#
-	# Check dist and model, set experiment code, set par_pos.
+	# Check Ct and yt length and, if needed, truncate y and yt.
+	#
+	Ct.last <- Ct[length(Ct)]
+	if ( Ct.last < yt[length(yt)] ) {
+		i <- which(yt <= Ct.last)
+		y <- y[i]
+		yt <- yt[i]
+		warning( 'Survivor information at time points later than the latest concentration time point are disregarded.' )
+	}
+
+
+	#
+	# Check dist and model.
+	# Set experiment code.
+	# Set par_pos.
+	# Set par.
+	# Set wpar.
 	#
 	experiment <- 11 # Default
-	par_pos <- 1:5
 	mdist  <- tolower(dist)
 	mmodel <- tolower(model)
+	par_pos <- 1:5
 	if ( mdist == 'lognormal' ) {
 		if ( mmodel == 'proper' ) {
 			experiment <- 11
@@ -93,7 +104,7 @@ guts_setup <- function(C, Ct, y, yt, par = 0, dist = 'lognormal', model = 'Prope
 			experiment <- 12
 			par_pos <- c(1:2, 4:5)
 		} else {
-			stop( 'Model can be either "Proper" or "IT".' )
+			stop( 'Model must be either "Proper" or "IT".' )
 		}
 	} else if ( mdist == "delta" ) {
 		if ( mmodel == 'proper' ) {
@@ -103,35 +114,14 @@ guts_setup <- function(C, Ct, y, yt, par = 0, dist = 'lognormal', model = 'Prope
 			experiment <- 22
 			par_pos <- c(1:2, 4)
 		} else {
-			stop( 'Model can be either "Proper" or "IT".' )
+			stop( 'Model must be either "Proper" or "IT".' )
 		}
 	} else {
-		stop( 'Distribution can be either "lognormal" or "delta".' )
+		stop( 'Distribution must be either "lognormal" or "delta".' )
 	}
+	par <- rep(NA, length(par_pos))
+	wpar <- c(0, 0, .Machine$double.xmax, 0, 0)
 
-	#
-	# Check parameters.
-	# This is the general setup check. Function guts_calc_loglikelihood() will only check values.
-	# Set wpar in attributes.
-	#
-	wpar <- c(0, 0, .Machine$double.xmax, 0, 0) # Default
-	if ( length(par) == 1 && par == 0 ) {
-		par <- rep( 0.0, length(par_pos) )
-	} else if ( length(par) != length(par_pos) ) {
-		stop( 'Wrong parameter vector length.' )
-	} else if ( min(par) < 0 ) {
-		# Here it is an error, in update it is a warning!
-		stop( 'Parameters must be non-negative values.' )
-	} else {
-		# Assign to wpar at positions in par_pos
-		wpar[par_pos] <- par
-		if ( wpar[4] == 0 && wpar[5] != 0 ) {
-			# Here it is an error, in update it is a warning!
-			stop( 'Sample sd = 0 only if m = 0.' )
-		} else if ( is.infinite(wpar[3]) ) {
-			wpar[3] = .Machine$double.xmax;
-		}
-	}
 
 	#
 	# Check sample length and time grid points.
@@ -142,6 +132,7 @@ guts_setup <- function(C, Ct, y, yt, par = 0, dist = 'lognormal', model = 'Prope
 		stop( 'M must be greater than 1.' )
 	}
 
+
 	#
 	# Build GUTS object for return.
 	#
@@ -151,33 +142,38 @@ guts_setup <- function(C, Ct, y, yt, par = 0, dist = 'lognormal', model = 'Prope
 			'Ct'    = Ct,
 			'y'     = y,
 			'yt'    = yt,
-			'par'   = par,
 			'dist'  = dist,
 			'model' = model,
 			'N'     = N,
 			'M'     = M,
-			'results' = list(
-				'S'  =  S,
-				'LL' =  LL
-			)
+			'par'   = par,
+			'S'     = rep(NA, length(yt)),
+			'LL'    =  NA
 		),
 		class      = "GUTS",
 		experiment = experiment,
 		wpar       = wpar,
-		par_pos    = par_pos,
-		checked    = TRUE # Refers to whether the object was modified only with setup function.
+		par_pos    = par_pos
 	)
 	invisible( return( ret ) )
-}
+
+} # End of guts_setup(C, Ct, y, yt, dist = 'lognormal', model = 'Proper', N = 1000, M = 10000)
 
 
 
 
 
 ##
-# Calc Loglik
+# Function guts_calc_loglikelihood(...).
+# Code was generated by Rcpp::compileAttributes
+# Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
+# Edit SV 2015-05-30
 #
-#guts_calc_loglikelihood <- function (gobj, pars) invisible(.Primitive(".Call")(<pointer: 0x110bc95e0>, gobj, pars))
+guts_calc_loglikelihood <- function(gobj, par) {
+	invisible(.Call('GUTS_guts_engine', PACKAGE = 'GUTS', gobj, par))
+	return(gobj[['LL']])
+}
+
 
 
 
@@ -186,71 +182,9 @@ guts_setup <- function(C, Ct, y, yt, par = 0, dist = 'lognormal', model = 'Prope
 ##
 # Function guts_calc_survivalprobs(...).
 #
-guts_calc_survivalprobs <- function( gobj, yts = 0 ) {
-
-	#
-	# Checks.
-	#
-	if ( !inherits( gobj, "GUTS", which=FALSE ) ) {
-		stop( "No GUTS object. Use `guts_setup()` to create or modify objects." )
-	} else if ( !is.numeric(yts) || length(yts) < 1 ) {
-		stop( "Wrong value for argument yts." )
-	}
-
-	#
-	# Create or use y and yt.
-	#
-	if ( length(yts) == 1 ) {
-		# existing (0) or length.
-		if ( yts < 0 ) {
-			stop( "Wrong value for argument yts." )
-		} else if ( yts == 0 ) {
-			# existing y and yt
-			y  <- gobj$y
-			yt <- gobj$yt
-		} else {
-			# number of yts.
-			y  <- rep(0.0, yts)
-			yt <- 0:(yts-1)
-		}
-	} else {
-		# time points.
-		y  <- rep(0.0, length(yts))
-		yt <- yts
-	}
-
-	#
-	# Use guts_setup to check for correct vector.
-	#
-	# tryCatch(print(a), error = function(e) FALSE)
-	tmp <- guts_setup(gobj$C, gobj$Ct, y, yt, par = gobj$par, dist = gobj$dist, model = gobj$model, N = gobj$N, M = gobj$M)
-	if ( is.list(tmp) && class(tmp)=="GUTS" ) {
-		# No error.
-		# a <- 1:3; a
-		# f <- function(obj) {
-		# 	objname <- deparse(substitute(obj)); print(objname)
-		# 	assign(objname, 7:9, parent.frame()); print(obj)
-		# }
-		# f(a); a
-
-		# Calculate everything on tmp.
-		guts_calc_loglikelihood( tmp, gobj$par )
-
-		# Create a random hidden temp file in parent.frame() and assign tmp to it.
-		# Because assign does not work with lists.
-		fn <- paste( '.', paste(sample(letters, 8), sep='', collapse=''), as.numeric(Sys.time()), sep='' )
-		assign(fn, tmp, parent.frame())
-
-		# Now do the actual assignment of fn to the original object.
-		gobjname <- deparse(substitute(gobj))
-		txt <- paste( gobjname, '<-', fn, sep='' )
-		eval(parse(text=txt), parent.frame())
-
-		# Remove temporary file from parent.frame().
-		rm( list=c(fn), envir=parent.frame() )
-	} else {
-		stop( "" )
-	}
+guts_calc_survivalprobs <- function(gobj, par) {
+	invisible(.Call('GUTS_guts_engine', PACKAGE = 'GUTS', gobj, par))
+	return(gobj[['S']])
 }
 
 
@@ -261,18 +195,14 @@ guts_calc_survivalprobs <- function( gobj, yts = 0 ) {
 # Printing.
 #
 
-#
 # A small helper for printing and wrapping.
-#
 .g_print_help <- function( x, width, digits, prefix=NULL ) {
 	y <- paste( round(x, digits=digits), sep="", collapse=", " )
 	z <- strwrap( y, width=width, indent=0, exdent=6, initial=prefix )
 	return( z )
 }
 
-#
 # The actual print function.
-#
 .g_print <- function( object, width=getOption('width'), digits=getOption('digits') ) {
 
 	# Header
@@ -312,23 +242,21 @@ guts_calc_survivalprobs <- function( gobj, yts = 0 ) {
 	}
 
 	# Survival probabilities
-	cat( "Survival probabilities (n=", length(object$results$S), ")", sep="" )
-	if ( length(object$results$S) > 0 ) {
-		cat( .g_print_help(object$results$S, width, digits, prefix=": "), sep="\n" )
+	cat( "Survival probabilities (n=", length(object$S), ")", sep="" )
+	if ( length(object$S) > 0 ) {
+		cat( .g_print_help(object$S, width, digits, prefix=": "), sep="\n" )
 	} else {
 		cat( "\n", sep="" )
 	}
 
 	# Loglikelihood
-	cat( "Loglikelihood: ", object$results$LL, "\n", sep="" )
+	cat( "Loglikelihood: ", object$LL, "\n", sep="" )
 
 	# Footer
 	cat( "\n", sep="" )
 }
 
-#
 # Do print.
-#
 print.GUTS <- function(x, ...) {
 	out <- .g_print(x)
 	return(invisible(out))

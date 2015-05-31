@@ -1,53 +1,54 @@
 /**
  * GUTS: Fast Calculation of the Likelihood of a Stochastic Survival Model.
- * Function guts_calc_loglikelihood(gobj, pars).
+ * Function guts_engine(GUTS-Object, Parameters).
  * soeren.vogel@posteo.ch, carlo.albert@eawag.ch
  * License GPL-2
- * 2015-05-15
+ * 2015-05-31
  */
 
 #include <Rcpp.h>
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
+void guts_engine( Rcpp::List gobj, Rcpp::NumericVector par ) {
 
 	/*
 	 * Check if this is an object of class GUTS.
-	 * Check whether object was created using guts_setup().
 	 */
 	if ( !gobj.inherits("GUTS") ) {
 		Rcpp::stop( "No GUTS object. Use `guts_setup()` to create or modify objects." );
-	} else if ( !gobj.attr("checked") ) {
-		Rcpp::stop( "Object not checked. Use `guts_setup()` to create or modify objects." );
 	}
 
 	/*
-	 * Get first object elements.
-	 * List for results from object.
+	 * Get object elements that are necessary until here.
 	 */
-	NumericVector par_pos = gobj.attr("par_pos");
-	NumericVector wpar = gobj.attr("wpar");
-	List res = gobj["results"];
+	NumericVector       par_pos  =  gobj.attr("par_pos");
+	NumericVector       wpar     =  gobj.attr("wpar");
+	NumericVector       opar     =  gobj["par"];
+	NumericVector       oS       =  gobj["S"];
+	std::vector<double> par_NA(opar.size(), NA_REAL);
+	std::vector<double> S_NA(oS.size(), NA_REAL);
 
 	/*
 	 * Check parameters.
+	 * Error: Stop and do nothing. Warning: Assign NAs.
 	 * Assign working parameters.
 	 * Assign parameters to object.
 	 */
-	if ( pars.size() != par_pos.size() ) {
-		res["LL"]  =  -std::numeric_limits<double>::infinity();
-		res["S"]   =  NA_REAL;
-		Rcpp::stop( "Vector of parameters has wrong length -- ignored." );
-	} else if ( *std::min_element( pars.begin(), pars.end() ) < 0.0 ) {
+	if ( par.size() != par_pos.size() ) {
+		// Error.
+		Rcpp::stop( "Vector of parameters has wrong length." );
+	} else if ( *std::min_element( par.begin(), par.end() ) < 0.0 ) {
+		// Warning.
 		Rcpp::warning( "Parameters must be non-negative values -- ignored." );
-		res["LL"]  =  -std::numeric_limits<double>::infinity();
-		res["S"]   =  NA_REAL;
+		gobj["par"] = par_NA;
+		gobj["S"]   = S_NA;
+		gobj["LL"]  =  -std::numeric_limits<double>::infinity();
 		return;
 	} else {
 		// assign
 		for ( int i = 0; i < par_pos.size(); ++i ) {
-			wpar[(par_pos[i] - 1)] = pars[i]; // R positions to C++ position.
+			wpar[(par_pos[i] - 1)] = par[i]; // R positions to C++ position.
 		}
 		// adjust wpar at 3.
 		if ( std::isinf(wpar[2]) ) {
@@ -55,12 +56,14 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 		}
 		// check for sd
 		if ( wpar[3] == 0.0 && wpar[4] != 0.0 ) {
-			Rcpp::warning( "Sample sd = 0 only if m = 0 -- ignored." );
-			res["LL"]  =  -std::numeric_limits<double>::infinity();
-			res["S"]   =  NA_REAL;
+			Rcpp::warning( "Parameter sd = 0 only if mn = 0 -- ignored." );
+			gobj["par"] = par_NA;
+			gobj["S"]   = S_NA;
+			gobj["LL"]  =  -std::numeric_limits<double>::infinity();
 			return;
 		}
-		gobj["par"] = pars;
+		// assign if not returned earlier
+		gobj["par"] = par;
 	}
 
 	/*
@@ -76,9 +79,8 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	int N = gobj["N"];
 	int M = gobj["M"];
 	int experiment = gobj.attr("experiment");
-	std::vector<double>     S(yt.size(), 0.0);
-	std::vector<double> diffS(yt.size(), 0.0);
-	std::vector<int>    diffy(yt.size(), 0);
+	std::vector<double> S(yt.size(), 0.0);
+	double LL = 0.0;
 
 	/*
 	 * Temporary variables.
@@ -91,14 +93,14 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	double summand3;
 	double E;
 	int    F;
-	double LL = 0.0;
 
 	/*
-	 * tau, dtau, tauit.
+	 * tau, dtau, tauit, wpar[2] * dtau.
 	 */
-	double tau   = 0.0;
-	double dtau  = (yt.back() - yt.front()) / M;
-	int    tauit = 0;
+	double tau     = 0.0;
+	double dtau    = (yt.back() - yt.front()) / M;
+	int    tauit   = 0;
+	double kkXdtau = wpar[2] * dtau;
 
 	/*
 	 * Representations of z, zw.
@@ -124,7 +126,7 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	}
 
 	/* 
-	 * Iterators and positions.
+	 * Iterators, positions.
 	 */
 	int dpos    = 0;
 	int ii      = 0;
@@ -132,8 +134,10 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	int k       = 0;
 
 	/*
-	 * diffC and diffCt, diffCCt is diffC/diffCt.
+	 * Diffs.
 	 */
+	std::vector<double>   diffS(yt.size());
+	std::vector<int>      diffy(yt.size());
 	std::vector<double>   diffC(C.size());
 	std::vector<double>  diffCt(Ct.size());
 	std::vector<double> diffCCt(Ct.size());
@@ -196,7 +200,7 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 		for ( int u=N-1; u >= 0; --u ) {
 			E += ee.at(u);
 			F += ff.at(u);
-			S.at(ytpos) += exp(   (wpar[2] * dtau * (z.at(u) * F - E))  +  zw.at(u)   );
+			S.at(ytpos) += exp(   (kkXdtau * (z.at(u) * F - E))  +  zw.at(u)   );
 		}
 		S.at(ytpos) *= exp( -wpar[0] * yt[ytpos] ) / N;
 
@@ -223,7 +227,7 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	/*
 	 * Update object fields.
 	 */
-	res["S"]   = S;
+	gobj["S"]   = S;
 
 	/*
 	 * Calculate Loglikelihood.
@@ -231,7 +235,7 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	for ( unsigned int i=0; i < diffy.size(); ++i ) {
 		if ( diffy.at(i) > 0 ) {
 			if ( diffS.at(i) == 0.0 ) {
-				res["LL"] = -std::numeric_limits<double>::infinity();
+				gobj["LL"] = -std::numeric_limits<double>::infinity();
 				return;
 			}
 			LL += diffy.at(i) * log(diffS.at(i));
@@ -241,6 +245,6 @@ void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ) {
 	/*
 	 * Update object fields.
 	 */
-	res["LL"]  = LL;
+	gobj["LL"]  = LL;
 
-} // End of void guts_calc_loglikelihood( Rcpp::List gobj, NumericVector pars ).
+} // End of void guts_engine( Rcpp::List gobj, NumericVector par ).

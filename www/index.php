@@ -57,6 +57,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <ul>
 	<li><strong>Important:</strong> GUTS version 0.9.X is a complete re-implementation of GUTS!  Please consult the man page for more information.</li>
 	<li>The current documentation (see below) is outdated. An updated version will follow soon.</li>
+	<li>Current <a href="./files/GUTS_0.9.5.tgz">package as OS X binary</a>. (This may work or not.)</li>
 </ul>
 
 
@@ -74,7 +75,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 	<li><a href="http://guts.r-forge.r-project.org/files/CRAN_bin_0.5.2.zip">CRAN binaries for GUTS version 0.5.2</a>. Note that they may contain bugs that will never be fixed.</li>
 </ul>
 
-<p>Last updated: 2015-05-05</p>
+<p>Last updated: 2015-05-31</p>
 
 </body>
 </html>

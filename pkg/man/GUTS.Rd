@@ -14,45 +14,41 @@
 
 
 
-\description{GUTS (General Unified Theory of Survival) is a stochastic survival model for ecotoxicology. Use \code{guts_setup} to define exposure and survival time series as well as parameter values. Use \code{guts_calc_loglikelihood} to calculate the survival probabilities and the corresponding loglikelihood. \code{guts_calc_survivalprobs} is a convenience wrapper for calculate survival probabilities.}
+\description{GUTS (General Unified Theory of Survival) is a stochastic survival model for ecotoxicology.  The package allows for the definition of exposure and survival time series as well as parameter values, and the fast calculation of the survival probabilities as well as the logarithm of the corresponding likelihood.}
 
 
 
 \usage{
-guts_setup(C, Ct, y, yt, par = 0, dist = "lognormal",
+guts_setup(C, Ct, y, yt, dist = "lognormal",
 	model = "Proper", N = 1000, M = 10000)
 
-guts_calc_loglikelihood(gobj, pars)
+guts_calc_loglikelihood(gobj, par)
 
-guts_calc_survivalprobs(gobj, yts = 0)
+guts_calc_survivalprobs(gobj, par)
 }
 
 
 
 \arguments{%
-	\item{C}{Numeric vector of concentrations. Vector must contain at least 2 values and be of the same length as Ct.%
+	\item{C}{Numeric vector of concentrations.  Vector must contain at least 2 values and be of the same length as \code{Ct}.%
 	}
-	\item{Ct}{Numeric vector of concentration time points. Vector must contain at leas 2 values and be of the same length as C. Numerics must start at 0, and contain unique values in ascending order. The last value of \code{Ct} must not be smaller than the last value of \code{yt}, i.e., there must be information about concentrations when no survivor remains.%
+	\item{Ct}{Numeric vector of concentration time points.  Vector must contain at least 2 values and be of the same length as \code{C}.  Numerics must start at 0, and contain unique values in ascending order.%
 	}
-	\item{y}{Integer vector (counts) of survivors. Vector must contain at least 2 values and be of the same length as yt. y must not be ascending.%
+	\item{y}{Integer vector (counts) of survivors.  Vector must contain at least 2 values and be of the same length as \code{yt}.  \code{y} must not be ascending.%
 	}
-	\item{yt}{Numeric vector of survivor time points. Vector must contain at least 2 values and be of the same length as y. Numerics must start at 0, and contain unique values in ascending order. The last value of \code{yt} must not be larger than the last value of \code{Ct}, i.e., there must be information about concentrations when no survivor remains.%
-	}
-	\item{par}{Numeric vector of parameters. If \code{0}, all parameters are set to 0. See details below.%
+	\item{yt}{Numeric vector of survivor time points.  Vector must contain at least 2 values and be of the same length as \code{y}.  Numerics must start at 0, and contain unique values in ascending order.  Survivor information at time points later than the latest concentration time point will be disregarded (with a warning).%
 	}
 	\item{dist}{Distribution as character, either \dQuote{lornormal} (default) or \dQuote{delta}.%
 	}
-	\item{model}{Model as character, either \dQuote{Proper} (default) or \dQuote{IT}.%
+	\item{model}{Model as character, either \dQuote{Proper} (for full model, the default) or \dQuote{IT} (for individual tolerance).%
 	}
-	\item{N}{Integer. Thresholds sample length. Must be greater than 2.%
+	\item{N}{Integer.  Thresholds sample length.  Must be greater than 2.%
 	}
-	\item{M}{Integer. Time grid points. Must be greater than 1.%
+	\item{M}{Integer.  Number of time grid points.  Must be greater than 1.%
 	}
-	\item{gobj}{GUTS object. The object to be updated (and used for the calculation).%
+	\item{gobj}{GUTS object.  The object to be updated (and used for the calculation).%
 	}
-	\item{pars}{Numeric vector of new parameters. See details below.%
-	}
-	\item{yts}{Either a single positive integer or a vector of survivor time points. If \code{0}, survivor information in \code{gobj} are used.%
+	\item{par}{Numeric vector of parameters.  See details below.%
 	}
 } % End of \arguments
 
@@ -61,15 +57,18 @@ guts_calc_survivalprobs(gobj, yts = 0)
 \details{%
 
 
-\subsection{Field and Attribute Access}{%
-Fields and attributes of an object of class \dQuote{GUTS} are read-only. To prevent accidental change of fields or attributes, replacement functions were rewritten throwing an error when used. Always use function \code{guts_setup} to modify fields.
+\subsection{Functions}{%
+Use \code{guts_setup} to define (or alter) a GUTS object.  Various checks are applied to the data.  On success, a GUTS object will be created.
 
-However, parameters can also be updated using the function \code{guts_calc_loglikelihood}, and survivors and survivor time points are set when using the function \code{guts_calc_survivalprobs}.
-} % End of \subsection{Field and Attribute Access}.
+Use \code{guts_calc_loglikelihood} to calculate the survival probabilities and the corresponding loglikelihood for a given set of parameters.  The function is very fast and can be used in routines for parameter estimation.  The function returns the loglikelihood, however it also updates the fields \code{par}, \code{S} and \code{LL} of the object.
+
+\code{guts_calc_survivalprobs} is a convenience wrapper (calling \code{cuts_calc_loglikelihood}) that can be used for predictions; it returns the survival probabilities.
+}
 
 
-\subsection{Parameters}{%
-For distribution \dQuote{lognormal} and model \dQuote{Proper}, 5 parameters are required:
+\subsection{Parameters, Models, and Distributions}{%
+
+GUTS uses the following parameters:
 \itemize{%
 	\item hb: background mortality rate
 	\item ke: dominant rate constant% was kr: recovery rate
@@ -78,26 +77,19 @@ For distribution \dQuote{lognormal} and model \dQuote{Proper}, 5 parameters are 
 	\item sd: standard deviation of thresholds z from distribution \code{dist}
 }
 
-The number of parameters is checked according to \code{dist} and \code{type}. For type \dQuote{Proper}…
-\itemize{%
-	\item …if distribution is \dQuote{lognormal}, 5 non-negative parameters are required. If \code{sd} is not 0, \code{mn} must not be 0.%
-	\item …if distribution is \dQuote{delta}, 4 non-negative parameters are required.%
-}
-If dist is \dQuote{delta} (also referred to as SD), \code{sd} is set internally and must not be provided. If model is \dQuote{IT}, the number of required parameters is reduced by 1; the parameter \dQuote{kk} is set internally and must not be provided.
+For model \dQuote{Proper}, the first 3 parameters are needed as well as the parameters for the distribution (\code{mn} and \code{sd} for \dQuote{lognormal}, or \code{mn} for \dQuote{delta}).  For model \dQuote{IT} (individual tolerance), the third parameter (\code{kk}) is set internally to infinity and must not be provided.  For model type \dQuote{SD} (stochastic death), use distribution \dQuote{delta} and model \dQuote{Proper} with the first 4 parameters.
 
-Wrong number of parameters will give an error. Wrong parameter values (e.g., negative values) give a warning and set the loglikelihood to \code{-Inf}.
-} % End of \subsection{Parameters}.
+The number of parameters is checked according to \code{dist} and \code{model}.  Wrong number of parameters invoke an error, wrong parameter values (e.g., negative values) invoke a warning, and the loglikelihood is set to -Inf.
+
+Thresholds are created internally according to \code{dist}, \code{model}, \code{N} (and \code{pars}).  If \code{dist} is \dQuote{lognormal} (default), \code{N} ordered thresholds are created from the lognormal distribution with \code{mn} and \code{sd}.  Note that \code{mn} and \code{sd} are parameters for the \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!  If \code{dist} is \dQuote{delta}, all \code{N} thresholds are equal to \code{mn}.
 
 
-\subsection{Distributions}{%
-Thresholds are created internally according to \code{dist}, \code{model}, \code{N} (and \code{pars}).
+} % End of \subsection{Parameters, Models, and Distributions}.
 
-\itemize{%
-	\item If \code{dist} is set to \dQuote{lognormal} (default), \code{N} ordered thresholds are created from the lognormal distribution with \code{mn, sd}. Note that \code{mn} and \code{sd} are parameters for the \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!%
-	\item If \code{dist} is set to \dQuote{delta}, \code{N} thresholds are created from the delta distribution with \code{mn}.%
-	\item For model type \dQuote{SD} use distribution \dQuote{delta} and model \dQuote{Proper}.
-}
-} % End of \subsection{Distributions}.
+
+\subsection{Field and Attribute Access}{%
+Fields and attributes of an object of class \dQuote{GUTS} are read-only.  To prevent accidental change of fields or attributes, replacement functions were rewritten throwing an error when used.  Always use function \code{guts_setup} to create objects or modify fields on existing objects.  However, \code{guts_calc_loglikelihood} and \code{guts_calc_survivalprobs} update an object’s fields \code{par} (parameters), \code{S} (survival probabilities) and \code{LL} (the loglikelihood).
+} % End of \subsection{Field and Attribute Access}.
 } % End of \details
 
 
@@ -109,16 +101,12 @@ Thresholds are created internally according to \code{dist}, \code{model}, \code{
 \item{Ct}{Concentration time points.}
 \item{y}{Survivors.}
 \item{yt}{Survivor time points.}
-\item{par}{Parameters.}
 \item{dist}{Distribution.}
 \item{model}{Model.}
 \item{N}{Sample length.}
 \item{M}{Time grid points.}
-\item{results}{List of results.}
-
-The field \code{results} is a list containing the following fields:
-
-\item{S}{Vector of Survivor probabilities.}
+\item{par}{Parameters.}
+\item{S}{Vector of survivor probabilities.}
 \item{LL}{The loglikelihood.}
 
 %The object has the following attributes (for internal use):
@@ -127,31 +115,27 @@ The field \code{results} is a list containing the following fields:
 %\item{experiment}{Internal representation of distribution and model.}
 %\item{wpar}{Internal representation of parameters.}
 %\item{par_pos}{Internal representation of parameter positions.}
-%\item{checked}{Force creation of GUTS objects through function use.}
 
-\code{guts_calc_loglikelihood} and \code{guts_calc_survivalprobs} update objects directly and do not return a value. Use the fields \code{object$results$LL} and \code{object$results$S} to access the loglikelihood and survival probabilities.
+\code{guts_calc_loglikelihood} returns the loglikelihood.
+
+\code{guts_calc_survivalprobs} returns the survival probabilities.
 } % End of \value.
 
 
 
-\references{Jager, T., Albert, C., Preuss T. and Ashauer R. (2011) General unified theory of survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Published online in \emph{Env. Sci. and Tech.} 
-(\href{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/}{http://www.mendeley.com/research/general-unified-threshold-model-survival-toxicokinetictoxicodynamic-framework-ecotoxicology/}).}
+\note{%
+The GUTS project web site can be found here: \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.
+} % End of \note.
+
+
+
+\references{Jager, T., Albert, C., Preuss T. and Ashauer R. (2011) General unified theory of survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, doi: 10.1021/es103092a.}
 
 
 
 \author{Carlo Albert \email{carlo.albert@eawag.ch} and Sören Vogel \email{soeren.vogel@posteo.ch}
 
 Maintainer: Sören Vogel \email{soeren.vogel@posteo.ch}}
-
-
-
-\note{%
-\itemize{
-	\item Caution: This is a complete reimplementation of the former package. Please update your code.%
-	\item The package is under current development. Parts of the software are likely to change with future releases. Refer to this manual page after updating. \bold{Save your work before using this software.}%
-	\item Extended help and an in-depth documentation can be found at the project web site \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.%
-}
-} % End of \note.
 
 
 
@@ -164,19 +148,15 @@ data(diazinon)
 
 gts <- guts_setup(C = diazinon$C1, Ct = diazinon$Ct1,
 	y = diazinon$y1, yt = diazinon$yt1)
+
 guts_calc_loglikelihood(gts, c(0.05084761, 0.12641525,
-	1.61840054, 19.09911, 6.495246))
-gts
-# LL: -183.566.
+	1.61840054, 19.09911, 6.495246)) # -183.566.
+guts_calc_survivalprobs(gts, rep(.5, 5)) # 1.000000e+00 1.737352e-05 ... 1.674316e-33
 
-guts_calc_survivalprobs( gts, 5 )
+guts_calc_loglikelihood(gts, -1:3) # Warning.
 gts
-# LL: 0, S: 1, 0.9293491, 0.8409267, 0.7987192, 0.4578539.
 
-guts_calc_survivalprobs( gts, 0:6 )
-gts
-# LL: 0, S: 1, 0.9293336, 0.8409121, 0.7987059,
-#           0.4577675, 0.3383611, 0.3213131.
+\dontrun{guts_calc_survivalprobs( gts, 1:4 )} # Error.
 
 \dontrun{gts[["C"]] <- 1:3} # Error.
 }
