@@ -14,7 +14,7 @@
 
 
 
-\description{GUTS (General Unified Theory of Survival) is a stochastic survival model for ecotoxicology.  The package allows for the definition of exposure and survival time series as well as parameter values, and the fast calculation of the survival probabilities as well as the logarithm of the corresponding likelihood.}
+\description{GUTS (General Unified Threshold model of Survival) is a stochastic survival model for ecotoxicology.  The package allows for the definition of exposure and survival time series as well as parameter values, and the fast calculation of the survival probabilities as well as the logarithm of the corresponding likelihood.}
 
 
 
@@ -129,7 +129,7 @@ The GUTS project web site can be found here: \href{http://guts.r-forge.r-project
 
 
 
-\references{Jager, T., Albert, C., Preuss T. and Ashauer R. (2011) General unified theory of survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, doi: 10.1021/es103092a.}
+\references{Jager, T., Albert, C., Preuss T. and Ashauer R. (2011) General unified threshold model of survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, doi: 10.1021/es103092a.}
 
 
 

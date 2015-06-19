@@ -196,14 +196,14 @@ guts_calc_survivalprobs <- function(gobj, par) {
 #
 
 # A small helper for printing and wrapping.
-.g_print_help <- function( x, width, digits, prefix=NULL ) {
-	y <- paste( round(x, digits=digits), sep="", collapse=", " )
-	z <- strwrap( y, width=width, indent=0, exdent=6, initial=prefix )
+.g_print_help <- function( x, width, digits, exdent = 6, prefix = NULL ) {
+	y <- paste( round(x, digits = digits), sep = "", collapse = ", " )
+	z <- strwrap( y, width = (width-6), indent = 0, exdent = exdent, initial = prefix )
 	return( z )
 }
 
 # The actual print function.
-.g_print <- function( object, width=getOption('width'), digits=getOption('digits') ) {
+.g_print <- function( object, width = getOption('width'), digits = getOption('digits') ) {
 
 	# Header
 	cat(
@@ -234,17 +234,19 @@ guts_calc_survivalprobs <- function(gobj, par) {
 	cat( "Sample length: ", object$N, ", Time grid points: ", object$M, ".\n", sep="" )
 
 	# Parameters
-	cat( "Parameters (n=", length(object$par), ")", sep="" )
+	prf <- paste("Parameters (n=", length(object$par), ")", sep="")
 	if ( length(object$par) > 0 ) {
-		cat( .g_print_help(object$par, width, digits, prefix=": "), sep="\n" )
+		prf <- paste(prf, ": ", sep="")
+		cat( .g_print_help(object$par, width, digits, prefix=prf), sep="\n" )
 	} else {
 		cat( "\n", sep="" )
 	}
 
 	# Survival probabilities
-	cat( "Survival probabilities (n=", length(object$S), ")", sep="" )
+	prf <- paste("Survival probabilities (n=", length(object$S), ")", sep="")
 	if ( length(object$S) > 0 ) {
-		cat( .g_print_help(object$S, width, digits, prefix=": "), sep="\n" )
+		prf <- paste(prf, ": ", sep="")
+		cat( .g_print_help(object$S, width, digits, exdent = 2, prefix = prf), sep="\n" )
 	} else {
 		cat( "\n", sep="" )
 	}

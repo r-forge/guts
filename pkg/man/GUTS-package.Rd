@@ -17,7 +17,7 @@
 
 \title{Fast Calculation of the Likelihood of a Stochastic Survival Model}
 
-\description{GUTS (General Unified Theory of Survival) is a stochastic survival model for ecotoxicology.  The package allows for the definition of exposure and survival time series as well as parameter values, and the fast calculation of the survival probabilities as well as the logarithm of the corresponding likelihood.}
+\description{GUTS (General Unified Threshold model of Survival) is a stochastic survival model for ecotoxicology.  The package allows for the definition of exposure and survival time series as well as parameter values, and the fast calculation of the survival probabilities as well as the logarithm of the corresponding likelihood.}
 
 \details{
 \tabular{ll}{
@@ -34,6 +34,6 @@ A GUTS object is a special list of class \dQuote{GUTS}.  Functions \code{\link{g
 
 Maintainer: Sören Vogel \email{soeren.vogel@posteo.ch}}
 
-\references{Jager, T., Albert, C., Preuss T. and Ashauer R. (2011) General unified theory of survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, doi: 10.1021/es103092a.}
+\references{Jager, T., Albert, C., Preuss T. and Ashauer R. (2011) General unified threshold model of survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, doi: 10.1021/es103092a.}
 
 \seealso{\code{\link{guts_setup}}, \code{\link{guts_calc_loglikelihood}}, \code{\link{guts_calc_survivalprobs}}, \code{\link{diazinon}}, \code{\link{Rcpp}}}

@@ -64,6 +64,8 @@ void guts_engine( Rcpp::List gobj, Rcpp::NumericVector par ) {
 		}
 		// assign if not returned earlier
 		gobj["par"] = par;
+		gobj.attr("wpar") = wpar;
+		
 	}
 
 	/*
