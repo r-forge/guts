@@ -3,7 +3,7 @@
  * Function guts_engine(GUTS-Object, Parameters).
  * soeren.vogel@posteo.ch, carlo.albert@eawag.ch
  * License GPL-2
- * 2015-05-31
+ * 2015-06-25
  */
 
 #include <Rcpp.h>

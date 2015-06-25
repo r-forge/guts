@@ -81,7 +81,7 @@ For model \dQuote{Proper}, the first 3 parameters are needed as well as the para
 
 The number of parameters is checked according to \code{dist} and \code{model}.  Wrong number of parameters invoke an error, wrong parameter values (e.g., negative values) invoke a warning, and the loglikelihood is set to -Inf.
 
-Thresholds are created internally according to \code{dist}, \code{model}, \code{N} (and \code{pars}).  If \code{dist} is \dQuote{lognormal} (default), \code{N} ordered thresholds are created from the lognormal distribution with \code{mn} and \code{sd}.  Note that \code{mn} and \code{sd} are parameters for the \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!  If \code{dist} is \dQuote{delta}, all \code{N} thresholds are equal to \code{mn}.
+Thresholds are created internally according to \code{dist}, \code{model}, \code{N} (and \code{par}).  If \code{dist} is \dQuote{lognormal} (default), \code{N} ordered thresholds are created from the lognormal distribution with \code{mn} and \code{sd}.  Note that \code{mn} and \code{sd} are parameters for the \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!  If \code{dist} is \dQuote{delta}, all \code{N} thresholds are equal to \code{mn}.
 
 
 } % End of \subsection{Parameters, Models, and Distributions}.

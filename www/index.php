@@ -55,9 +55,10 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <h2>News</h2>
 
 <ul>
-	<li><strong>Important:</strong> GUTS version 0.9.X is a complete re-implementation of GUTS!  Please consult the man page for more information.</li>
-	<li>The current documentation (see below) is outdated. An updated version will follow soon.</li>
-	<li>Current <a href="./files/GUTS_0.9.5.tgz">package as OS X binary</a>. (This may work or not.)</li>
+	<li><strong>Important:</strong> GUTS version 1.0.0 is a complete re-implementation of the former GUTS package!  Please consult the man page for more information.</li>
+	<li>Extensive documentary material is under preparation. Updates will follow soon.</li>
+	<!-- li>The current documentation (see below) is outdated. An updated version will follow soon.</li -->
+	<!--li>Current <a href="./files/GUTS_0.9.5.tgz">package as OS X binary</a>. (This may work or not.)</li-->
 </ul>
 
 
@@ -67,7 +68,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 	<li><a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">Project summary page on R-Forge</a></li>
 	<li>GUTS on CRAN:
 		<a href="http://cran.r-project.org/web/packages/GUTS/index.html">http://cran.r-project.org/web/packages/GUTS/index.html</a></li>
-	<li><a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf">GUTS extended documentation</a> (currently outdated!)</li>
+	<!-- li><a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf">GUTS extended documentation</a> (currently outdated!)</li -->
 	<li>GUTS R-Forge mailing list (new and updates): <a href="https://lists.r-forge.r-project.org/mailman/listinfo/guts-users">https://lists.r-forge.r-project.org/mailman/listinfo/guts-users</a></li>
 	<li>Background of GUTS: <a href="http://www.debtox.info/about_guts.php">http://www.debtox.info/about_guts.php</a></li>
 	<li>GUTS modelling: <a href="http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/">http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/</a></li>
@@ -75,7 +76,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 	<li><a href="http://guts.r-forge.r-project.org/files/CRAN_bin_0.5.2.zip">CRAN binaries for GUTS version 0.5.2</a>. Note that they may contain bugs that will never be fixed.</li>
 </ul>
 
-<p>Last updated: 2015-05-31</p>
+<p>Last updated: 2015-06-25</p>
 
 </body>
 </html>
