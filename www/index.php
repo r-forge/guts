@@ -55,28 +55,37 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <h2>News</h2>
 
 <ul>
-	<li><strong>Important:</strong> GUTS version 1.0.0 is a complete re-implementation of the former GUTS package!  Please consult the man page for more information.</li>
-	<li>Extensive documentary material is under preparation. Updates will follow soon.</li>
+	<li><strong>Important:</strong> GUTS version &gt; 1.0.0 is a complete re-implementation of the former GUTS package!  Please consult the man page for more information.</li>
+	<!--li>Extensive documentary material is under preparation. Updates will follow soon.</li-->
 	<!-- li>The current documentation (see below) is outdated. An updated version will follow soon.</li -->
 	<!--li>Current <a href="./files/GUTS_0.9.5.tgz">package as OS X binary</a>. (This may work or not.)</li-->
+</ul>
+
+
+<h2>Publications</h2>
+
+<ul>
+	<li>Albert, C., Vogel, S., and Ashauer, R. (2016). Computationally efficient implementation of a novel algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978. doi: <a href="http://dx.doi.org/10.1371/journal.pcbi.1004978" target="_blank">10.1371/journal.pcbi.1004978</a>.</li>
+	<li>Jager, T., Albert, C., Preuss T., and Ashauer R. (2011). General Unified Threshold Model of Survival – a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science &amp; Technology, 45(7), 2529–2540, doi: <a href="http://dx.doi.org/10.1021/es103092a" target="_blank">10.1021/es103092a</a>.</li>
 </ul>
 
 
 <h2>Links</h2>
 
 <ul>
+	<li>GUTS R-Forge mailing list (news and updates): <a href="https://lists.r-forge.r-project.org/mailman/listinfo/guts-users">https://lists.r-forge.r-project.org/mailman/listinfo/guts-users</a></li>
+
 	<li><a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">Project summary page on R-Forge</a></li>
+
 	<li>GUTS on CRAN:
 		<a href="http://cran.r-project.org/web/packages/GUTS/index.html">http://cran.r-project.org/web/packages/GUTS/index.html</a></li>
-	<!-- li><a href="http://guts.r-forge.r-project.org/doc/GUTS Documentation.pdf">GUTS extended documentation</a> (currently outdated!)</li -->
-	<li>GUTS R-Forge mailing list (new and updates): <a href="https://lists.r-forge.r-project.org/mailman/listinfo/guts-users">https://lists.r-forge.r-project.org/mailman/listinfo/guts-users</a></li>
+
 	<li>Background of GUTS: <a href="http://www.debtox.info/about_guts.php">http://www.debtox.info/about_guts.php</a></li>
+
 	<li>GUTS modelling: <a href="http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/">http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/</a></li>
-	<li>Paper on GUTS: <a href="http://dx.doi.org/10.1021/es103092a">http://dx.doi.org/10.1021/es103092a</a></li>
-	<li><a href="http://guts.r-forge.r-project.org/files/CRAN_bin_0.5.2.zip">CRAN binaries for GUTS version 0.5.2</a>. Note that they may contain bugs that will never be fixed.</li>
 </ul>
 
-<p>Last updated: 2015-06-25</p>
+<p>Last updated: 2017-06-07</p>
 
 </body>
 </html>

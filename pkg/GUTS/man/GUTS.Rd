@@ -1,4 +1,5 @@
 \encoding{UTF-8}
+% Last updated 2017-06-07, SV
 
 \name{GUTS}
 
@@ -81,7 +82,7 @@ For model \dQuote{Proper}, the first 3 parameters are needed as well as the para
 
 The number of parameters is checked according to \code{dist} and \code{model}.  Wrong number of parameters invoke an error, wrong parameter values (e.g., negative values) invoke a warning, and the loglikelihood is set to -Inf.
 
-Thresholds are created internally according to \code{dist}, \code{model}, \code{N} (and \code{par}).  If \code{dist} is \dQuote{lognormal} (default), \code{N} ordered thresholds are created from the lognormal distribution with \code{mn} and \code{sd}.  Note that \code{mn} and \code{sd} are parameters for the \bold{lognormal} distribution, not its logarithm (differs from \code{rlnorm} in \R)!  If \code{dist} is \dQuote{delta}, all \code{N} thresholds are equal to \code{mn}.
+Thresholds are created internally according to \code{dist}, \code{model}, \code{N} (and \code{par}).  If \code{dist} is \dQuote{lognormal} (default), \code{N} ordered thresholds are created from the lognormal distribution with \code{mn} and \code{sd}.  Note that \code{mn} and \code{sd} are parameters for the \bold{lognormal} distribution (differs from \code{rlnorm} in \R that uses \code{mu} and \code{sigma})!  If \code{dist} is \dQuote{delta}, all \code{N} thresholds are equal to \code{mn}.
 
 
 } % End of \subsection{Parameters, Models, and Distributions}.
@@ -124,12 +125,14 @@ Fields and attributes of an object of class \dQuote{GUTS} are read-only.  To pre
 
 
 \note{%
-The GUTS project web site can be found here: \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.
+The GUTS project web site can be found here: \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.  For questions and discussion, please subscribe to the mailing list there.
 } % End of \note.
 
 
 
-\references{Albert, C., Vogel, S. & Ashauer, R. (2016). Computationally Efficient Implementation of a Novel Algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978, doi: 10.1371/journal.pcbi.1004978 (open access).}
+\references{Albert, C., Vogel, S., and Ashauer, R. (2016). Computationally efficient implementation of a novel algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978. doi: 10.1371/journal.pcbi.1004978.
+
+Jager, T., Albert, C., Preuss T., and Ashauer R. (2011). General Unified Threshold Model of Survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, doi: 10.1021/es103092a.}
 
 
 

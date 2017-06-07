@@ -34,6 +34,8 @@ A GUTS object is a special list of class \dQuote{GUTS}.  Functions \code{\link{g
 
 Maintainer: Sören Vogel \email{soeren.vogel@posteo.ch}}
 
-\references{Albert, C., Vogel, S. & Ashauer, R. (2016). Computationally Efficient Implementation of a Novel Algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978, doi: 10.1371/journal.pcbi.1004978 (open access).}
+\references{Albert, C., Vogel, S., and Ashauer, R. (2016). Computationally efficient implementation of a novel algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978. doi: 10.1371/journal.pcbi.1004978.
+
+Jager, T., Albert, C., Preuss T., and Ashauer R. (2011). General Unified Threshold Model of Survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, doi: 10.1021/es103092a.}
 
 \seealso{\code{\link{guts_setup}}, \code{\link{guts_calc_loglikelihood}}, \code{\link{guts_calc_survivalprobs}}, \code{\link{diazinon}}, \code{\link{Rcpp}}}
