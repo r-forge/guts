@@ -1,5 +1,5 @@
 \encoding{UTF-8}
-% Last updated 2017-06-07, SV
+% Last updated 2017-10-09, SV
 
 \name{GUTS}
 
@@ -142,7 +142,7 @@ Maintainer: Sören Vogel \email{soeren.vogel@posteo.ch}}
 
 
 
-\seealso{\code{\link{diazinon}}, \code{\link[adaptMCMC]{adaptMCMC}}, \code{\link{GUTS-package}}}
+\seealso{\code{\link{diazinon}}, \code{\link{GUTS-package}}}
 
 
 

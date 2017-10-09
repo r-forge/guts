@@ -3,7 +3,7 @@
  * Function guts_engine(GUTS-Object, Parameters).
  * soeren.vogel@posteo.ch, carlo.albert@eawag.ch
  * License GPL-2
- * 2015-06-25
+ * 2017-10-09
  */
 
 #include <Rcpp.h>
@@ -117,7 +117,7 @@ void guts_engine( Rcpp::List gobj, Rcpp::NumericVector par ) {
 		mu       =  log(wpar[3])  -  (0.5 * sigma2);
 		sigmaD   =  sqrt(sigma2) * 4; // Interval fixed to 4.
 		double ztmp;
-		for ( unsigned int i = 0; i < N; ++i ) {
+		for ( int i = 0; i < N; ++i ) {
 			ztmp = (2.0 * i - N + 1.0) / (N-1.0);
 			z.at(i)  =  exp( ztmp * sigmaD + mu );
 			zw.at(i) =  -0.5  *  pow((ztmp * sigmaD), 2.0)  /  sigma2;
@@ -143,7 +143,7 @@ void guts_engine( Rcpp::List gobj, Rcpp::NumericVector par ) {
 	std::vector<double>   diffC(C.size());
 	std::vector<double>  diffCt(Ct.size());
 	std::vector<double> diffCCt(Ct.size());
-	for ( int i = 1; i < C.size(); ++i ) {
+	for ( unsigned int i = 1; i < C.size(); ++i ) {
 		  diffC.at(i-1) =  C.at(i) -  C.at(i-1);
 		 diffCt.at(i-1) = Ct.at(i) - Ct.at(i-1);
 		diffCCt.at(i-1) = diffC.at(i-1) / diffCt.at(i-1);

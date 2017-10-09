@@ -1,6 +1,7 @@
 useDynLib(GUTS)
 #exportPattern("^[[:alpha:]]+")
 exportPattern("^[^\\.]")
+importFrom(Rcpp, evalCpp)
 import(methods, Rcpp)
 S3method(print, GUTS)
 S3method("[[<-", GUTS)
