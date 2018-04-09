@@ -1,9 +1,9 @@
 /**
  * GUTS: Fast Calculation of the Likelihood of a Stochastic Survival Model.
  * Function guts_engine(GUTS-Object, Parameters).
- * soeren.vogel@posteo.ch, carlo.albert@eawag.ch
+ * soeren.vogel@posteo.ch, carlo.albert@eawag.ch, oliver.jakoby@rifcon.de
  * License GPL-2
- * 2017-10-09
+ * 2017-10-09 (changes 2018-04-04)
  */
 
 #include <Rcpp.h>
@@ -122,7 +122,23 @@ void guts_engine( Rcpp::List gobj, Rcpp::NumericVector par ) {
 			z.at(i)  =  exp( ztmp * sigmaD + mu );
 			zw.at(i) =  -0.5  *  pow((ztmp * sigmaD), 2.0)  /  sigma2;
 		}
-	} else {
+        } else if ( experiment > 30 && wpar[4] != 0 ) {  // OJ  2018-04-04
+            // wpar[3] -> alpha, wpar[4] -> beta
+            ss   =  1 / wpar[4]; //log(   1.0  +  pow( (wpar[4] / wpar[3]), 2.0 )   );
+            mu       =  log(wpar[3]); //log(wpar[3])  -  (0.5 * sigma2);
+            sD   =  ss * 4;          // Interval fixed to ??. TODO adapt factor
+            Rprintf("Test if new code runns.");
+             double ztmp;
+            for ( int i = 0; i < N; ++i ) {
+                    ztmp = (2.0 * i - N + 1.0) / (N-1.0);
+                    z.at(i)  =  exp( ztmp * sD + mu );
+	            num1 = (wpar[4] / wpar[3]) * pow((z / wpar[3]), (wpar[4] - 1));
+	  	    denom1 = pow((1 + pow((z / wpar[3]), (wpar[4])) ), 2);
+  	  	    zw.at(i) =  log(z * ( num1 / denom1 ) );        //-0.5  *  pow((ztmp * sigmaD), 2.0)  /  sigma2;
+                    //z.at(i)  =  ; //exp( ztmp * sigmaD + mu );
+                    //zw.at(i) =  ; //-0.5  *  pow((ztmp * sigmaD), 2.0)  /  sigma2;
+            }
+        } else {
 		z.assign(N, wpar[3]);
 		zw.assign(N, 0.0);
 	}
@@ -231,7 +247,7 @@ void guts_engine( Rcpp::List gobj, Rcpp::NumericVector par ) {
 	 */
 	gobj["S"]   = S;
 
-	/*
+ 	/*
 	 * Calculate Loglikelihood.
 	 */
 	for ( unsigned int i=0; i < diffy.size(); ++i ) {

@@ -4,7 +4,8 @@
 # License GPL-2
 # 2015-06-25
 #
-
+# extensions 2018-01-09 oliver.jakoby@rifcon.de
+#
 
 
 
@@ -107,17 +108,28 @@ guts_setup <- function(C, Ct, y, yt, dist = 'lognormal', model = 'Proper', N = 1
 			stop( 'Model must be either "Proper" or "IT".' )
 		}
 	} else if ( mdist == "delta" ) {
-		if ( mmodel == 'proper' ) {
-			experiment <- 21
-			par_pos <- 1:4
-		} else if ( mmodel == 'it' ) {
-			experiment <- 22
-			par_pos <- c(1:2, 4)
-		} else {
-			stop( 'Model must be either "Proper" or "IT".' )
-		}
+	  if ( mmodel == 'proper' ) {
+	    experiment <- 21
+	    par_pos <- 1:4
+	  } else if ( mmodel == 'it' ) {
+	    experiment <- 22
+	    par_pos <- c(1:2, 4)
+	  } else {
+	    stop( 'Model must be either "Proper" or "IT".' )
+	  }
+	} else if ( mdist == "loglogistic" ) { ## OJ 9.1.18
+	  if ( mmodel == 'proper' ) {
+	    experiment <- 31
+	    par_pos <- 1:5
+	  } else if ( mmodel == 'it' ) {
+	    experiment <- 32
+	    par_pos <- c(1:2, 4,5)
+	  } else {
+	    stop( 'Model must be either "Proper" or "IT".' )
+	  }
 	} else {
-		stop( 'Distribution must be either "lognormal" or "delta".' )
+	  stop( 'Distribution must be either "lognormal", "loglogistic" or "delta".' ) ## OJ 9.1.18
+	  #stop( 'Distribution must be either "lognormal" or "delta".' )
 	}
 	par <- rep(NA, length(par_pos))
 	wpar <- c(0, 0, .Machine$double.xmax, 0, 0)
