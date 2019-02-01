@@ -1,4 +1,4 @@
-
+﻿
 <!-- This is the project specific website template -->
 <!-- It can be changed as liked or replaced by other content -->
 
@@ -55,6 +55,8 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <h2>News</h2>
 
 <ul>
+	<li>GUTS version 1.1.0 was extended to provide different distribution for individual tolerance (log-logistic, log-normal and a flexible option for applying any possible distribution function from R).</li>
+	<li>New vignettes are provided documenting the process of model calibration.</li>
 	<li><strong>Important:</strong> GUTS version &gt; 1.0.0 is a complete re-implementation of the former GUTS package!  Please consult the man page for more information.</li>
 	<!--li>Extensive documentary material is under preparation. Updates will follow soon.</li-->
 	<!-- li>The current documentation (see below) is outdated. An updated version will follow soon.</li -->
@@ -77,15 +79,19 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 
 	<li><a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/">Project summary page on R-Forge</a></li>
 
-	<li>GUTS on CRAN:
-		<a href="http://cran.r-project.org/web/packages/GUTS/index.html">http://cran.r-project.org/web/packages/GUTS/index.html</a></li>
+	<li>GUTS on CRAN: <a href="http://cran.r-project.org/web/packages/GUTS/index.html">http://cran.r-project.org/web/packages/GUTS/index.html</a></li>
 
 	<li>Background of GUTS: <a href="http://www.debtox.info/about_guts.php">http://www.debtox.info/about_guts.php</a></li>
 
-	<li>GUTS modelling: <a href="http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/">http://www.ecotoxmodels.org/research-publications-projects/toxicokinetic-toxicodynamic-models/</a></li>
+	<li>EFSA opinion on Toxicokinetic/Toxicodynamic (TKTD) effect models: <a href="https://www.efsa.europa.eu/en/efsajournal/pub/5377">https://www.efsa.europa.eu/en/efsajournal/pub/5377</a></li>
+
+	<li>GUTS modelling: <a href="https://www.ecotoxmodels.org/guts/">https://www.ecotoxmodels.org/guts/</a></li>
+
+	<li>EasyGUTS a user-friendly and freely available software for TK/TD modelling of survival (using the GUTS R package): <a href="https://www.rifcon.de/images/rifcon/Downloads/posters/setac2018_nickisch_EasyGUTS.pdf">https://www.rifcon.de/images/rifcon/Downloads/posters/setac2018_nickisch_EasyGUTS.pdf</a></li>
+
 </ul>
 
-<p>Last updated: 2017-06-07</p>
+<p>Last updated: 2019-02-01</p>
 
 </body>
 </html>
