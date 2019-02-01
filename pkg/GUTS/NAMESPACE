@@ -1,4 +1,4 @@
-useDynLib(GUTS)
+useDynLib(GUTS, .registration = TRUE)
 #exportPattern("^[[:alpha:]]+")
 #exportPattern("^[^\\.]")
 export(guts_setup)
