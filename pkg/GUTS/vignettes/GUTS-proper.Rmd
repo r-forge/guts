@@ -3,7 +3,7 @@ title: "Analysing Diazinon impact on the freshwater crustacean Gammarus pulex us
 author: "Alexander Singer"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Analysing Diazinon impact on the freshwater crustacean Gammarus pulex using GUTS-SIC-proper}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---

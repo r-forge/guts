@@ -3,7 +3,7 @@ title: "GUTS software ring test for the GUTS-package"
 author: "Alexander Singer"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{GUTS software ring test for the GUTS-package}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
