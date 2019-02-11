@@ -8,8 +8,13 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-```{r setup, include = FALSE}
+```{r setup, echo=FALSE, results='hide', message=TRUE}
 rm(list = ls())
+
+do.calc <- FALSE # if TRUE, all calculations are conducted. if FALSE, calculations are omitted and the vignette output is built from pre-caculated data.
+do.save <- FALSE # if TRUE, calculation parts will be saved to disk. This works only correctly, if building from source. Therefore, if you are not building the vignette from source: do.save <- FALSE
+
+if (do.calc == FALSE) message("For performance reasons, this vignette builds from pre-calculated data.\n\n To run all calculations, set 'do.calc <- TRUE' in the vignette's first code chunk. \n Building the vignette will take a while.")
 
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -46,7 +51,7 @@ str(diazinon)
 Setting up a GUTS-Proper-object requires for each toxicity test
 
 * the exposure profile containing the measured concentration `C` at each concentration measurement time `Ct`
-* the survival data consisting of the number of survived organisms *y* at each abundance measurement time `yt`
+* the survival data consisting of the number of survived organisms `y` at each abundance measurement time `yt`
 * the GUTS-model type `model = "Proper"`
 * the tolerance threshold distribution `dist = "loglogistic"`
 
@@ -116,7 +121,7 @@ is_out_of_bounds_fun_Proper <- function(p) any(
 ## Guess suitable initial values
 Suitable initial parameter values for the MCMC algorithm are searched by optimization.
 
-```{r guess-initial-values-Proper}
+```{r guess-initial-values-Proper, echo = TRUE, eval = do.calc}
 
 pars_start_Proper <- c(0.05, 0.5, 1, 10, 5)
 names(pars_start_Proper) <- c("hb", "ke", "kk", "mn", "beta")
@@ -129,27 +134,50 @@ optim_fun <- function(pars, guts_objects, isOutOfBoundsFun) {
 }
 
 optim_result_Proper <- optim(pars_start_Proper, optim_fun, lower = c(1e-6, 1e-6, 1e-6, 1e-6, 1e-6), upper = c(1, 1, 30, 40, 20), method = "L-BFGS-B", control = list(trace = 0, fnscale = -1), guts_objects = guts_object, isOutOfBoundsFun = is_out_of_bounds_fun_Proper)
-print(optim_result_Proper)
+```
 
+```{r save-initial-values-Proper, echo = FALSE, results = 'hide', eval = do.calc & do.save}
+save(optim_result_Proper, file = file.path("..", "inst", "extdata", "vignetteGUTS-Proper-initialValues.Rdata"))
+```
+
+```{r load-initial-values-Proper, echo = FALSE, results = 'hide', eval = !do.calc}
+load(system.file("extdata", "vignetteGUTS-Proper-initialValues.Rdata", 
+  package = "GUTS", mustWork = TRUE)
+)
+```
+
+```{r show-initial-values-Proper}
 if (optim_result_Proper$convergence != 0) {
   warning("Optimizing initial values has not converged. Using non-optimized initial values.")
   optim_result_Proper$par <- pars_start_Proper
 }
+
+print(optim_result_Proper)
 ```
 
 ## Bayesian parameter estimation
 
-```{r run-MCMC-Proper}
+```{r run-MCMC-Proper, echo = TRUE, results = 'hide', eval = do.calc}
 mcmc_pars_Proper <- optim_result_Proper$par
 mcmc_sigma_Proper <- diag( (mcmc_pars_Proper/10)^2 + .Machine$double.eps )
 mcmc_result_Proper <- MCMC(p = logposterior, 
-  init = mcmc_pars_Proper, scale = mcmc_sigma_Proper, adapt = 20000, acc.rate = 0.4, n = 50000, 
+  init = mcmc_pars_Proper, scale = mcmc_sigma_Proper, adapt = 20000, acc.rate = 0.4, n = 150000, 
   guts_objects = guts_object, isOutOfBoundsFun = is_out_of_bounds_fun_Proper
 )
 
-#exclude burnin and thin by 5
-mcmc_result_Proper$samples <- mcmc_result_Proper$samples[seq(30000, 50000, by = 5),]
-mcmc_result_Proper$log.p <- mcmc_result_Proper$log.p[seq(30000, 50000, by = 5)]
+#exclude burnin and thin by 20
+mcmc_result_Proper$samples <- mcmc_result_Proper$samples[seq(50001, 150000, by = 20),]
+mcmc_result_Proper$log.p <- mcmc_result_Proper$log.p[seq(50001, 150000, by = 20)]
+```
+
+```{r save-MCMC-results-Proper, echo = FALSE, results = 'hide', eval = do.calc & do.save}
+save(mcmc_result_Proper, file = file.path("..", "inst", "extdata", "vignetteGUTS-Proper-MCMCresults.Rdata"))
+```
+
+```{r load-MCMC-results-Proper, echo = FALSE, results = 'hide', eval = !do.calc}
+load(system.file("extdata", "vignetteGUTS-Proper-MCMCresults.Rdata", 
+  package = "GUTS", mustWork = TRUE)
+)
 ```
 
 # Show parameter estimation results
@@ -227,8 +255,8 @@ guts_obj_forecast <-
 
 We forecast survival probabilities and damage over time for each dose concentration and each parameter set in the thinned posterior. This procedure takes into account the uncertainties in parameter estimates.
 
-```{r forecast-survival}
-#memory.limit(16000) # for convenient treatment of large projection objects
+```{r forecast, echo = TRUE, results = 'hide', eval = do.calc}
+memory.limit(16000) # for convenient treatment of large projection objects
 mcmc_forecasts_paras <- mcmc_result_Proper$samples
 
 forec <- apply(mcmc_forecasts_paras, 1,
@@ -237,7 +265,9 @@ forec <- apply(mcmc_forecasts_paras, 1,
           guts_report_damage(gobj = guts_obj_forecast)$damage
         )
       )
+```
 
+```{r extract-forecast-results-Proper, echo = TRUE, results = 'hide', eval = do.calc}
 # extract the damage matrix
 damage <- sapply(forec, function(x) x[[2]])
 forec <- sapply(forec, function(x) x[[1]])
@@ -251,6 +281,16 @@ dat <- cbind(rep(seq_len(dim(forec)[1]) - 1, times = dim(forec)[2]), c(forec, re
 
 deaths <- 100 * (forec[1:dim(forec)[1] - 1,] - forec[2:dim(forec)[1],])
 dat.deaths <- cbind(rep(seq_len(dim(deaths)[1]), times = dim(deaths)[2]), c(deaths, recursive = TRUE))
+```
+
+```{r save-forecast-Proper, echo = FALSE, results = 'hide', eval = do.calc & do.save}
+save(dat, damage.qu, damage.ti, dat.deaths, file = file.path("..", "inst", "extdata", "vignetteGUTS-Proper-forecast.Rdata"))
+```
+
+```{r load-forecast-Proper, echo = FALSE, results = 'hide', eval = !do.calc}
+load(system.file("extdata", "vignetteGUTS-Proper-forecast.Rdata", 
+  package = "GUTS", mustWork = TRUE)
+)
 ```
 
 ## Analyse projections
