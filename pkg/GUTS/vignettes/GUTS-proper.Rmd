@@ -55,7 +55,7 @@ Setting up a GUTS-Proper-object requires for each toxicity test
 * the GUTS-model type `model = "Proper"`
 * the tolerance threshold distribution `dist = "loglogistic"`
 
-We generate three GUTS-proper-objects; one for each of the toxicity test. The Guts-objects are collected in a list. 
+We generate three GUTS-proper-objects; one for each of the toxicity test. The GUTS-objects are collected in a list. 
 
 ```{r setup-GUTS-OBJ-A_SD}
 guts_object <- list( 
@@ -100,7 +100,7 @@ Constraints on parameters should consider
 
 * hard boundaries: 
     + `is.infinite(p)` constraints parameters to finite values
-    + `p<0` confines rates and thresholds to positive values
+    + `p < 0` confines rates and thresholds to positive values
 * knowledge on numerical limitations:
     + `p[3] > 30` confines the killing rate to realistic values. The constraint avoids an unrealistic local optimum of the optimization problem, i.e. a high killing rate simulates the effect of a low tolerance threshold, and makes the threshold estimation obsolete. 
     + `p[5] <= 1` is assumed, to exclude that the mode of the log-logistic threshold distribution is 0, due to the shape parameter. Note that the mode can approach 0 if the estimated median `p[4]` approaches 0. Therefore, this constraint stabilises estimation of low threshold values.
@@ -270,21 +270,23 @@ forec <- apply(mcmc_forecasts_paras, 1,
 ```{r extract-forecast-results-Proper, echo = TRUE, results = 'hide', eval = do.calc}
 # extract the damage matrix
 damage <- sapply(forec, function(x) x[[2]])
-forec <- sapply(forec, function(x) x[[1]])
+survProb <- sapply(forec, function(x) x[[1]])
+rm(forec)
 
 # analyse damage
 damage.qu <- apply(damage, 1, function(x) quantile(x, probs = c(0.025, 0.5, 0.975)))
-damage.ti <- guts_report_damage(gobj = guts_obj_forecast)$time
 
-# coerce the forec-matrix to a vector for plotting
-dat <- cbind(rep(seq_len(dim(forec)[1]) - 1, times = dim(forec)[2]), c(forec, recursive = TRUE))
 
-deaths <- 100 * (forec[1:dim(forec)[1] - 1,] - forec[2:dim(forec)[1],])
-dat.deaths <- cbind(rep(seq_len(dim(deaths)[1]), times = dim(deaths)[2]), c(deaths, recursive = TRUE))
+survProb.qu <- apply(survProb, 1, function(x) quantile(x, probs = c(0.025, 0.5, 0.975)))
+
+hazard <- (- apply(survProb, 2, diff, 1) ) / survProb[seq(2,dim(survProb)[1]),]
+
+hazard.qu <- apply(hazard, 1, function(x) quantile(x, probs = c(0.025, 0.5, 0.975)))
+
 ```
 
 ```{r save-forecast-Proper, echo = FALSE, results = 'hide', eval = do.calc & do.save}
-save(dat, damage.qu, damage.ti, dat.deaths, file = file.path("..", "inst", "extdata", "vignetteGUTS-Proper-forecast.Rdata"))
+save(survProb.qu, damage.qu, hazard.qu, file = file.path("..", "inst", "extdata", "vignetteGUTS-Proper-forecast.Rdata"))
 ```
 
 ```{r load-forecast-Proper, echo = FALSE, results = 'hide', eval = !do.calc}
@@ -294,23 +296,40 @@ load(system.file("extdata", "vignetteGUTS-Proper-forecast.Rdata",
 ```
 
 ## Analyse projections
-The plots show (i) measured concentrations, (ii) damage (median and 95%-CI), (iii) survival probability and (iv) the number of death individuals over time.
+The plots show median and 95%-CI over time of the (i) measured external concentration (red) and damage (black), (ii) survival probability and (iii) daily hazard.
 
 ```{r plot-forecast}
-par(mfrow = c(4,1), mar = c(5,4,0.5, 0.5))
-plot(guts_obj_forecast$Ct, guts_obj_forecast$C, xlim = range(guts_obj_forecast$yt), xlab = "day", ylab = "dose", pch = 20, cex = 1.5)
-plot(damage.ti, damage.qu[2,], type = "l", ylim = range(damage.qu), xlab = "time", ylab = "damage D")
-lines(damage.ti, damage.qu[1,], lty = 2)
-lines(damage.ti, damage.qu[3,], lty = 2)
-plot(as.factor(dat[,1]), dat[,2],
-      xlab = "day", ylab = "probability of survival"
+par(mfrow = c(3,1), mar = c(0.5,4,0.5,0.5), oma = c(2.5,0,0,0), las = 1, cex = 1)
+plot(guts_obj_forecast$Ct, guts_obj_forecast$C, 
+  xlim = range(guts_obj_forecast$yt), 
+  ylim = range(c(guts_obj_forecast$C, damage.qu)), 
+  xlab = "", ylab = "exposure dose", 
+  pch = 20, cex = 2, lwd = 2, col = "red",
+  type = "b", xaxt = "n"
 )
-plot(as.factor(dat.deaths[,1]), dat.deaths[,2],
-      xlab = "day", ylab = "deaths"
-)
+damage.ti <- seq(0, max(guts_obj_forecast$yt), 
+  length.out = dim(damage.qu)[2]) 
+lines(damage.ti, damage.qu[2,], type = "l", ylim = range(damage.qu), xlab = "time", ylab = "damage D", lwd = 2)
+lines(damage.ti, damage.qu[1,], lty = 2, lwd = 2)
+lines(damage.ti, damage.qu[3,], lty = 2, lwd = 2)
+legend("topright", legend = c("external", "proj. internal", "  (damage)"), fill = c("red", "black", NA), border = c("red", "black", NA), cex = 0.8, bty = "n")
+
+prob.ti <- seq(0, max(guts_obj_forecast$yt))
+plot(prob.ti, survProb.qu[2,],
+  ylim = range(survProb.qu),
+  xlab = "", ylab = "proj. survival", xaxt = "n",
+  pch = 20, cex = 2)
+arrows(prob.ti[-1], survProb.qu[1,-1], prob.ti[-1], survProb.qu[3,-1], angle = 90, code = 3, length = 0.1, lwd = 2)
+
+plot(prob.ti[-1] - 0.5, hazard.qu[2,],
+  xlim = range(prob.ti), ylim = range(hazard.qu),
+  xlab = "", ylab = "proj. daily hazard", pch = 20, cex = 2, 
+  col = "blue")
+arrows(prob.ti[-1] - 0.5, hazard.qu[1,], prob.ti[-1] - 0.5, hazard.qu[3,], angle = 90, code = 3, length = 0.1, col = "blue", lwd = 2)
+mtext(text = "time", side = 1, line = 1.4, outer = TRUE)
 ```
 
-The time series demonstrates an accumulative effect: The second application exerts higher mortality than the first application due to accumulating damage. The third application causes only few further deaths, because (i) only few individuals have survived until time step 20 and (ii) their individual tolerance thresholds are high.
+The time series demonstrates an accumulative effect: The second and third exposure pulse exert a higher hazard than the first exposure pulse due to accumulating damage.
 
 # Literature
 
