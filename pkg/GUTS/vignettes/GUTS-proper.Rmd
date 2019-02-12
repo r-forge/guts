@@ -256,7 +256,6 @@ guts_obj_forecast <-
 We forecast survival probabilities and damage over time for each dose concentration and each parameter set in the thinned posterior. This procedure takes into account the uncertainties in parameter estimates.
 
 ```{r forecast, echo = TRUE, results = 'hide', eval = do.calc}
-memory.limit(16000) # for convenient treatment of large projection objects
 mcmc_forecasts_paras <- mcmc_result_Proper$samples
 
 forec <- apply(mcmc_forecasts_paras, 1,
