@@ -176,7 +176,7 @@ EFSA PPR Panel (EFSA Panel on Plant Protection Products and their Residues), Ock
 Maintainer: Oliver Jakoby \email{oliver.jakoby@rifcon.de}}
 
 
-\seealso{\code{\link{diazinon}}, \code{\link{GUTS-package}}, vignettes \url{../doc/ringTest.html} and \url{../doc/ringTest.html} for examples on how to calibrate and project GUTS-models.}
+\seealso{\code{\link{diazinon}}, \code{\link{GUTS-package}} and the package vignettes for examples on how to calibrate and project GUTS-models.}
 
 
 
