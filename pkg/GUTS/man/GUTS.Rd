@@ -1,5 +1,5 @@
-\encoding{UTF-8}
-% Last updated 2019-01-29
+﻿\encoding{UTF-8}
+% Last updated 2019-05-24
 
 \name{GUTS}
 
@@ -9,6 +9,8 @@
 \alias{guts_calc_loglikelihood}
 \alias{guts_calc_survivalprobs}
 \alias{guts_report_damage}
+\alias{guts_report_sppe}
+\alias{guts_report_squares}
 
 
 
@@ -30,6 +32,10 @@ guts_calc_loglikelihood(gobj, par, external_dist = NULL)
 guts_calc_survivalprobs(gobj, par, external_dist = NULL)
 
 guts_report_damage(gobj)
+
+guts_report_sppe(gobj)
+
+guts_report_squares(gobj)
 }
 
 
@@ -71,6 +77,10 @@ Use \code{guts_calc_loglikelihood} to calculate the survival probabilities and t
 \code{guts_calc_survivalprobs} is a convenience wrapper that can be used for predictions; it returns the survival probabilities.
 
 \code{guts_report_damage} returns a data.frame with time grid points and the damage for each of these. The function reports the damage that was calculated in the previous call to \code{guts_calc_loglikelihood} or \code{guts_calc_survivalprobs}.
+
+\code{guts_report_squares} returns the sum of squares used e.g. in the NRMSE calculation.
+
+\code{guts_report_SPPE} returns the survival-probability prediction error (SPPE).
 }
 
 
@@ -114,7 +124,7 @@ The number of parameters is checked according to \code{dist} and \code{model}.  
 
 
 \subsection{Field and Attribute Access}{%
-Fields and attributes of an object of class \dQuote{GUTS} are read-only.  To prevent accidental change of fields or attributes, replacement functions were rewritten throwing an error when used.  Always use function \code{guts_setup} to create objects or modify fields on existing objects.  However, \code{guts_calc_loglikelihood} and \code{guts_calc_survivalprobs} update an object's fields \code{par} (parameters), \code{D} (damage), \code{S} (survival probabilities) and \code{LL} (the loglikelihood).
+Fields and attributes of an object of class \dQuote{GUTS} are read-only.  To prevent accidental change of fields or attributes, replacement functions were rewritten throwing an error when used.  Always use function \code{guts_setup} to create objects or modify fields on existing objects.  However, \code{guts_calc_loglikelihood} and \code{guts_calc_survivalprobs} update an object's fields \code{par} (parameters), \code{D} (damage), \code{Squares} (sum of squares), \code{SPPE} survival-probability prediction error\code{S} (survival probabilities) and \code{LL} (the loglikelihood).
 } % End of \subsection{Field and Attribute Access}.
 } % End of \details
 
@@ -134,6 +144,8 @@ Fields and attributes of an object of class \dQuote{GUTS} are read-only.  To pre
 \item{par}{Parameters.}
 \item{S}{Vector of survivor probabilities.}
 \item{D}{Vector of internal damage for each of the \code{M} time grid points.}
+\item{Squares}{Sum of squares used e.g. in NRMSE calculation.}
+\item{SPPE}{Survival-probability prediction error.}
 \item{LL}{The loglikelihood.}
 
 %The object has the following attributes (for internal use):
@@ -148,6 +160,10 @@ Fields and attributes of an object of class \dQuote{GUTS} are read-only.  To pre
 \code{guts_calc_survivalprobs} returns the survival probabilities.
 
 \code{guts_report_damage} returns the damage.
+
+\code{guts_report_sppe} returns the SPPE.
+
+\code{guts_report_squares} returns the squares.
 
 } % End of \value.
 

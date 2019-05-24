@@ -2,7 +2,7 @@
 # GUTS R Definitions.
 # soeren.vogel@uzh.ch, carlo.albert@eawag.ch, oliver.jakoby@rifcon.de, alexander.singer@rifcon.de
 # License GPL-2
-# 2019-01-29
+# 2019-05-24
 
 
 ##
@@ -171,7 +171,9 @@ guts_setup <- function(C, Ct, y, yt, dist = 'lognormal', model = 'Proper', N = 1
 			'par'   = par,
 			'S'     = rep(NA, length(yt)),
 			'D'     = rep(NA, M),
-			'LL'    =  NA
+			'LL'    = NA,
+			'SPPE'  = NA,
+			'squares'  = NA
 		),
 		class      = "GUTS",
 		experiment = experiment,
@@ -216,6 +218,17 @@ guts_report_damage <- function(gobj) {
   )
 }
 
+##
+# Function guts_report_sppe(...).
+guts_report_sppe <- function(gobj) {
+  return(gobj[['SPPE']])
+}
+
+##
+# Function guts_report_squares(...).
+guts_report_squares <- function(gobj) {
+  return(gobj[['squares']])
+}
 
 
 
@@ -289,8 +302,16 @@ guts_report_damage <- function(gobj) {
 		cat( "\n", sep="" )
 	}
 
+	#Sum of squares
+	cat( "Sum of suares: ", object$squares, "\n", sep="" )
 	# Loglikelihood
 	cat( "Loglikelihood: ", object$LL, "\n", sep="" )
+
+	#SPPE
+	cat( "SPPE: ", object$SPPE, "\n", sep="" )
+
+	# time dependent break point
+	cat( "Time dependent breakpoint: ", object$tb, "\n", sep="" )
 
 	# Footer
 	cat( "\n", sep="" )
