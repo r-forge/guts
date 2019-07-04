@@ -1,6 +1,6 @@
 ##
 # GUTS R Definitions.
-# soeren.vogel@uzh.ch, carlo.albert@eawag.ch, oliver.jakoby@rifcon.de, alexander.singer@rifcon.de
+# soeren.vogel@uzh.ch, carlo.albert@eawag.ch, oliver.jakoby@rifcon.de, alexander.singer@rifcon.de, dirk.nickisch@rifcon.de
 # License GPL-2
 # 2019-05-24
 

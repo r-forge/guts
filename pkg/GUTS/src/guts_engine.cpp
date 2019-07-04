@@ -1,7 +1,7 @@
 /**
  * GUTS: Fast Calculation of the Likelihood of a Stochastic Survival Model.
  * Function guts_engine(GUTS-Object, Parameters).
- * soeren.vogel@posteo.ch, carlo.albert@eawag.ch, alexander singer@rifcon.de, oliver.jakoby@rifcon.de
+ * soeren.vogel@posteo.ch, carlo.albert@eawag.ch, alexander singer@rifcon.de, oliver.jakoby@rifcon.de, dirk.nickisch@rifcon.de
  * License GPL-2
  * 2017-10-09 (last changes 2019-01-29)
  */

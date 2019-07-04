@@ -30,7 +30,7 @@ License: \tab GPL (>= 2)\cr
 A GUTS object is a special list of class \dQuote{GUTS}.  Functions \code{\link{guts_setup}}, \code{\link{guts_calc_loglikelihood}} and \code{\link{guts_calc_survivalprobs}} are available to create and work with GUTS objects.  A data set \link{diazinon} is also included.  See links for more details.
 }
 
-\author{Carlo Albert \email{carlo.albert@eawag.ch}, Sören Vogel \email{soeren.vogel@posteo.ch}, Oliver Jakoby \email{oliver.jakoby@rifcon.de} and Alexander Singer \email{alexander.singer@rifcon.de}
+\author{Carlo Albert \email{carlo.albert@eawag.ch}, Sören Vogel \email{soeren.vogel@posteo.ch}, Oliver Jakoby \email{oliver.jakoby@rifcon.de}, Alexander Singer \email{alexander.singer@rifcon.de} and Dirk Nickisch \email{dirk.nickisch@rifcon.de}
 
 Maintainer: Oliver Jakoby \email{oliver.jakoby@rifcon.de}}
 

@@ -187,7 +187,7 @@ EFSA PPR Panel (EFSA Panel on Plant Protection Products and their Residues), Ock
 }
 
 
-\author{Carlo Albert \email{carlo.albert@eawag.ch}, Sören Vogel \email{soeren.vogel@posteo.ch}, Oliver Jakoby \email{oliver.jakoby@rifcon.de} and Alexander Singer \email{alexander.singer@rifcon.de}
+\author{Carlo Albert \email{carlo.albert@eawag.ch}, Sören Vogel \email{soeren.vogel@posteo.ch}, Oliver Jakoby \email{oliver.jakoby@rifcon.de}, Alexander Singer \email{alexander.singer@rifcon.de} and Dirk Nickisch \email{dirk.nickisch@rifcon.de}
 
 Maintainer: Oliver Jakoby \email{oliver.jakoby@rifcon.de}}
 
