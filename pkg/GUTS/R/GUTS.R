@@ -173,7 +173,7 @@ guts_setup <- function(C, Ct, y, yt, dist = 'lognormal', model = 'Proper', N = 1
 			'D'     = rep(NA, M),
 			'LL'    = NA,
 			'SPPE'  = NA,
-			'squares'  = NA
+			'squares' = NA
 		),
 		class      = "GUTS",
 		experiment = experiment,
@@ -303,15 +303,13 @@ guts_report_squares <- function(gobj) {
 	}
 
 	#Sum of squares
-	cat( "Sum of suares: ", object$squares, "\n", sep="" )
+	cat( "Sum of squares: ", object$squares, "\n", sep="" )
+	
 	# Loglikelihood
 	cat( "Loglikelihood: ", object$LL, "\n", sep="" )
 
 	#SPPE
 	cat( "SPPE: ", object$SPPE, "\n", sep="" )
-
-	# time dependent break point
-	cat( "Time dependent breakpoint: ", object$tb, "\n", sep="" )
 
 	# Footer
 	cat( "\n", sep="" )
