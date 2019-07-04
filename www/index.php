@@ -1,4 +1,4 @@
-﻿
+
 <!-- This is the project specific website template -->
 <!-- It can be changed as liked or replaced by other content -->
 
@@ -55,6 +55,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <h2>News</h2>
 
 <ul>
+	<li>GUTS version 1.1.1 adds access to the sum of squares and the survival-probability prediction error.</li>
 	<li>GUTS version 1.1.0 was extended to provide different distribution for individual tolerance (log-logistic, log-normal and a flexible option for applying any possible distribution function from R).</li>
 	<li>New vignettes are provided documenting the process of model calibration.</li>
 	<li><strong>Important:</strong> GUTS version &gt; 1.0.0 is a complete re-implementation of the former GUTS package!  Please consult the man page for more information.</li>
