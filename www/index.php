@@ -94,7 +94,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 
 </ul>
 
-<p>Last updated: 2019-07-04</p>
+<p>Last updated: 2021-11-30</p>
 
 </body>
 </html>
