@@ -55,6 +55,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <h2>News</h2>
 
 <ul>
+	<li>GUTS version 1.2 introduces faster implementations for special cases GUTS-RED-IT and GUTS-RED-SD.<br>The now analytical solution for GUTS-RED-IT can be approximated by the previous version if using large M and N. The new version does not use parameters M and N any longer.<br>GUTS-RED-SD now directly implements the delta distribution and does no longer use N.<br>Further, features are: modular c++-code, template adaptation to Rcpp data structures, adaptation to ERA as suggested in EFSA PPR (2018)</li>
 	<li>GUTS version 1.1.1 adds access to the sum of squares and the survival-probability prediction error.</li>
 	<li>GUTS version 1.1.0 was extended to provide different distribution for individual tolerance (log-logistic, log-normal and a flexible option for applying any possible distribution function from R).</li>
 	<li>New vignettes are provided documenting the process of model calibration.</li>
@@ -69,6 +70,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 
 <ul>
 	<li>Albert, C., Vogel, S., and Ashauer, R. (2016). Computationally efficient implementation of a novel algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978. doi: <a href="http://dx.doi.org/10.1371/journal.pcbi.1004978" target="_blank">10.1371/journal.pcbi.1004978</a>.</li>
+	<li>EFSA PPR Panel (EFSA Panel on Plant Protection Products and their Residues), Ockleford, C., Adriaanse, P., Berny, P., Brock, T., Duquesne, S., Grilli, S., Hernandez-Jerez, A.F., Bennekou, S.H., Klein, M., Kuhl, T., Laskowski, R., Machera, K., Pelkonen, O., Pieper, S., Smith, R.H., Stemmer, M., Sundh, I., Tiktak, A., Topping, C.J., Wolterink, G., Cedergreen, N., Charles, S., Focks, A., Reed, M., Arena, M., Ippolito, A., Byers, H. and Teodorovic, I. (2018). Scientific Opinion on the state of the art of Toxicokinetic/Toxicodynamic (TKTD) effect models for regulatory risk assessment of pesticides for aquatic organisms. EFSA Journal, 16(8):5377, 188 pp. doi: <a href="https://doi.org/10.2903/j.efsa.2018.5377" target="_blank">https://doi.org/10.2903/j.efsa.2018.5377</a>.</li>
 	<li>Jager, T., Albert, C., Preuss T., and Ashauer R. (2011). General Unified Threshold Model of Survival – a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science &amp; Technology, 45(7), 2529–2540, doi: <a href="http://dx.doi.org/10.1021/es103092a" target="_blank">10.1021/es103092a</a>.</li>
 </ul>
 
