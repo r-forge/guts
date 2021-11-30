@@ -1,6 +1,6 @@
 ---
 title: "GUTS software ring test for the GUTS-package"
-author: "Alexander Singer"
+author: "Rifcon GmbH"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{GUTS software ring test for the GUTS-package}
@@ -30,11 +30,11 @@ op <- par(no.readonly = TRUE)
 
 
 # Summary
-The GUTS package provides GUTS-SIC (also called GUTS-RED) variants GUTS-SIC-IT, GUTS-SIC-SD and GUTS-SIC-Proper. For further information see Jager et al. (2011), Ashauer et al. (2016), Jager & Ashauer (2018) and EFSA PPR Panel (2018). The R-package implementation follows Albert et al. (2016), with minor enhancements.
+The GUTS package provides GUTS-RED variants GUTS-RED-IT, GUTS-RED-SD and GUTS-RED-Proper. For further information see Jager et al. (2011), Ashauer et al. (2016), Jager & Ashauer (2018) and EFSA PPR Panel (2018). The R-package implementation follows Albert et al. (2016), with minor enhancements.
 
-This vignette demonstrates application of the individual tolerance model GUTS-SIC-IT and the stochastic death model GUTS-SIC-SD. The vignette is designed as verification test of model results. For this purpose, it runs one part of a recently conducted ring test on GUTS-software.
+This vignette demonstrates application of the individual tolerance model GUTS-RED-IT and the stochastic death model GUTS-RED-SD. The vignette is designed as verification test of model results. For this purpose, it runs one part of a recently conducted ring test on GUTS-software.
 
-The ring test compared results from several software implementations of GUTS (Jager & Ashauer, 2018, Ch. 7). It focused on GUTS-SIC-IT and GUTS-SIC-SD models. Here, we follow the protocol of ring-test A, and perform the calibration as well as a forecast analysis.
+The ring test compared results from several software implementations of GUTS (Jager & Ashauer, 2018, Ch. 7). It focused on GUTS-RED-IT and GUTS-RED-SD models. Here, we follow the protocol of ring-test A, and perform the calibration as well as a forecast analysis.
 
 # Prepare
 Load the GUTS-package.

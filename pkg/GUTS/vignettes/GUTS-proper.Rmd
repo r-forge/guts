@@ -1,9 +1,9 @@
 ---
-title: "Analysing Diazinon impact on the freshwater crustacean Gammarus pulex using GUTS-SIC-proper"
-author: "Alexander Singer"
+title: "Analysing Diazinon impact on the freshwater crustacean Gammarus pulex using GUTS-RED-proper"
+author: "Rifcon GmbH"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Analysing Diazinon impact on the freshwater crustacean Gammarus pulex using GUTS-SIC-proper}
+  %\VignetteIndexEntry{Analysing Diazinon impact on the freshwater crustacean Gammarus pulex using GUTS-RED-proper}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
@@ -31,7 +31,7 @@ op <- par(no.readonly = TRUE)
 
 
 # Summary
-The GUTS-package (Albert et al., 2016) implements the individual tolerance model GUTS-SIC-IT, the stochastic death model GUTS-SIC-SD and the GUTS-SIC-proper model, which combines the GUTS-SIC-IT and the GUTS-SIC-SD model (Jager et al., 2011). We demonstrate a Bayesian model calibration of the proper model on the case study of the freshwater crustacean *Gammarus pulex* being exposed to Diazinon in three pulsed toxicity tests. This vignette follows the description in Albert et al. (2016), but uses a log-logistic threshold distribution, a slightly different calibration procedure and results analysis. The experiment data is provided with the GUTS-package.
+The GUTS-package (Albert et al., 2016) implements the individual tolerance model GUTS-RED-IT, the stochastic death model GUTS-RED-SD and the GUTS-RED-proper model, which combines the GUTS-RED-IT and the GUTS-RED-SD model (Jager et al., 2011). We demonstrate a Bayesian model calibration of the proper model on the case study of the freshwater crustacean *Gammarus pulex* being exposed to Diazinon in three pulsed toxicity tests. This vignette follows the description in Albert et al. (2016), but uses a log-logistic threshold distribution, a slightly different calibration procedure and results analysis. The experiment data is provided with the GUTS-package.
 
 # Prepare
 Load the GUTS-package

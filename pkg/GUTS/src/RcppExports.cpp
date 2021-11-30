@@ -17,3 +17,13 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_GUTS_guts_engine", (DL_FUNC) &_GUTS_guts_engine, 3},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_GUTS(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+}

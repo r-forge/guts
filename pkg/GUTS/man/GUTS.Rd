@@ -1,5 +1,7 @@
-﻿\encoding{UTF-8}
-% Last updated 2019-07-04
+\encoding{UTF-8}
+% updated 2019-07-04
+% updated 2021-11-30
+
 
 \name{GUTS}
 
@@ -25,9 +27,15 @@ The package implements the GUTS-SIC (also called GUTS-RED) variants that assume 
 
 \usage{
 guts_setup(C, Ct, y, yt, dist = "lognormal",
-	model = "Proper", N = 1000, M = 10000)
+	model = "Proper",
+	N = 1000L,
+	MF = 100L, M = max(5000L, as.integer(ceiling(MF * length(union(Ct, yt))))),
+	SVR = 1L,
+	study = "", Clevel = ""
+	)
 
-guts_calc_loglikelihood(gobj, par, external_dist = NULL)
+guts_calc_loglikelihood(gobj, par, external_dist = NULL,
+  use_multinomial_coefficient = FALSE)
 
 guts_calc_survivalprobs(gobj, par, external_dist = NULL)
 
@@ -52,15 +60,23 @@ guts_report_squares(gobj)
 	}
 	\item{model}{Model as character, either \dQuote{Proper} (for full model, the default), \dQuote{IT} (for individual tolerance), or \dQuote{SD} (for stochastic death).%
 	}
-	\item{N}{Integer.  Thresholds sample length.  Must be greater than 2.%
+	\item{MF}{Integer.  Multiplication factor for M.  Must be greater than 1. MF is used only if \dQuote{model = 'SD'} or \dQuote{model = 'Proper'} and M is not specified. Setting MF automatically ensures that the number of points for time discretization M is at least the number of measurement time steps multiplied by MF. M = \code{max(MF * number of measurement time steps, 5000)}.%
 	}
-	\item{M}{Integer.  Number of time grid points.  Must be greater than 1.%
+	\item{M}{Integer.  Desired number of points for time discretization.  Must be greater than 1. M is used only if \dQuote{model = 'SD'} or \dQuote{model = 'Proper'}%
+	}
+	\item{N}{Integer.  Sample length of individual tolerance thresholds. Must be greater than 2. N is used only, if \dQuote{model = 'Proper'}%
+	}
+	\item{study}{string with the name of the study}
+	\item{Clevel}{character vector with names for each of the concentraton levels}
+	\item{SVR}{Numeric surface-volume-ratio. A multiplication factor to kd.%
 	}
 	\item{gobj}{GUTS object.  The object to be updated (and used for the calculation).%
 	}
 	\item{par}{Numeric vector of parameters.  See details below.%
 	}
 	\item{external_dist}{Numeric vector containing the distribution of individual thresholds. Only used if \code{dist = 'external'}. See details below.%
+	}
+	\item{use_multinomial_coefficient}{If \dQuote{TRUE} returns loglikelihood from the correct multinomial distribution. Defaults to ignoring the constant multinomial coefficient for performance reasons.
 	}
 } % End of \arguments
 
@@ -102,11 +118,13 @@ The Proper GUTS model requires the following parameters \code{par}, while varian
 	\item further parameters for the tolerance threshold (in SD) or the threshold distribution \code{dist} (in Proper and IT) 
 }
 
-For model type \dQuote{SD} (stochastic death), required parameters \code{par[1:4]} are \code{kb}, \code{ke}, \code{kk} and \code{mn}, which is the population-wide tolerance threshold. For backwards compatibility this model type can be initiated setting \code{dist = "Delta"} and \code{model = "Proper"}.
-For model type \dQuote{IT} (individual tolerance), required parameters \code{par[1:2]} are \code{kb}, \code{ke}, as well as respective distribution parameters (continued from \code{par[3]}). Parameter (\code{kk}) is set internally to infinity and must not be provided.
-For model type \dQuote{Proper}, all parameters are needed. \code{par[1:3]} take \code{kb}, \code{ke}, \code{kk}, distribution parameters follow from \code{par[4]}).
+For model type \dQuote{SD} (stochastic death), required parameters \code{par[1:4]} are \code{hb}, \code{ke}, \code{kk} and \code{mn}, which is the population-wide tolerance threshold. For backwards compatibility this model type can be initiated setting \code{dist = "Delta"} and \code{model = "Proper"}.
 
-For model types \dQuote{Proper} and \dQuote{IT} individual tolerance thresholds are created internally. Individual tolerances are drawn from the specified distribution \code{dist}:
+For model type \dQuote{IT} (individual tolerance), required parameters \code{par[1:2]} are \code{hb}, \code{ke}, as well as respective distribution parameters (from \code{par[3]} onwards). Parameter (\code{kk}) is set internally to infinity and does not need to be provided.
+
+For model type \dQuote{Proper}, all parameters are needed. \code{par[1:3]} take \code{hb}, \code{ke}, \code{kk}, distribution parameters follow (from \code{par[4]} onwards).
+
+For model types \dQuote{Proper} and \dQuote{IT} individual tolerance thresholds are created internally. Individual tolerances are drawn from the specified distribution \code{dist}. The parameter values required depend on the specified \code{dist}:
 \itemize{%
 	\item "lognormal": requires the parameters \code{mn} and \code{sd} which are the mean and standard deviation of the lognormal random distribution. In contrast to parameters \code{meanlog} and \code{sdlog} of function \code{\link{dlnorm}}, these parameters are not on the logscale. They relate in the following way:
 \deqn{sdlog = \sqrt{\ln{\frac{1 + sd^2}{mn^2}}}}{%
@@ -114,17 +132,17 @@ For model types \dQuote{Proper} and \dQuote{IT} individual tolerance thresholds 
 \deqn{meanlog = \ln{mn} - \frac{1}{2} * sdlog^2}{%
       meanlog = ln(mn) - 0.5 * sdlog^2}
 	\item "loglogistic": requires the parameters \eqn{mn = scale = median} and \eqn{beta = shape}.
-	\item "external": uses random variates provided to \code{external_dist}. With this option GUTS can be run with arbitrarily distributed individual tolerance thresholds. With the option \dQuote{external} only parameters \code{hb}, \code{ke} and \code{kk} are required. Further, the thresholds sample length \code{N} is internally adjusted to the length of the external vector of random variates \code{external_dist}. The adjustment of \code{N} is notified by a warning.
+	\item "external": uses random variates provided to \code{external_dist}. With this option GUTS can be run with arbitrarily distributed individual tolerance thresholds. With the option \dQuote{external} only parameters \code{hb}, \code{ke} and \code{kk} (Proper only) are required. Further, the thresholds sample length \code{N} is internally adjusted to the length of the external vector of random variates \code{external_dist}. The adjustment of \code{N} is notified by a warning.
 }
-For performance reasons the implemented distributions \dQuote{lognormal}  and \dQuote{loglogistic} are approximated using importance sampling. The option \dQuote{external} generally performance well, but might require a larger thresholds sample (i.e. \code{length(external_dist)} should be large). 
+For performance reasons the implemented distributions \dQuote{lognormal}  and \dQuote{loglogistic} are approximated using importance sampling. The option \dQuote{external} generally performs well, but might require a larger thresholds sample (i.e. \code{length(external_dist)} should be large). 
 
-The number of parameters is checked according to \code{dist} and \code{model}.  Wrong number of parameters invoke an error, wrong parameter values (e.g., negative values) invoke a warning, and the loglikelihood is set to \code{-Inf}.
+The number of parameters is checked according to \code{dist} and \code{model}.  Wrong number of parameters invokes an error, wrong parameter values (e.g., negative values) invoke a warning, and the loglikelihood is set to \code{-Inf}.
 
 } % End of \subsection{ Models, Parameters, and Distributions}.
 
 
 \subsection{Field and Attribute Access}{%
-Fields and attributes of an object of class \dQuote{GUTS} are read-only.  To prevent accidental change of fields or attributes, replacement functions were rewritten throwing an error when used.  Always use function \code{guts_setup} to create objects or modify fields on existing objects. Functions \code{guts_calc_loglikelihood} and \code{guts_calc_survivalprobs} update an object's fields \code{par} (parameters), \code{D} (damage), \code{squares} (sum of squares), \code{SPPE} (survival-probability prediction error), \code{S} (survival probabilities) and \code{LL} (the loglikelihood).
+Fields and attributes of an object of class \dQuote{GUTS} are read-only.  It is not possible to directly modify single elements of the GUTS object.  Instead use function \code{guts_setup} to create GUTS objects or modify fields on existing GUTS objects. Functions \code{guts_calc_loglikelihood} and \code{guts_calc_survivalprobs} update an object's fields \code{par} (parameters), \code{D} (damage), \code{squares} (sum of squares), \code{SPPE} (survival-probability prediction error), \code{S} (survival probabilities) and \code{LL} (the loglikelihood).
 } % End of \subsection{Field and Attribute Access}.
 } % End of \details
 
@@ -173,8 +191,6 @@ Fields and attributes of an object of class \dQuote{GUTS} are read-only.  To pre
 The GUTS project web site can be found here: \href{http://guts.r-forge.r-project.org}{http://guts.r-forge.r-project.org}.  For questions and discussion, please subscribe to the mailing list there.
 } % End of \note.
 
-
-
 \references{Albert, C., Vogel, S., and Ashauer, R. (2016). Computationally efficient implementation of a novel algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978. doi: 10.1371/journal.pcbi.1004978.
 
 Jager, T., Albert, C., Preuss, T., and Ashauer, R. (2011). General Unified Threshold Model of Survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, doi: 10.1021/es103092a.
@@ -184,8 +200,9 @@ Ashauer, R., Albert, C., Augustine, S., Cedergreen, N., Charles, S., Ducrot, V.,
 Jager, T., Ashauer, R. (2018). Modelling survival under chemical stress. A comprehensive guide to the GUTS framework. Leanpub: \url{https://leanpub.com/guts_book}, \url{http://www.debtox.info/book_guts.html}
 
 EFSA PPR Panel (EFSA Panel on Plant Protection Products and their Residues), Ockleford, C., Adriaanse, P., Berny, P., Brock, T., Duquesne, S., Grilli, S., Hernandez-Jerez, A.F., Bennekou, S.H., Klein, M., Kuhl, T., Laskowski, R., Machera, K., Pelkonen, O., Pieper, S., Smith, R.H., Stemmer, M., Sundh, I., Tiktak, A., Topping, C.J., Wolterink, G., Cedergreen, N., Charles, S., Focks, A., Reed, M., Arena, M., Ippolito, A., Byers, H. and Teodorovic, I. (2018). Scientific Opinion on the state of the art of Toxicokinetic/Toxicodynamic (TKTD) effect models for regulatory risk assessment of pesticides for aquatic organisms. EFSA Journal, 16(8):5377, 188 pp. \url{https://doi.org/10.2903/j.efsa.2018.5377}
-}
 
+Gergs, A.́, Gabsi, F., Zenker, A., Preuss, T. (2011). Demographic toxicokinetic--toxicodynamic modeling of lethal effects. Environmental Science \& Technology, 50(11), 6017--6024, doi: 10.1021/acs.est.6b01113.
+}
 
 \author{Carlo Albert \email{carlo.albert@eawag.ch}, Sören Vogel \email{soeren.vogel@posteo.ch}, Oliver Jakoby \email{oliver.jakoby@rifcon.de}, Alexander Singer \email{alexander.singer@rifcon.de} and Dirk Nickisch \email{dirk.nickisch@rifcon.de}
 
