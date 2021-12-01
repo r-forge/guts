@@ -11,8 +11,8 @@ vignette: >
 ```{r setup, echo=FALSE, results='hide', message=TRUE}
 rm(list = ls())
 
-do.calc <- FALSE # if TRUE, all calculations are conducted. if FALSE, calculations are omitted and the vignette output is built from pre-caculated data.
-do.save <- FALSE # if TRUE, calculation parts will be saved to disk. This works only correctly, if building from source. Therefore, if you are not building the vignette from source: do.save <- FALSE
+do.calc <- TRUE # if TRUE, all calculations are conducted. if FALSE, calculations are omitted and the vignette output is built from pre-caculated data.
+do.save <- TRUE # if TRUE, calculation parts will be saved to disk. This works only correctly, if building from source. Therefore, if you are not building the vignette from source: do.save <- FALSE
 
 if (do.calc == FALSE) message("For performance reasons, this vignette builds from pre-calculated data.\n\n To run all calculations, set 'do.calc <- TRUE' in the vignette's first code chunk. \n Building the vignette will take a while.")
 knitr::opts_chunk$set(
@@ -405,19 +405,19 @@ To calculate the LC50, we use the GUTS object to simulate the survival during a 
 We choose 9 observation and application time steps for illustration purposes. In fact, to calculate 4d-LC50, it would be sufficient to specify the initial number of individuals at time step 0, and specifiy time step 4 days as the observation time. We assume an initial population size of 100 individuals.
 
 ```{r forecast-setup-GUTS-object}
-conc <- seq(0, 16)
+conc <- seq(0, 16, by = 2)
 guts_obj_forecast <- lapply(conc,
   function(concentration) guts_setup(
-    C = rep(concentration, 10),
-    Ct = seq(0,9),
-    y = c(100, rep(0,9)),
-    yt = seq(0,9),
+    C = rep(concentration, 7),
+    Ct = seq(0,12, by = 2),
+    y = c(100, rep(0,6)),
+    yt = seq(0,12, by = 2),
     model = "IT", dist = "loglogistic", N = 1000
   )
 )
 ```
 
-We forecast survival probabilities for each dose concentration and for each parameter set in the posterior distribution. This procedure takes into account uncertainties in parameter estimates.
+We forecast survival probabilities for each dose concentration and the parameter sets in the posterior distribution. This procedure takes into account uncertainties in parameter estimates.
 
 According to the protocol for the ring test, for prediction the background mortality "hb" was fixed at 0, in order to isolate the treatment effects in model forecasts.
 
@@ -432,7 +432,7 @@ forec <- lapply(guts_obj_forecast,
     rbind(
       rep(gobj$C[1], dim(mcmc_forecasts_paras)[1]), 
       apply(mcmc_res, 1,
-        function(par) guts_calc_survivalprobs(gobj = gobj, par, external_dist = NULL)
+        function(pars) guts_calc_survivalprobs(gobj = gobj, pars, external_dist = NULL)
       )
     ),
   mcmc_res = mcmc_forecasts_paras
@@ -455,16 +455,14 @@ load(system.file("extdata", "vignetteGUTS-ringTest-forecast.Rdata",
 
 ## Analyse projections
 The box-whisker-plots show dose-response relationships as forecasted for the specific days.
-```{r plot-forecast}
-par(mfrow = c(3,3), mar = c(5,4,3, 0.5))
-invisible(
-  sapply(seq(9),
-    function(day)
-      plot(as.factor(forec$conc), forec[,paste0("day",day)], 
-        ylim = c(0,1),
-        xlab = "concentration (micromol/l)", ylab = "probability of survival", 
-        main = paste("day",day))
-  )
+```{r plot-forecast, results='hide'}
+par(mfrow = c(2,3), mar = c(5,4,3, 0.5))
+sapply(tail(names(forec), -2),
+			 function(day)
+			 	plot(as.factor(forec$conc), forec[, day], 
+			 			 ylim = c(0,1),
+			 			 xlab = "concentration (micromol/l)", ylab = "probability of survival", 
+			 			 main = day)
 )
 par(op)
 ```
