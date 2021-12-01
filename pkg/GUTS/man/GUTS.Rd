@@ -201,7 +201,7 @@ Jager, T., Ashauer, R. (2018). Modelling survival under chemical stress. A compr
 
 EFSA PPR Panel (EFSA Panel on Plant Protection Products and their Residues), Ockleford, C., Adriaanse, P., Berny, P., Brock, T., Duquesne, S., Grilli, S., Hernandez-Jerez, A.F., Bennekou, S.H., Klein, M., Kuhl, T., Laskowski, R., Machera, K., Pelkonen, O., Pieper, S., Smith, R.H., Stemmer, M., Sundh, I., Tiktak, A., Topping, C.J., Wolterink, G., Cedergreen, N., Charles, S., Focks, A., Reed, M., Arena, M., Ippolito, A., Byers, H. and Teodorovic, I. (2018). Scientific Opinion on the state of the art of Toxicokinetic/Toxicodynamic (TKTD) effect models for regulatory risk assessment of pesticides for aquatic organisms. EFSA Journal, 16(8):5377, 188 pp. \url{https://doi.org/10.2903/j.efsa.2018.5377}
 
-Gergs, A.́, Gabsi, F., Zenker, A., Preuss, T. (2011). Demographic toxicokinetic--toxicodynamic modeling of lethal effects. Environmental Science \& Technology, 50(11), 6017--6024, doi: 10.1021/acs.est.6b01113.
+Gergs, A., Gabsi, F., Zenker, A., Preuss, T. (2011). Demographic toxicokinetic--toxicodynamic modeling of lethal effects. Environmental Science \& Technology, 50(11), 6017--6024, doi: 10.1021/acs.est.6b01113.
 }
 
 \author{Carlo Albert \email{carlo.albert@eawag.ch}, Sören Vogel \email{soeren.vogel@posteo.ch}, Oliver Jakoby \email{oliver.jakoby@rifcon.de}, Alexander Singer \email{alexander.singer@rifcon.de} and Dirk Nickisch \email{dirk.nickisch@rifcon.de}
