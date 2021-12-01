@@ -195,7 +195,7 @@ The GUTS project web site can be found here: \href{http://guts.r-forge.r-project
 
 Jager, T., Albert, C., Preuss, T., and Ashauer, R. (2011). General Unified Threshold Model of Survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, \doi{10.1021/es103092a}.
 
-Ashauer, R., Albert, C., Augustine, S., Cedergreen, N., Charles, S., Ducrot, V., Focks, A., Gabsi, F., Gergs, A., Goussen, B., Jager, T., Kramer, N.I., Nyman, A.-M., Poulsen, V., Reichenberger, S., Schäfer, R.B., Van den Brink, P.J., Veltman, K., Vogel, S., Zimmer, E.I., Preuss, T.G. (2016) Modelling survival: exposure pattern, species sensitivity and uncertainty. Scientific Reports, 6, 1.
+Ashauer, R., Albert, C., Augustine, S., Cedergreen, N., Charles, S., Ducrot, V., Focks, A., Gabsi, F., Gergs, A., Goussen, B., Jager, T., Kramer, N.I., Nyman, A.-M., Poulsen, V., Reichenberger, S., Schäfer, R.B., Van den Brink, P.J., Veltman, K., Vogel, S., Zimmer, E.I., Preuss, T.G. (2016) Modelling survival: exposure pattern, species sensitivity and uncertainty. Scientific Reports, 6, 1, \doi{10.1038/srep29178}.
 
 Jager, T., Ashauer, R. (2018). Modelling survival under chemical stress. A comprehensive guide to the GUTS framework. Leanpub: \url{https://leanpub.com/guts_book}, \url{http://www.debtox.info/book_guts.html}
 
