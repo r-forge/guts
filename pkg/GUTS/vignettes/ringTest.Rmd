@@ -400,9 +400,9 @@ Values to be specified are
     + other entries of `y` can be chosen arbitrarily and will not be used.
 * forecast time points `yt`: a vector starting with 0
 
-To calculate the LC50, we use the GUTS object to simulate the survival during a 4 day period for several constant dose levels. Here, we uses doses 0 to 16 in steps of 1, which provides a slightly higher resolution than in the original synthetic experimental data.
+To calculate the LC50, we use the GUTS object to simulate the survival during a 4 day period for several constant dose levels. Here, we uses doses 0 to 16 in steps of 2.
 
-We choose 9 observation and application time steps for illustration purposes. In fact, to calculate 4d-LC50, it would be sufficient to specify the initial number of individuals at time step 0, and specifiy time step 4 days as the observation time. We assume an initial population size of 100 individuals.
+We choose 6 observation and application time steps for illustration purposes. In fact, to calculate 4d-LC50, it would be sufficient to specify the initial number of individuals at time step 0, and specify time step 4 days as the observation time. We assume an initial population size of 100 individuals.
 
 ```{r forecast-setup-GUTS-object}
 conc <- seq(0, 16, by = 2)
@@ -504,7 +504,7 @@ The estimated LC50 median of `r signif(LC50[2],2)` (CI = [`r signif(LC50[1],2)`;
 # Literature
 Albert, C., Vogel, S., and Ashauer, R. (2016). Computationally efficient implementation of a novel algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978. doi: 10.1371/journal.pcbi.1004978.
 
-Ashauer, R., Albert, C., Augustine, S., Cedergreen, N., Charles, S., Ducrot, V., Focks, A., Gabsi, F., Gergs, A., Goussen, B., Jager, T., Kramer, N.I., Nyman, A.-M., Poulsen, V., Reichenberger, S., Sch?fer, R.B., Van den Brink, P.J., Veltman, K., Vogel, S., Zimmer, E.I., Preuss, T.G. (2016). Modelling survival: exposure pattern, species sensitivity and uncertainty. Scientific Reports, 6, 1, doi: 10.1038/srep29178
+Ashauer, R., Albert, C., Augustine, S., Cedergreen, N., Charles, S., Ducrot, V., Focks, A., Gabsi, F., Gergs, A., Goussen, B., Jager, T., Kramer, N.I., Nyman, A.-M., Poulsen, V., Reichenberger, S., Schäfer, R.B., Van den Brink, P.J., Veltman, K., Vogel, S., Zimmer, E.I., Preuss, T.G. (2016). Modelling survival: exposure pattern, species sensitivity and uncertainty. Scientific Reports, 6, 1, doi: 10.1038/srep29178
 
 Jager, T., Albert, C., Preuss, T., and Ashauer, R. (2011). General Unified Threshold Model of Survival - a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science & Technology, 45(7), 2529-2540, doi: 10.1021/es103092a.
 
