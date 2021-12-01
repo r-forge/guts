@@ -11,7 +11,7 @@ vignette: >
 ```{r setup, echo=FALSE, results='hide', message=TRUE}
 rm(list = ls())
 
-do.calc <- FALSE # if TRUE, all calculations are conducted. if FALSE, calculations are omitted and the vignette output is built from pre-caculated data.
+do.calc <- FALSE # if TRUE, all calculations are conducted. if FALSE, calculations are omitted and the vignette output is built from pre-calculated data.
 do.save <- FALSE # if TRUE, calculation parts will be saved to disk. This works only correctly, if building from source. Therefore, if you are not building the vignette from source: do.save <- FALSE
 
 if (do.calc == FALSE) message("For performance reasons, this vignette builds from pre-calculated data.\n\n To run all calculations, set 'do.calc <- TRUE' in the vignette's first code chunk. \n Building the vignette will take a while.")
