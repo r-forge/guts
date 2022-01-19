@@ -5,6 +5,7 @@
  * 2017-10-09 
  * updated: 2019-01-29
  * updated: 2021-11-30 
+ * updated: 2022-01-17
  */
 
 #ifndef TD_SD_H
@@ -23,8 +24,8 @@ public:
 	  dtau = TDdata.calculate_dtau();
   }
   void initialize_from_parameters() override {}
-  inline void set_start_conditions() {E = 0.0;}
-  virtual bool is_still_gathering() const {return true;}
+  inline void set_start_conditions() const override {E = 0.0;}
+  bool is_still_gathering() const override {return true;}
   /**
   * @returns true if there are still survivors
   */
@@ -37,20 +38,20 @@ public:
   inline double get_killing_rate() const {return kk;}
   inline double get_background_mortality() const {return hb;}
   inline double get_threshold() const {return z;}
-  inline virtual void update_to_next_survival_measurement() const {}
+  inline void update_to_next_survival_measurement() const override {}
   /**
    *\brief gather an effect from known damage
    * \param[in] D damage
    */
-  inline void gather_effect(const double D) const {
+  inline void gather_effect(const double D) const override {
     if ( D > z ) E += z - D;
   }
   /**
    * \returns  calculate survival at time yt
    * \param[in] yt survival measurement time
    */
-  inline double calculate_current_survival(const double yt) const {
-    return exp(kkXdtau * E - hb * yt);
+  inline double calculate_current_survival(const double yt) const override {
+    return std::exp(kkXdtau * E - hb * yt);
   }
   
 protected:

@@ -55,6 +55,7 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <h2>News</h2>
 
 <ul>
+	<li>GUTS version 1.2.1 fixes C++ code that caused compiler warnings on some computer platforms supported by CRAN and improves consistency with C++-11 style</li>
 	<li>GUTS version 1.2 introduces faster implementations for special cases GUTS-RED-IT and GUTS-RED-SD.<br>The now analytical solution for GUTS-RED-IT can be approximated by the previous version if using large M and N. The new version does not use parameters M and N any longer.<br>GUTS-RED-SD now directly implements the delta distribution and does no longer use N.<br>Further, features are: modular c++-code, template adaptation to Rcpp data structures, adaptation to ERA as suggested in EFSA PPR (2018)</li>
 	<li>GUTS version 1.1.1 adds access to the sum of squares and the survival-probability prediction error.</li>
 	<li>GUTS version 1.1.0 was extended to provide different distribution for individual tolerance (log-logistic, log-normal and a flexible option for applying any possible distribution function from R).</li>

@@ -5,6 +5,7 @@
  * 2017-10-09 
  * updated: 2019-01-29
  * updated: 2021-11-30 
+ * updated: 2022-01-17
  */
 
 #ifndef TK_RED_H
@@ -52,7 +53,7 @@ public:
 	 * @param[in] t time at which to calculate the damage
 	 * @param[in] k index of concentration measurement interval. The index defines the boundary (starting) conditions and must point to the concentration measurement interval in which t lies (i.e. Ct[k] <= t < Ct[k+1])
 	 */
-	inline double calculate_damage(const std::size_t k, const double t) const {
+	inline double calculate_damage(const std::size_t k, const double t) const override {
 		double tmp = exp( -ke_times_SVR * (t - this->Ct->at(k)) );
 		double summand3 =
 			ke_times_SVR > 0.0  ? (t - this->Ct->at(k) - (1.0-tmp)/ke_times_SVR)  *  this->diffCCt[k] : 0.0;

@@ -4,7 +4,8 @@
  * License GPL-2
  * 2017-10-09 
  * updated: 2019-01-29
- * updated: 2021-11-30 
+ * updated: 2021-11-30
+ * updated: 2022-01-17 
  */
 
 #ifndef TK_single_concentration_H
@@ -23,7 +24,7 @@
  * @brief Solver for the TK differential equation to calculate the damage
  * @details The method double calculate_current_D() solves the TK equation at the next discretization step and returns the damage.
  * The function is called within a while-loop that iterates until bool is_timestep_in_range(const double) fails.
- * The discretization iterator is automatically updated.
+ * The discretized iterator is automatically updated.
  */
 template<typename tCt, typename tC >
 class TK_single_concentration : public TK  {
@@ -32,14 +33,14 @@ public:
     inline void initialize(const tTDdata& TDdata) {
   	  initialize(TDdata.Ct, TDdata.C);
     }
-  void initialize_from_parameters() const override {}
+  void initialize_from_parameters() override {}
   void set_start_conditions() const override {
 	  D = 0;
 	  D_k = 0;
   }
   virtual ~TK_single_concentration() {}
 protected:
-  inline void update_to_next_concentration_measurement() const {D_k = D;}
+  inline void update_to_next_concentration_measurement() const override {D_k = D;}
 	void initialize(
 			const std::shared_ptr<const tCt > new_Ct,
 			const std::shared_ptr<const tC > new_C

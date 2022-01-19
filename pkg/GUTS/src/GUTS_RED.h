@@ -5,6 +5,7 @@
  * 2017-10-09 
  * updated: 2019-01-29
  * updated: 2021-11-30 
+ * updated: 2022-01-17
  */
 
 #ifndef GUTS_RED_H
@@ -57,23 +58,23 @@ void set_parameters_z(parameterized_model& model, const tparam& param) {
 }
 template<typename tparam, typename parameterized_model >
 void get_lognormal_threshold_parameters(const parameterized_model& model, tparam& param) {
-  param[static_cast<std::size_t >(parameterized_model::position::t1)] = model.get_threshold_mean();
-  param[static_cast<std::size_t >(parameterized_model::position::t2)] = model.get_threshold_sd();
+  param[static_cast<std::size_t >(parameterized_model::position::t1)] = model.samp.get_threshold_mean();
+  param[static_cast<std::size_t >(parameterized_model::position::t2)] = model.samp.get_threshold_sd();
 }
 template<typename tparam, typename parameterized_model >
 void set_lognormal_threshold_parameters(parameterized_model& model, const tparam& param) {
-  model.set_threshold_mean(param[static_cast<std::size_t >(parameterized_model::position::t1)]);
-  model.set_threshold_sd(param[static_cast<std::size_t >(parameterized_model::position::t2)]);
+  model.samp.set_threshold_mean(param[static_cast<std::size_t >(parameterized_model::position::t1)]);
+  model.samp.set_threshold_sd(param[static_cast<std::size_t >(parameterized_model::position::t2)]);
 }
 template<typename tparam, typename parameterized_model >
 void get_loglogistic_threshold_parameters(const parameterized_model& model, tparam& param) {
-  param[static_cast<std::size_t >(parameterized_model::position::t1)] = model.get_threshold_alpha();
-  param[static_cast<std::size_t >(parameterized_model::position::t2)] = model.get_threshold_beta();
+  param[static_cast<std::size_t >(parameterized_model::position::t1)] = model.samp.get_threshold_alpha();
+  param[static_cast<std::size_t >(parameterized_model::position::t2)] = model.samp.get_threshold_beta();
 }
 template<typename tparam, typename parameterized_model >
 void set_loglogistic_threshold_parameters(parameterized_model& model, const tparam& param) {
-  model.set_threshold_alpha(param[static_cast<std::size_t >(parameterized_model::position::t1)]);
-  model.set_threshold_beta(param[static_cast<std::size_t >(parameterized_model::position::t2)]);
+  model.samp.set_threshold_alpha(param[static_cast<std::size_t >(parameterized_model::position::t1)]);
+  model.samp.set_threshold_beta(param[static_cast<std::size_t >(parameterized_model::position::t2)]);
 }
 
 template<typename tt, typename tc, typename TD_mod, typename tparam >
@@ -149,7 +150,7 @@ struct guts_RED<tt, tC, TD<random_sample<tparam >, 'P' >, tparam > :
 	void set_parameters(const tparam& param) override {
 		set_parameters_hb_kd(*this, param);
 		set_parameters_kk(*this, param);
-		TD_mod::set_variates(param.begin() + 3, param.end());
+		TD_mod::samp.set_variates(param.begin() + 3, param.end());
 	}
 };
 
@@ -234,7 +235,7 @@ struct guts_RED<tt, tC, TD<random_sample<tparam >, 'I' >, tparam > :
 	}
 	void set_parameters(const tparam& param) override {
 		set_parameters_hb_kd(*this, param);
-		TD_mod::set_variates(param.begin() + 2, param.end());
+		TD_mod::samp.set_variates(param.begin() + 2, param.end());
 	}
 };
 

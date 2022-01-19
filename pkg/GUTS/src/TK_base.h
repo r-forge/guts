@@ -5,6 +5,7 @@
  * 2017-10-09 
  * updated: 2019-01-29
  * updated: 2021-11-30 
+ * updated: 2022-01-17
  */
 
 #ifndef TK_BASE_H
@@ -29,7 +30,7 @@ struct TK {
   virtual double calculate_damage(
       const std::size_t k, const double tau) const = 0;
   virtual void set_start_conditions() const = 0;
-  virtual void initialize_from_parameters() const = 0; 
+  virtual void initialize_from_parameters() = 0; 
 protected:
   virtual void update_to_next_concentration_measurement() const = 0;
 };

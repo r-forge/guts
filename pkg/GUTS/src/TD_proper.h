@@ -5,6 +5,7 @@
  * 2017-10-09 
  * updated: 2019-01-29
  * updated: 2021-11-30 
+ * updated: 2022-01-17
  */
 
 
@@ -24,16 +25,16 @@
  * @brief accumulates damage above the threshold and executes respective mortality
  */
 template< typename sampler >
-class TD_proper_base : public TD_base, public sampler {
+class TD_proper_base : public TD_base {
 public:
-	TD_proper_base() : TD_base(), sampler(), ee(), ff(), zpos(0),
+	TD_proper_base() : TD_base(), samp(), ee(), ff(), zpos(0),
 	kk(std::numeric_limits<double>::quiet_NaN()),
 	dtau(std::numeric_limits<double>::quiet_NaN()),
 	kkXdtau(std::numeric_limits<double>::quiet_NaN()),
 	hb(std::numeric_limits<double>::quiet_NaN())
 {}
 	virtual ~TD_proper_base() {}
-	virtual bool is_still_gathering() const {return true;}
+	bool is_still_gathering() const override {return true;}
 	inline void set_killing_rate(const double new_kk) {
 		kkXdtau = new_kk * dtau;
 		kk = new_kk;
@@ -41,25 +42,25 @@ public:
 	inline void set_background_mortality(const double new_hb) {hb = new_hb;}
 	inline double get_killing_rate() const {return kk;}
 	inline double get_background_mortality() const {return hb;}
-	virtual void update_to_next_survival_measurement() const {}
+	void update_to_next_survival_measurement() const override {}
 	/**
 	 * @brief gather an effect from known damage
 	 * @param[in] D damage
 	 */
-	inline void gather_effect(const double D) const {
-		if ( D > this->variate_back() ) {
+	inline void gather_effect(const double D) const override {
+		if ( D > samp.variate_back() ) {
 			// damage higher than the largest value in threshold distribution
 			ee.back() += D;
 			ff.back() ++;
 			return;
 		}
-		if ( D > this->variate_at(0) ) {
+		if ( D > samp.variate_at(0) ) {
 			// damage within threshold distribution
 			// Search quantile in threshold distribution that covers the damage.
-			while ( zpos > 0 && D < this->variate_at(zpos)) {
+			while ( zpos > 0 && D < samp.variate_at(zpos)) {
 				--zpos;
 			}
-			while ( zpos < (this->sample_size() - 1) && D > this->variate_at(zpos) ) {
+			while ( zpos < (samp.sample_size() - 1) && D > samp.variate_at(zpos) ) {
 				++zpos;
 			}
 			ee.at(zpos-1) += D;
@@ -67,10 +68,10 @@ public:
 		}
 	}
 
-	inline virtual void set_start_conditions() {
+	inline void set_start_conditions() const override {
 		std::fill(ee.begin(), ee.end(), 0.0);
 		std::fill(ff.begin(), ff.end(), 0);
-		zpos = this->sample_size()/2;
+		zpos = samp.sample_size()/2;
 	}
 protected:
 	void initialize_threshold_distribution(const std::size_t sample_size) {
@@ -80,7 +81,10 @@ protected:
 	void initialize_time_discretization(const double new_dtau) {
 		dtau = new_dtau;
 	}
-
+public:
+	///the sampler
+	mutable sampler samp;
+protected:
 	///brief gathered damage
 	mutable std::vector<double > ee;
 	///brief frequency distribution of damage == threshold
@@ -99,24 +103,30 @@ protected:
 template<typename sampler >
 struct TD_proper_impsampling : public TD_proper_base<sampler > {
 	TD_proper_impsampling() : TD_proper_base<sampler >() {}
-	void set_start_conditions() override {
+	void set_start_conditions() const override {
 		TD_proper_base<sampler >::set_start_conditions();
-		sampler::calc_sample();
+		this -> samp.calc_sample();
 	}
 	double calculate_current_survival(const double yt) const override {
 		double E = 0.0;
 		unsigned F = 0;
 		double S = 0;
-		for (int u = this->sample_size() - 1; u >= 0; --u) {
-			F += this->ff.at(u);
-			E += this->ee.at(u);
-			S += F == 0 ? exp(this->weight_at(u) ) : exp((this->kkXdtau * (this->variate_at(u) * F - E)) + this->weight_at(u) );
+		std::size_t N = this->samp.sample_size();
+		for (std::size_t u = N; u > 0; --u) {
+			F += this->ff.at(u-1);
+			E += this->ee.at(u-1);
+			S += F == 0 ? exp(this->samp.weight_at(u-1) ) : exp((this->kkXdtau * (this->samp.variate_at(u-1) * F - E)) + this->samp.weight_at(u-1) );
 		}
-		return S * exp( -this->hb * yt ) / this->sample_size();
+		return S * exp( -this->hb * yt ) / static_cast<double>(this->samp.sample_size());
 	}
 	virtual ~TD_proper_impsampling() {}
 protected:
 	void initialize_from_parameters() override {}
+	inline void initialize(const double new_dtau, const std::size_t sample_size) {
+		this -> samp.initialize(sample_size);
+		TD_proper_impsampling<sampler >::initialize_threshold_distribution(sample_size);
+		TD_proper_impsampling<sampler >::initialize_time_discretization(new_dtau);
+	}
 };
 
 template< typename sampler >
@@ -125,15 +135,11 @@ public:
 	TD() : TD_proper_impsampling<sampler >() {}
 	template<typename tTDdata >
 	inline void initialize(const tTDdata& TDdata) {
-		initialize(TDdata.N, TDdata.calculate_dtau());
+		this->samp.initialize(TDdata.N);
+		this->initialize_threshold_distribution(TDdata.N);
+		this->initialize_time_discretization(TDdata.calculate_dtau());
 	}
 	virtual ~TD() {}
-private:
-	inline void initialize(const std::size_t sample_size, const double new_dtau) {
-		sampler::initialize(sample_size);
-		TD_proper_impsampling<sampler >::initialize_threshold_distribution(sample_size);
-		TD_proper_impsampling<sampler >::initialize_time_discretization(new_dtau);
-	}
 };
 
 template<>
@@ -141,10 +147,12 @@ struct TD<imp_delta, 'P' > : public TD_proper_impsampling<imp_delta > {
 	TD() : TD_proper_impsampling<imp_delta >() {}
 	template<typename tTDdata >
 	inline void initialize(const tTDdata& TDdata) {
-		imp_delta::initialize();
-		TD_proper_impsampling<imp_delta >::initialize_threshold_distribution(this->sample_size());
-		TD_proper_impsampling<imp_delta >::initialize_time_discretization(TDdata.calculate_dtau());
+		this->samp.initialize();
+		this->initialize_threshold_distribution(1);
+		this->initialize_time_discretization(TDdata.calculate_dtau());
 	}
+	inline void set_threshold(const double new_z) {samp.set_threshold(new_z);}
+	inline double get_threshold() const {return samp.get_threshold();}
 	virtual ~TD() {}
 };
 
@@ -158,7 +166,7 @@ public:
 	}
 	void initialize_from_parameters() override {
 		TD_proper_base<random_sample<tz > >::initialize_threshold_distribution(
-				random_sample<tz >::sample_size()
+				this->samp.sample_size()
 		);
 	}
 	virtual ~TD() {}
@@ -166,12 +174,13 @@ public:
 		double E = 0.0;
 		unsigned F = 0;
 		double S = 1;
-		for (int u = this->sample_size() - 1; u >= 0; --u) {
-			E += this->ee.at(u);
-			F += this->ff.at(u);
-			S += exp(   (this->kkXdtau * (this->variate_at(u) * F - E)) );
+		std::size_t N = this->samp.sample_size();
+		for (std::size_t u = N; u > 0; --u) {
+			E += this->ee.at(u - 1);
+			F += this->ff.at(u - 1);
+			S += exp(   (this->kkXdtau * (this->samp.variate_at(u - 1) * F - E)) );
 		}
-		return S * exp( -this->hb * yt ) / this->sample_size();
+		return S * exp( -this->hb * yt ) / static_cast<double>(N);
 	}
 };
 #endif //TD_PROPER_H

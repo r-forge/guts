@@ -6,6 +6,7 @@
  * 2017-10-09 
  * updated: 2019-01-29
  * updated: 2021-11-30 
+ * updated: 2022-01-17
  */
 
 #include <Rcpp.h>
@@ -20,7 +21,7 @@ typedef Rcpp::NumericVector tconc;
 typedef Rcpp::NumericVector tpara;
 typedef std::vector<double > tsurv;
 typedef Rcpp::IntegerVector tobssurv;
-typedef R_len_t vec_size_t; 
+typedef R_xlen_t vec_size_t; 
 
 
 enum TD_type {

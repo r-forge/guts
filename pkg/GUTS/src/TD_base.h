@@ -4,7 +4,8 @@
  * License GPL-2
  * 2017-10-09 
  * updated: 2019-01-29
- * updated: 2021-11-30 
+ * updated: 2021-11-30
+ * updated: 2022-01-17 
  */
 
 #ifndef TD_BASE_H
@@ -40,7 +41,7 @@ public:
    */
   virtual bool is_still_gathering() const = 0;
   virtual void update_to_next_survival_measurement() const = 0;
-  virtual void set_start_conditions() = 0;
+  virtual void set_start_conditions() const = 0;
   virtual void initialize_from_parameters() = 0;
 };
 

@@ -4,7 +4,8 @@
  * License GPL-2
  * 2017-10-09 
  * updated: 2019-01-29
- * updated: 2021-11-30 
+ * updated: 2021-11-30
+ * updated: 2022-01-17 
  */
 
 
@@ -44,8 +45,7 @@ struct lognormal :
 		virtual public lognormal_parameters
 		{
 	virtual ~lognormal() {}
-	inline double CDF(const double x) const {
-// TODO: needs checking
+	inline double CDF(const double x) const final {
 	  double sigma_square = std::log((sd * sd) / mn / mn + 1);
 	  double mu = std::log(mn) - sigma_square / 2;
 		return 0.5 + std::erf( (std::log(x)-mu)/std::sqrt(2 * sigma_square) ) / 2;
@@ -73,7 +73,7 @@ struct loglogistic :
 		virtual public loglogistic_parameters
 		{
 	virtual ~loglogistic() {}
-	inline double CDF(const double x) const {
+	inline double CDF(const double x) const final {
 		return 1/(1+std::pow(x/alpha,-beta));
 	}
 };

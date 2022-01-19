@@ -4,7 +4,8 @@
  * License GPL-2
  * 2017-10-09 
  * updated: 2019-01-29
- * updated: 2021-11-30 
+ * updated: 2021-11-30
+ * updated: 2022-01-17 
  */
 
 #ifndef GUTS_BASE_H_
@@ -41,7 +42,7 @@ struct guts_model:
   	TK_mod::initialize_from_parameters();
   	TD_mod::initialize_from_parameters();
   	}
-  void set_start_conditions() override {
+  void set_start_conditions() const override {
     TK_mod::set_start_conditions();
     TD_mod::set_start_conditions();
   }
@@ -52,7 +53,7 @@ template<typename tModel, typename tt, typename tSurvival >
 struct guts_projector_base : public tModel {
   typedef tSurvival tProjection;
   virtual ~guts_projector_base() {}
-  inline void set_start_conditions() override {
+  inline void set_start_conditions() const override {
   	tModel::set_start_conditions();
   }
   inline void get_survival_projection(tProjection& proj) const {proj = p;}
@@ -101,7 +102,7 @@ public:
 	  dtau = data.calculate_dtau(); 
 	  parent::initialize(data);
 	}
-	inline virtual void set_start_conditions() override {
+	inline void set_start_conditions() const override {
 		tauit = 0; //index discrete time
 		k = 0;     //index Ct
 		D.assign(M, std::numeric_limits<double>::quiet_NaN());
@@ -127,11 +128,11 @@ private:
 	mutable std::size_t tauit; //index discrete time
 	mutable std::size_t k;     //index Ct
 	void gather_effect_per_time_step (const double yt) const override {
-		double tau = dtau * tauit;		 //discrete absolute time
+		double tau = dtau * static_cast<double>(tauit);		 //discrete absolute time
 		while ( tauit < M && tau < yt && tModel::TD_mod::is_still_gathering() ) {
 			D.at(tauit) = tModel::TK_mod::calculate_damage(k, tau);
 			tModel::TD_mod::gather_effect(D[tauit]);
-			tau = dtau * (++tauit);
+			tau = dtau * static_cast<double>(++tauit);
 			if (tau > tModel::TK_mod::Ct->at(k+1)) {
 				++k; // concentration index
 				tModel::TK_mod::update_to_next_concentration_measurement();
@@ -147,7 +148,7 @@ public:
 	typedef tSurvival tProjection;
 	typedef guts_projector_base<tModel, tt, tSurvival > parent;
 	virtual ~guts_projector_fastIT() {}
-	inline void set_start_conditions() override {
+	inline void set_start_conditions() const override {
 		k = 0;
 		Dk = 0;
 		damage.resize(0);
@@ -166,7 +167,7 @@ public:
 		return damage;
 		}
 	std::vector<double > get_damage_time() const override {
-		// ensure that the function is not called repetedly. 
+		// ensure that the function is not called repeatedly. 
 		// Note: survival calculations automatically increase Dk. 
 		if (Dk != 0) {
 			tModel::TK_mod::set_start_conditions();
@@ -219,7 +220,7 @@ private:
 		k = 0;
 		Dk = 0;
 		while (this->Ct->at(k) < max_time) {
-				dtau = (this->Ct->at(k+1) - this->Ct->at(k)) / (num_extra_evals_per_time_interval);
+				dtau = (this->Ct->at(k+1) - this->Ct->at(k)) / static_cast<double>(num_extra_evals_per_time_interval);
 				cur_time = this->Ct->at(k) + dtau;
 				do {
 					damage_time.push_back(cur_time);
@@ -254,7 +255,7 @@ template<typename tProjection, typename tmeasured_survivors >
         if (diffS == 0.0) {
           return -std::numeric_limits<double >::infinity();
         }
-        loglik += diffy * std::log(diffS);
+        loglik += static_cast<double>(diffy) * std::log(diffS);
       }
     } 
     return loglik;
