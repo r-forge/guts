@@ -91,11 +91,11 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 
 	<li>GUTS modelling: <a href="https://www.ecotoxmodels.org/guts/">https://www.ecotoxmodels.org/guts/</a></li>
 
-	<li>EasyGUTS a user-friendly and freely available software for TK/TD modelling of survival (using the GUTS R package): <a href="https://www.rifcon.de/images/rifcon/Downloads/posters/setac2018_nickisch_EasyGUTS.pdf">https://www.rifcon.de/images/rifcon/Downloads/posters/setac2018_nickisch_EasyGUTS.pdf</a></li>
+	<li>EasyGUTS a user-friendly and freely available software for TK/TD modelling of survival (using the GUTS R package): <a href="https://rifcon.de/wp-content/uploads/2018/08/setac2018_nickisch_EasyGUTS.pdf">https://rifcon.de/wp-content/uploads/2018/08/setac2018_nickisch_EasyGUTS.pdf</a></li>
 
 </ul>
 
-<p>Last updated: 2021-11-30</p>
+<p>Last updated: 2022-01-19</p>
 
 </body>
 </html>
