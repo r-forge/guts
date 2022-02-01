@@ -6,6 +6,7 @@
  * updated: 2019-01-29
  * updated: 2021-11-30 
  * updated: 2022-01-17
+ * updated: 2022-02-01
  */
 
 #ifndef TD_IT_H
@@ -72,7 +73,7 @@ public:
     return this->zit == this->z.end() ? 0 : Sj.at(this->zit - this->z.begin())  / this->samp.sample_size() * exp( -this->hb * yt );
   }
 private:
-  std::vector<double > Sj;
+  mutable std::vector<double > Sj;
 };
 
 
@@ -81,9 +82,7 @@ struct TD_IT_CDF :
 		virtual public background_mortality {
 	virtual ~TD_IT_CDF() {}
 	  template<typename tTDdata >
-	      inline void initialize([[gnu::unused]] const tTDdata& TDdata) {
-	      	M=0;
-	      }
+	  inline void initialize(const tTDdata&) {M=0;}
 	  void initialize_from_parameters() override {}
 	  inline void set_start_conditions() const override {M=0;}
 	  inline bool is_still_gathering() const override {return M<1;}
