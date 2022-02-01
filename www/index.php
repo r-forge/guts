@@ -88,8 +88,6 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 
 	<li>Background of GUTS: <a href="http://www.debtox.info/about_guts.php">http://www.debtox.info/about_guts.php</a></li>
 
-	<li>EFSA opinion on Toxicokinetic/Toxicodynamic (TKTD) effect models: <a href="https://www.efsa.europa.eu/en/efsajournal/pub/5377">https://www.efsa.europa.eu/en/efsajournal/pub/5377</a></li>
-
 	<li>GUTS modelling: <a href="https://www.ecotoxmodels.org/guts/">https://www.ecotoxmodels.org/guts/</a></li>
 
 	<li>EasyGUTS a user-friendly and freely available software for TK/TD modelling of survival (using the GUTS R package): <a href="https://rifcon.de/wp-content/uploads/2018/08/setac2018_nickisch_EasyGUTS.pdf">https://rifcon.de/wp-content/uploads/2018/08/setac2018_nickisch_EasyGUTS.pdf</a></li>
