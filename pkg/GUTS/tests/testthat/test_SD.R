@@ -38,3 +38,56 @@ test_that("new and old versions are similar (up to tolerance 1e-5)", {
     tolerance = 1e-5
   )
 })
+
+
+test_that("SD raises exceptions", {
+  expect_error(
+    guts_setup(
+      C = c(4, 2, 4, 6, 6),
+      Ct = seq_len(5) - 1,
+      y = c(10,3,2,1,0),
+      yt = seq_len(5) - 1,
+      dist = "delta",
+      model = "SD",
+      M = NA,
+      N = NA,
+      SVR = 1,
+      study = "SD",
+      Clevel = "arbitrary"
+    ), 
+    ".+The number of discretization time steps M.+"
+  )
+  expect_error(
+    guts_setup(
+      C = c(4, 2, 4, 6, 6),
+      Ct = seq_len(5) - 1,
+      y = c(10,3,2,1,0),
+      yt = seq_len(5) - 1,
+      dist = "delta",
+      model = "SD",
+      M = 1,
+      N = NA,
+      SVR = 1,
+      study = "SD",
+      Clevel = "arbitrary"
+    ), 
+    ".+The number of discretization time steps M.+"
+  )
+  expect_error(
+    guts_setup(
+      C = c(4, 2, 4, 6, 6),
+      Ct = seq_len(5) - 1,
+      y = c(10,3,2,1,0),
+      yt = seq_len(5) - 1,
+      dist = "delta",
+      model = "SD",
+      M = 5000,
+      N = NA,
+      SVR = 0,
+      study = "SD",
+      Clevel = "arbitrary"
+    ), 
+    "The surface volume ratio SVR.+"
+  )
+})
+

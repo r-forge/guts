@@ -70,9 +70,9 @@ struct svr {
   void set_data(
       const double new_SVR
   ) {
-    if ((std::isnan(new_SVR)) || (new_SVR < 2)) {
+    if ((std::isnan(new_SVR)) || (new_SVR <= 0)) {
       throw std::invalid_argument(
-          std::string("The surface volume ration must be a positive value.") + 
+          std::string("The surface volume ratio must be a positive value.") + 
             std::string(" Value '") + 
             (std::isnan(new_SVR) ? std::string("NaN' or 'NA") : std::to_string(new_SVR) + 
             std::string("' is not allowed")

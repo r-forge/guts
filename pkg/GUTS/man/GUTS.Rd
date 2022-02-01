@@ -29,7 +29,12 @@ The package implements the GUTS-SIC (also called GUTS-RED) variants that assume 
 guts_setup(C, Ct, y, yt, dist = "lognormal",
 	model = "Proper",
 	N = 1000L,
-	MF = 100L, M = max(5000L, as.integer(ceiling(MF * length(union(Ct, yt))))),
+	MF = 100L, 
+	M = max(
+		5000L, 
+		as.integer(ceiling(MF * length(union(Ct, yt)))),
+		as.integer(ceiling(MF * max(union(Ct, yt))))
+		),
 	SVR = 1L,
 	study = "", Clevel = ""
 	)
@@ -60,7 +65,7 @@ guts_report_squares(gobj)
 	}
 	\item{model}{Model as character, either \dQuote{Proper} (for full model, the default), \dQuote{IT} (for individual tolerance), or \dQuote{SD} (for stochastic death).%
 	}
-	\item{MF}{Integer.  Multiplication factor for M.  Must be greater than 1. MF is used only if \dQuote{model = 'SD'} or \dQuote{model = 'Proper'} and M is not specified. Setting MF automatically ensures that the number of points for time discretization M is at least the number of measurement time steps multiplied by MF. M = \code{max(MF * number of measurement time steps, 5000)}.%
+	\item{MF}{Integer.  Multiplication factor for M.  Must be greater than 1. MF is used only if \dQuote{model = 'SD'} or \dQuote{model = 'Proper'} and M is not specified. Setting MF automatically ensures that the number of points for time discretization M is at least the number of measurement time steps or the measurement time (which ever is larger) multiplied by MF. A minimum of \code{M = 5000} is ensured.%
 	}
 	\item{M}{Integer.  Desired number of points for time discretization.  Must be greater than 1. M is used only if \dQuote{model = 'SD'} or \dQuote{model = 'Proper'}%
 	}
