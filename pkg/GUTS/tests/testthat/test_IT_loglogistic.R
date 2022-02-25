@@ -135,3 +135,4 @@ test_that("multiple guts-objects in loops keep their values in calls by referenc
     guts_lst, list(guts1, guts2)
   )
 })
+

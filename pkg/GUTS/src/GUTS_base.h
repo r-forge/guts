@@ -68,7 +68,7 @@ struct guts_projector_base : public tModel {
     auto ytpos = 1; //index yt
     while (ytpos < yt->size() && p.at(ytpos-1) > 0) {
       tModel::TD_mod::update_to_next_survival_measurement();
-      gather_effect_per_time_step(yt->at(ytpos));
+      gather_effect_per_time_step(yt->at(ytpos), yt->at(ytpos-1));
       p.at(ytpos) = tModel::TD_mod::calculate_current_survival(yt->at(ytpos)) / p.at(0);
       ++ytpos;
     }
@@ -85,7 +85,7 @@ struct guts_projector_base : public tModel {
   //tData exp_dat;
 protected:
   std::shared_ptr<const tt > yt;
-  virtual void gather_effect_per_time_step(const double) const = 0;
+  virtual void gather_effect_per_time_step(const double, const double) const = 0;
 private:
   mutable tSurvival p;
 };
@@ -127,7 +127,10 @@ protected:
 private:
 	mutable std::size_t tauit; //index discrete time
 	mutable std::size_t k;     //index Ct
-	void gather_effect_per_time_step (const double yt) const override {
+	void gather_effect_per_time_step (
+			const double yt, 
+			const double
+		) const override {
 		double tau = dtau * static_cast<double>(tauit);		 //discrete absolute time
 		while ( tauit < M && tau < yt && tModel::TD_mod::is_still_gathering() ) {
 			D.at(tauit) = tModel::TK_mod::calculate_damage(k, tau);
@@ -168,7 +171,7 @@ public:
 		}
 	std::vector<double > get_damage_time() const override {
 		// ensure that the function is not called repeatedly. 
-		// Note: survival calculations automatically increase Dk. 
+		// Note: survival calculations automatically increase Dk.
 		if (Dk != 0) {
 			tModel::TK_mod::set_start_conditions();
 			extend_damage_values();
@@ -181,16 +184,31 @@ private:
 	mutable std::size_t Dk;
 	mutable std::vector<double > damage_time;
 	mutable std::vector<double > damage;
-	void gather_effect_per_time_step (const double yt) const override {
+	void gather_effect_per_time_step (
+			const double yt, 
+			const double yt_previous
+		) const override {
 		double te;
 		std::size_t Dk_old = Dk;
 		while (this->Ct->at(k+1) < yt && this->is_still_gathering() ) {
-			// check damage at local maximum
+			//Note: the while loop excludes potential theoretical maxima before the second
+			//  concentration measurement.
+			//  This is correct with the underlying assumption that
+			//  at the beginning of the experiment, damage is 0 and thus 
+			//  the maximum of damage during this first concentration interval 
+			//  automatically is at yt that are measured during the first concentation
+			//  interval.
+			//  From the second concentration measurement on, all damage extremes 
+			//  are considered.
+			
+			// check damage at theoretical global maximum
 			if (this->is_maximum_damage(k)) {
-				//a maximum exists (at an extreme point)
+				//theoretically a maximum exists somewhere in time (at an extreme point)
+				//calculate the timing of the global maximum
 				te = this->calculate_time_of_extreme_damage(k);
-				if (te < yt) {
-					if (te < this->Ct->at(k+1)) {
+				if (te > yt_previous && te < yt) {
+					// the maximum is within the current survival measurement interval
+					if (te > this->Ct->at(k) && te < this->Ct->at(k+1)) {
 						// the maximum is within the current concentration measurement interval
 						damage_time.push_back(te);
 						damage.push_back(this->calculate_damage(k, te));

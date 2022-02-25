@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // guts_engine
 void guts_engine(Rcpp::List gobj, Rcpp::NumericVector par, Rcpp::Nullable<Rcpp::NumericVector > z_dist);
 RcppExport SEXP _GUTS_guts_engine(SEXP gobjSEXP, SEXP parSEXP, SEXP z_distSEXP) {
