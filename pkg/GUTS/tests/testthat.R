@@ -1,4 +1,4 @@
-path <- file.path("tests", "testthat")
-test_files <- dir(path, pattern = "test_")
+library(testthat)
+library(GUTS)
 
-sapply(file.path(path, test_files), source)
+test_check("GUTS")

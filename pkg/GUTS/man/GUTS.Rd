@@ -20,7 +20,7 @@
 
 
 
-\description{GUTS (General Unified Threshold model of Survival) is a stochastic survival model for ecotoxicology. The package allows for the definition of exposure and survival time series as well as parameter values, and the fast calculation of the survival probabilities as well as the logarithm of the corresponding likelihood. 
+\description{GUTS (General Unified Threshold model of Survival) is a stochastic survival model for ecotoxicology. The package allows for the definition of exposure and survival time series as well as parameter values, and the fast calculation of the survival probabilities as well as the logarithm of the corresponding likelihood.
 
 The package implements the GUTS-SIC (also called GUTS-RED) variants that assume a one-compartment model with first-order toxicokinetics.}
 
@@ -29,9 +29,9 @@ The package implements the GUTS-SIC (also called GUTS-RED) variants that assume 
 guts_setup(C, Ct, y, yt, dist = "lognormal",
 	model = "Proper",
 	N = 1000L,
-	MF = 100L, 
+	MF = 100L,
 	M = max(
-		5000L, 
+		5000L,
 		as.integer(ceiling(MF * length(union(Ct, yt)))),
 		as.integer(ceiling(MF * max(union(Ct, yt))))
 		),
@@ -120,7 +120,7 @@ The Proper GUTS model requires the following parameters \code{par}, while varian
 	\item hb: background mortality rate (Proper, IT, SD)
 	\item ke: dominant rate constant (Proper, IT, SD)
 	\item kk: killing rate (Proper, SD)
-	\item further parameters for the tolerance threshold (in SD) or the threshold distribution \code{dist} (in Proper and IT) 
+	\item further parameters for the tolerance threshold (in SD) or the threshold distribution \code{dist} (in Proper and IT)
 }
 
 For model type \dQuote{SD} (stochastic death), required parameters \code{par[1:4]} are \code{hb}, \code{ke}, \code{kk} and \code{mn}, which is the population-wide tolerance threshold. For backwards compatibility this model type can be initiated setting \code{dist = "Delta"} and \code{model = "Proper"}.
@@ -139,7 +139,7 @@ For model types \dQuote{Proper} and \dQuote{IT} individual tolerance thresholds 
 	\item "loglogistic": requires the parameters \eqn{mn = scale = median} and \eqn{beta = shape}.
 	\item "external": uses random variates provided to \code{external_dist}. With this option GUTS can be run with arbitrarily distributed individual tolerance thresholds. With the option \dQuote{external} only parameters \code{hb}, \code{ke} and \code{kk} (Proper only) are required. Further, the thresholds sample length \code{N} is internally adjusted to the length of the external vector of random variates \code{external_dist}. The adjustment of \code{N} is notified by a warning.
 }
-For performance reasons the implemented distributions \dQuote{lognormal}  and \dQuote{loglogistic} are approximated using importance sampling. The option \dQuote{external} generally performs well, but might require a larger thresholds sample (i.e. \code{length(external_dist)} should be large). 
+For performance reasons the implemented distributions \dQuote{lognormal}  and \dQuote{loglogistic} are approximated using importance sampling. The option \dQuote{external} generally performs well, but might require a larger thresholds sample (i.e. \code{length(external_dist)} should be large).
 
 The number of parameters is checked according to \code{dist} and \code{model}.  Wrong number of parameters invokes an error, wrong parameter values (e.g., negative values) invoke a warning, and the loglikelihood is set to \code{-Inf}.
 
@@ -198,7 +198,7 @@ The GUTS project web site can be found here: \href{http://guts.r-forge.r-project
 
 \references{Albert, C., Vogel, S., and Ashauer, R. (2016). Computationally efficient implementation of a novel algorithm for the General Unified Threshold Model of Survival (GUTS). PLOS Computational Biology, 12(6), e1004978. \doi{10.1371/journal.pcbi.1004978}.
 
-Jager, T., Albert, C., Preuss, T., and Ashauer, R. (2011). General Unified Threshold Model of Survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science \& Technology, 45(7), 2529--2540, \doi{10.1021/es103092a}.
+Jager, T., Albert, C., Preuss, T., and Ashauer, R. (2011). General Unified Threshold Model of Survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science & Technology, 45(7), 2529--2540, \doi{10.1021/es103092a}.
 
 Ashauer, R., Albert, C., Augustine, S., Cedergreen, N., Charles, S., Ducrot, V., Focks, A., Gabsi, F., Gergs, A., Goussen, B., Jager, T., Kramer, N.I., Nyman, A.-M., Poulsen, V., Reichenberger, S., Schäfer, R.B., Van den Brink, P.J., Veltman, K., Vogel, S., Zimmer, E.I., Preuss, T.G. (2016) Modelling survival: exposure pattern, species sensitivity and uncertainty. Scientific Reports, 6, 1, \doi{10.1038/srep29178}.
 
@@ -206,7 +206,11 @@ Jager, T., Ashauer, R. (2018). Modelling survival under chemical stress. A compr
 
 EFSA PPR Panel (EFSA Panel on Plant Protection Products and their Residues), Ockleford, C., Adriaanse, P., Berny, P., Brock, T., Duquesne, S., Grilli, S., Hernandez-Jerez, A.F., Bennekou, S.H., Klein, M., Kuhl, T., Laskowski, R., Machera, K., Pelkonen, O., Pieper, S., Smith, R.H., Stemmer, M., Sundh, I., Tiktak, A., Topping, C.J., Wolterink, G., Cedergreen, N., Charles, S., Focks, A., Reed, M., Arena, M., Ippolito, A., Byers, H. and Teodorovic, I. (2018). Scientific Opinion on the state of the art of Toxicokinetic/Toxicodynamic (TKTD) effect models for regulatory risk assessment of pesticides for aquatic organisms. EFSA Journal, 16(8):5377, 188 pp., \doi{10.2903/j.efsa.2018.5377}.
 
-Gergs, A., Gabsi, F., Zenker, A., Preuss, T. (2011). Demographic toxicokinetic--toxicodynamic modeling of lethal effects. Environmental Science \& Technology, 50(11), 6017--6024, \doi{10.1021/acs.est.6b01113}.
+Gergs, A., Gabsi, F., Zenker, A., Preuss, T. (2011). Demographic toxicokinetic--toxicodynamic modeling of lethal effects. Environmental Science & Technology, 50(11), 6017--6024, \doi{10.1021/acs.est.6b01113}.
+
+Nickisch, D., Rall, B., Singer, A., Ashauer, R. (2022). Fish Species Sensitivity Ranking Depends on Pesticide Exposure Profiles. Environmental Toxicology & Chemistry, 41, 1732-1741, \doi{10.1002/etc.5348}.
+
+Singer, A., Nickisch, D., Gergs, A. (2023). Joint survival modelling for multiple species exposed to toxicants. Science of The Total Environment, 857, 159266, \doi{10.1016/j.scitotenv.2022.159266}.
 }
 
 \author{Carlo Albert \email{carlo.albert@eawag.ch}, Sören Vogel \email{soeren.vogel@posteo.ch}, Oliver Jakoby \email{oliver.jakoby@rifcon.de}, Alexander Singer \email{alexander.singer@rifcon.de} and Dirk Nickisch \email{dirk.nickisch@rifcon.de}
@@ -221,21 +225,21 @@ Maintainer: Oliver Jakoby \email{oliver.jakoby@rifcon.de}}
 \examples{
 data(diazinon)
 
-# create GUTS object to calculate the Proper model 
-#  using a log-normal distribution of tolerance thresholds  
+# create GUTS object to calculate the Proper model
+#  using a log-normal distribution of tolerance thresholds
 gts.lognormal <- guts_setup(
   C = diazinon$C1, Ct = diazinon$Ct1,
-  y = diazinon$y1, yt = diazinon$yt1, 
+  y = diazinon$y1, yt = diazinon$yt1,
   dist = "lognormal", model = "Proper")
 
 # calculate likelihood of Proper model using log-normal distribution
-guts_calc_loglikelihood(  
-  gts.lognormal, 
+guts_calc_loglikelihood(
+  gts.lognormal,
   c(0.051, 0.126, 1.618, 19.099, 6.495))
 gts.lognormal  # show GUTS object
 
-# repeating calculation above 
-#  with threshold values from an external log-normal distribution. 
+# repeating calculation above
+#  with threshold values from an external log-normal distribution.
 #  Note, we need to account for the different parametrisations
 #  used in the GUTS-package and in rlnorm
 sigma2 <- log( 1 + 6.495^2 / 19.099^2)
@@ -243,44 +247,44 @@ mu <- log(19.099) - 0.5 * sigma2
 lognormal.thresholds <- rlnorm(1000, meanlog = mu, sdlog = sqrt(sigma2))
 gts.external <- guts_setup(
   C = diazinon$C1, Ct = diazinon$Ct1,
-  y = diazinon$y1, yt = diazinon$yt1, 
+  y = diazinon$y1, yt = diazinon$yt1,
   dist = "external", model = "Proper")
 guts_calc_loglikelihood(
-  gts.external, 
-  c(0.051, 0.126, 1.618), external_dist = lognormal.thresholds) 
+  gts.external,
+  c(0.051, 0.126, 1.618), external_dist = lognormal.thresholds)
 # -> Results using external and internal distributions are comparable
 
-# create GUTS object to calculate the Proper model 
+# create GUTS object to calculate the Proper model
 #  using a log-logistic distribution of tolerance thresholds
 gts.loglogistic <- guts_setup(
   C = diazinon$C1, Ct = diazinon$Ct1,
-  y = diazinon$y1, yt = diazinon$yt1, 
+  y = diazinon$y1, yt = diazinon$yt1,
   dist = "loglogistic", model = "Proper")
 guts_calc_survivalprobs( # returning survival probabilities
-  gts.loglogistic, 
-  c(0.01, 0.2, 0.3, 3, 2)) 
+  gts.loglogistic,
+  c(0.01, 0.2, 0.3, 3, 2))
 
 str(guts_report_damage(gts.loglogistic)) # returning damage
 
-# calculate survival probabilities with IT model 
+# calculate survival probabilities with IT model
 #  using a log-logistic distribution of tolerance thresholds
 guts_calc_survivalprobs(
   guts_setup(
   C = diazinon$C1, Ct = diazinon$Ct1,
-  y = diazinon$y1, yt = diazinon$yt1, 
-  dist = "loglogistic", model = "IT"), 
-  c(0.01, 0.2, 3, 2)) 
+  y = diazinon$y1, yt = diazinon$yt1,
+  dist = "loglogistic", model = "IT"),
+  c(0.01, 0.2, 3, 2))
 
 # calculate survival probabilities with an SD model with a fixed tolerance threshold
 guts_calc_survivalprobs(
   guts_setup(
   C = diazinon$C1, Ct = diazinon$Ct1,
-  y = diazinon$y1, yt = diazinon$yt1, 
-  dist = "loglogistic", model = "SD"), 
+  y = diazinon$y1, yt = diazinon$yt1,
+  dist = "loglogistic", model = "SD"),
   c(0.01, 0.2, 0.3, 3))
 
 
-\dontrun{guts_calc_survivalprobs(gts.external, rep(.5, 3))} 
+\dontrun{guts_calc_survivalprobs(gts.external, rep(.5, 3))}
 # Warning and no result, because no external distribution was specified
 
 \dontrun{guts_calc_survivalprobs(gts.loglogistic , 1:4 )} # Error.
