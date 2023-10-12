@@ -12,17 +12,17 @@
 guts_setup <- function(
 	C, Ct, y, yt,
 	dist = 'lognormal', model = 'Proper',
-	N = 1000L, 
-	MF = 100L, 
+	N = 1000L,
+	MF = 100L,
 	M = max(
-		5000L, 
+		5000L,
 		as.integer(ceiling(MF * length(union(Ct, yt)))),
 		as.integer(ceiling(MF * max(union(Ct, yt))))
 		),
 	SVR = 1L,
 	study = "", Clevel = ""
 ) {
-	
+
 	#
 	# Check missing arguments and arguments types (numeric, character).
 	#
@@ -43,11 +43,11 @@ guts_setup <- function(
 		i <- which(!args_char_type)
 		stop( paste( "Arguments ", paste0(args_char_names[i], collapse = ", "), " must be character.", sep='' ) )
 	}
-	
+
 	check_finite(Ct)
 	check_finite(C)
 	check_finite(yt)
-	
+
 	#
 	# Check length of single value arguments.
 	#
@@ -59,10 +59,10 @@ guts_setup <- function(
 			assign( args_sin_names[i], get(args_sin_names[i])[1] )
 		}
 	}
-	
-	
+
+
 	# Check concentrations and survivors.
-	
+
 	if ( length(C) < 2 ) {
 		stop( 'Vector C must be longer than 1.' )
 	} else if ( length(Ct) < 2 ) {
@@ -88,8 +88,8 @@ guts_setup <- function(
 	} else if ( min(c(C, Ct, y, yt)) < 0 ) {
 		stop( 'Vectors C, Ct, y, yt must contain non-negative values.' )
 	}
-	
-	
+
+
 	#
 	# Check Ct and yt length and, if needed, truncate y and yt.
 	#
@@ -100,16 +100,16 @@ guts_setup <- function(
 		yt <- yt[i]
 		warning( 'Survivor information at time points later than the latest concentration time point are disregarded.' )
 	}
-	
+
 	#list reflects enums in C++
 	TD_types <- list(PROPER = 0L, IT = 1L, SD = 2L )
 	dist_types <- list(LOGLOGISTIC = 0L, LOGNORMAL = 1L, DELTA = 2L, EXTERNAL = 3L)
-	
+
 	TD <- toupper(model)
 	dist_type <- toupper(dist)
-	
+
 	#organise parameters
-	
+
 	par_len <- switch (TD,
 										 PROPER =
 										 	switch(dist_type,
@@ -127,7 +127,7 @@ guts_setup <- function(
 	if (is.null(par_len)) {
 		stop("Cannot construct GUTS from model = '", model, "' and dist = '", dist, "'")
 	}
-	
+
 	if (any(is.na(M), is.nan(M), is.infinite(M), is.null(M))) {
 		D <- NA
 		Dt <- NA
@@ -135,7 +135,7 @@ guts_setup <- function(
 		D <- rep(NA, M)
 		Dt <- rep(NA, M)
 	}
-	
+
 	#
 	# Check correctness of model specific parameters
 	#
@@ -169,11 +169,11 @@ guts_setup <- function(
 			)
 		)
 	}
-	
+
 	#
 	# Build GUTS object for return.
 	#
-	
+
 	ret <- structure(
 		list(
 			'study' = study,
@@ -291,7 +291,7 @@ log_multinomial_coefficient <- function(gts) log(faculty(sum(-diff(c(gts$y,0))))
 
 # The actual print function.
 .g_print <- function( object, width = getOption('width'), digits = getOption('digits') ) {
-	
+
 	# Header
 	cat(
 		"\n",
@@ -299,13 +299,13 @@ log_multinomial_coefficient <- function(gts) log(faculty(sum(-diff(c(gts$y,0))))
 		"============\n",
 		sep=""
 	)
-	
+
 	# Distribution, Model
 	cat( "Name: ", object$study, ", CLevel: ", object$Clevel, ".\n", sep="" )
-	
+
 	# Distribution, Model
 	cat( "Distribution: ", object$dist, ", model: ", object$model, ".\n", sep="" )
-	
+
 	# Concentrations, Survivors
 	cat( "Concentrations (n=", length(object$C), "), survivors (n=", length(object$y), ")", sep="" )
 	if ( length(object$C) > 0 ) {
@@ -319,10 +319,10 @@ log_multinomial_coefficient <- function(gts) log(faculty(sum(-diff(c(gts$y,0))))
 	} else {
 		cat( "\n", sep="" )
 	}
-	
+
 	# Sample length, Time grid points
 	cat( "Sample length: ", object$N, ", Time grid points: ", object$M, ".\n", sep="" )
-	
+
 	# Parameters
 	prf <- paste("Parameters (n=", length(object$par), ")", sep="")
 	if ( length(object$par) > 0 ) {
@@ -331,7 +331,7 @@ log_multinomial_coefficient <- function(gts) log(faculty(sum(-diff(c(gts$y,0))))
 	} else {
 		cat( "\n", sep="" )
 	}
-	
+
 	# External distribution
 	if (is.null(object$external_dist)) {
 		cat("External distribution: NULL\n", sep = "")
@@ -344,7 +344,7 @@ log_multinomial_coefficient <- function(gts) log(faculty(sum(-diff(c(gts$y,0))))
 			cat( "\n", sep="" )
 		}
 	}
-	
+
 	# Survival probabilities
 	prf <- paste("Survival probabilities (n=", length(object$S), ")", sep="")
 	if ( length(object$S) > 0 ) {
@@ -353,7 +353,7 @@ log_multinomial_coefficient <- function(gts) log(faculty(sum(-diff(c(gts$y,0))))
 	} else {
 		cat( "\n", sep="" )
 	}
-	
+
 	# Damage
 	if (any(is.na(object$D))) {
 		damage <- object$D
@@ -373,19 +373,19 @@ log_multinomial_coefficient <- function(gts) log(faculty(sum(-diff(c(gts$y,0))))
 		prf <- paste(prf, ": ", sep="")
 		cat( .g_print_help(damage, width, digits, exdent = 2, prefix = prf), sep="\n" )
 	}
-	
+
 	#Sum of squares
 	cat( "Sum of squares: ", object$squares, "\n", sep="" )
-	
+
 	# Loglikelihood
 	cat( "Loglikelihood (ignoring multinomial_coefficient): ", object$LL, "\n", sep="" )
-	
+
 	#SPPE
 	cat( "SPPE: ", object$SPPE, "\n", sep="" )
-	
+
 	#SVR
 	cat( "SVR: ", object$SVR, "\n", sep="" )
-	
+
 	# Footer
 	cat( "\n", sep="" )
 }
@@ -414,27 +414,4 @@ print.GUTS <- function(x, ...) {
 #}
 "$<-.GUTS" <- function(x, field, value) {
 	stop( "Use function `guts_setup()` for changing fields." )
-}
-
-
-##
-# Attributes.
-#
-#'attr<-' <- function(x, which, value) {
-#	UseMethod('attr<-', x)
-#}
-"attr<-.GUTS" <- function(x, which, value) {
-	stop( "Use function `guts_setup()` for changing GUTS object fields." )
-}
-#'attributes<-' <- function(x, which, value) {
-#	UseMethod('attributes<-', x)
-#}
-"attributes<-.GUTS" <- function(x, which, value) {
-	stop( "Use function `guts_setup()` for changing attributes of a GUTS object." )
-}
-#'mostattributes<-' <- function(x, which, value) {
-#	UseMethod('mostattributes<-', x)
-#}
-"mostattributes<-.GUTS" <- function(x, which, value) {
-	stop( "Use function `guts_setup()` for changing attributes of a GUTS object." )
 }
