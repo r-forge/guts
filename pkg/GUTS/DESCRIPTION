@@ -18,5 +18,6 @@ Suggests:
     adaptMCMC,
     xlsx,
     drc,
-    testthat
+    testthat,
+    withr
 VignetteBuilder: knitr
