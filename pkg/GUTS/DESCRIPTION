@@ -1,7 +1,7 @@
 Package: GUTS
 Type: Package
 Title: Fast Calculation of the Likelihood of a Stochastic Survival Model
-Version: 1.2.4
+Version: 1.2.5
 Date: 2023-09-26
 Author: Carlo Albert <carlo.albert@eawag.ch>, Sören Vogel <soeren.vogel@posteo.ch>, Oliver Jakoby <oliver.jakoby@rifcon.de>, Alexander Singer <alexander.singer@rifcon.de> and Dirk Nickisch <dirk.nickisch@rifcon.de>
 Maintainer: Oliver Jakoby <oliver.jakoby@rifcon.de>
