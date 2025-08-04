@@ -25,4 +25,4 @@ Maintainer: Oliver Jakoby \email{oliver.jakoby@rifcon.de}}
 
 Jager, T., Albert, C., Preuss T., and Ashauer R. (2011). General Unified Threshold Model of Survival -- a toxicokinetic toxicodynamic framework for ecotoxicology. Environmental Science & Technology, 45(7), 2529--2540, \doi{10.1021/es103092a}}
 
-\seealso{\code{\link{guts_setup}}, \code{\link{guts_calc_loglikelihood}}, \code{\link{guts_calc_survivalprobs}}, \code{\link{guts_report_damage}}, \code{\link{diazinon}}, \code{\link{Rcpp}}}
+\seealso{\code{\link{guts_setup}}, \code{\link{guts_calc_loglikelihood}}, \code{\link{guts_calc_survivalprobs}}, \code{\link{guts_report_damage}}, \code{\link{diazinon}}}

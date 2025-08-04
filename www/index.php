@@ -55,7 +55,8 @@ if ($handle=fopen('http://'.$domain.'/export/projtitl.php?group_name='.$group_na
 <h2>News</h2>
 
 <ul>
-	<li>GUTS version 1.2.5 sets seed on tests that use random numbers to get determinsitic testtable environment. Package functionality was not changed.</li>
+	<li>GUTS version 1.2.6 is a maintenance update and fixes incompatibilities with newer CRAN requests. Package functionality was not changed.</li>
+	<li>GUTS version 1.2.5 sets seed on tests that use random numbers to get deterministic testable environment. Package functionality was not changed.</li>
 	<li>GUTS version 1.2.4 updates package documentation and improves test access. Package functionality was not changed. Methods to avoid changing the attributes of a GUTS-object were removed as attribute setting functions are not generic.</li>
 	<li>GUTS version 1.2.3 fixes an incorrect IT damage calculation in case of complex profiles. Since version 1.2 in few cases of specific exposure dynamics calculation of IT damage and survival estimates have gone wrong.</li>
 	<li>GUTS version 1.2.2 fixes C++ code that did not compile on one computer platform supported by CRAN and improves checks of model parameter values.</li>
